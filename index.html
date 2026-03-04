@@ -1,220 +1,873 @@
-<!DOCTYPE html>
+
+<!doctype html>
 <html lang="az">
 <head>
-    <meta name="msvalidate.01" content="46BA8887ABB9709F172ED354E9C526D3" />
-    <meta name="google-site-verification" content="i4omR6aDhgh00ZQnB1NtNkCtWyx8JXyoO2oc2P3RX68" />
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="referrer" content="no-referrer">
-    <title>Canlı Oyun Nəticələri</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        :root { 
-            --bg: #f8fafc; --card: #ffffff; --primary: #020617; 
-            --accent: #3b82f6; --live: #ef4444; --text: #0f172a; 
-            --border: #e2e8f0; --home-color: #3b82f6; --away-color: #f59e0b;
-        }
-        body { margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); -webkit-tap-highlight-color: transparent; }
-        body.modal-open { overflow: hidden; height: 100vh; }
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5663281315926059"
+     crossorigin="anonymous"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Söz Yazma Təcrübəsi — Super Dizayn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg1:#0f172a;--bg2:#07103a;--card:#0b1220;--accent:#7c3aed;--glass:rgba(255,255,255,0.04);--muted:rgba(255,255,255,0.6)}
+    *{box-sizing:border-box;font-family:Inter,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial}
+    /* AÇIQ REJİM (LIGHT MODE) */
 
-        header { background: var(--primary); color: white; padding: 15px 20px; position: sticky; top: 0; z-index: 1000; }
-        .logo { font-size: 20px; font-weight: 800; text-align: center; margin-bottom: 15px; }
-        .search-box { width: 100%; max-width: 600px; margin: 0 auto; display: block; padding: 12px 15px; border-radius: 12px; border: none; background: rgba(255,255,255,0.1); color: white; outline: none; box-sizing: border-box; }
 
-        .loader-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 50px 0; }
-        .goal-container { width: 100px; height: 60px; border: 4px solid var(--primary); border-bottom: none; position: relative; display: flex; align-items: center; justify-content: center; border-radius: 4px 4px 0 0; }
-        .goal-net { position: absolute; width: 100%; height: 100%; background-image: radial-gradient(#ccc 1px, transparent 1px); background-size: 5px 5px; opacity: 0.3; }
-        .ball { font-size: 24px; position: absolute; bottom: -10px; animation: scoreGoal 1.5s infinite ease-in-out; }
-        @keyframes scoreGoal {
-            0% { transform: translate(-80px, 0) rotate(0deg); }
-            60% { transform: translate(0, -20px) rotate(360deg); }
-            100% { transform: translate(0, 0) rotate(720deg); }
-        }
+body.light .card,
+body.light .panel,
+body.light .modal-card {
+  background: #ffffff;
+  color: #0f172a;
+}
 
-        .container { max-width: 600px; margin: 0 auto; padding: 10px; }
-        .league-group { background: var(--card); margin-bottom: 15px; border-radius: 16px; border: 1px solid var(--border); overflow: hidden; }
-        .league-header { background: #f1f5f9; padding: 10px 15px; display: flex; align-items: center; }
-        .league-header img { width: 18px; height: 18px; margin-right: 10px; }
-        .league-title { font-size: 12px; font-weight: 700; color: #475569; }
-        
-        .match-card { display: flex; align-items: center; padding: 15px; cursor: pointer; border-bottom: 1px solid #f1f5f9; }
-        .time-status { width: 45px; font-size: 11px; font-weight: 800; color: var(--live); text-align: center; }
-        .teams-area { flex: 1; padding: 0 10px; border-left: 1px solid #f1f5f9; }
-        .team-row { display: flex; justify-content: space-between; align-items: center; margin: 4px 0; }
-        .team-logo { width: 22px; height: 22px; object-fit: contain; }
-        .team-name { font-size: 14px; font-weight: 600; }
-        .score { font-size: 15px; font-weight: 800; color: var(--primary); }
+    html,body{height:100%;margin:0}
+    body{
+      background:linear-gradient(135deg,var(--bg1),var(--bg2));
+  color:#e6eef8;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:32px;
+  flex-direction: column;
+  gap: 20px;
 
-        #detailsModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#fff; z-index:2000; overflow-y:auto; }
-        .modal-header { background: var(--primary); color:white; padding: 45px 15px 20px; text-align:center; position: relative; }
-        .close-btn { position: absolute; left: 15px; top: 15px; font-size: 26px; cursor: pointer; color: white; }
-        
-        .modal-tabs { display: flex; background: #f1f5f9; padding: 5px; gap: 5px; position: sticky; top: 0; z-index: 10; border-bottom: 1px solid var(--border); }
-        .tab-btn { flex: 1; padding: 12px; border: none; background: none; font-weight: 700; font-size: 12px; color: #64748b; cursor: pointer; border-radius: 10px; }
-        .tab-btn.active { background: #fff; color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .tab-content { display: none; padding: 20px 15px; }
-        .tab-content.active { display: block; }
-        
-        .stat-box { margin-bottom: 18px; }
-        .stat-labels { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; margin-bottom: 6px; }
-        .stat-bar-outer { height: 6px; background: #f1f5f9; border-radius: 3px; display: flex; overflow: hidden; }
-        .bar-home { background: var(--home-color); }
-        .bar-away { background: var(--away-color); }
-    </style>
+  overflow-y: auto;   /* ✅ AŞAĞI SCROLL AÇILDI */
+  overflow-x: hidden; /* yan sürüşmə olmasın */
+}
+    
+/* LIGHT MODE – card və panellər */
+body.light .card,
+body.light .typing-area,
+body.light .panel {
+  background: #ffffff !important;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+
+    /* AÇIQ REJİM (LIGHT MODE) */
+body.light {
+  --bg1: #f8fafc;
+  --bg2: #e5e7eb;
+  --card: #ffffff;
+  --accent: #7c3aed;
+  --glass: rgba(0,0,0,0.04);
+  --muted: rgba(0,0,0,0.6);
+  color: #0f172a;
+}
+
+    .container{width:100%;max-width:980px}
+
+    .card{
+      background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
+      border-radius:18px;padding:28px;box-shadow:0 10px 30px rgba(2,6,23,0.7);backdrop-filter: blur(6px);
+    }
+
+    header{display:flex;align-items:center;gap:18px;margin-bottom:18px}
+    .logo {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  overflow: hidden; /* sekil kənardan daşmasın */
+  background: none; /* köhnə rəngi silirik */
+}
+
+.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* şəkil eyilməsin */
+}
+.huquq{
+  align-items: center;
+  justify-content: center;
+  height: auto;
+}
+
+    h1{font-size:20px;margin:0}
+    p.lead{margin:0;color:var(--muted);font-size:13px}
+
+    .top-row{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-top:16px}
+    .stats{display:flex;gap:12px;align-items:center}
+    .stat{background:var(--glass);padding:10px 12px;border-radius:10px;font-weight:600;font-size:13px}
+
+    .stage{display:grid;grid-template-columns:1fr 320px;gap:18px;margin-top:18px}
+
+    /* main typing area */
+    .typing-area{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:20px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+    .word-stream{min-height:140px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+    .word{padding:6px 10px;border-radius:8px;background:transparent;color:var(--muted);font-weight:600}
+    .word.past{opacity:0.5}
+    .word.current{background:linear-gradient(90deg, rgba(124,58,237,0.14), rgba(59,130,246,0.06));border:1px solid rgba(124,58,237,0.18);color:#fff}
+    .word.correct{background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.18);color:#bbf7d0}
+    .word.wrong{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.16);color:#ffd6d6}
+
+    .input-row{display:flex;gap:12px;margin-top:16px;align-items:center}
+    input[type=text]{flex:1;padding:14px 16px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit;font-size:16px;outline:none}
+    .controls{display:flex;gap:8px}
+    button{background:var(--accent);border:none;color:white;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer}
+    button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06)}
+
+    /* right panel */
+    .panel{background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+    .panel h3{margin:0 0 8px 0}
+    .list{max-height:240px;overflow:auto;padding-right:8px}
+    .list-item{display:flex;justify-content:space-between;padding:8px;border-radius:8px;margin-bottom:6px}
+    .list-item.correct{background:rgba(34,197,94,0.04)}
+    .list-item.wrong{background:rgba(239,68,68,0.04)}
+
+    /* results modal */
+    .modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(2,6,23,0.6),rgba(2,6,23,0.8));backdrop-filter:blur(4px);}
+    .modal-card{background:linear-gradient(180deg,#071127,#051028);padding:28px;border-radius:14px;max-width:720px;width:92%;color:#eaf2ff}
+    .results-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px}
+    .result-box{background:rgba(255,255,255,0.03);padding:12px;border-radius:10px;text-align:center}
+
+    footer{margin-top:14px;color:var(--muted);font-size:13px}
+
+    @media(max-width:880px){
+      .stage{grid-template-columns:1fr}
+      .panel{order:2}
+    }
+    .oyda{
+      display: flex;
+      flex-direction: row;
+      margin-right: 30px;
+      
+      
+    }
+    h4{
+      margin-left: 500px;
+    }
+    .account-wrapper{
+      margin-left: 501px;
+      height: 30px;
+    
+      width: 55px;
+      border-radius: 10px;
+      display: flex;
+      gap: 50px;
+      transition: ;
+
+      
+
+    }
+    .account-wrapper:hover{
+      tr
+    }
+    .ayarlar{
+      
+    }
+    .hesab a{
+      text-decoration: none;
+      color: #e6eef8;
+      height: 25px;
+      width: 200px;
+      text-decoration: none;
+      transition: 0.3s ease;
+
+    }
+    .hesab:hover{
+      transform: scale(1.1);
+    }
+    .account-menu{
+  position: absolute;
+  top: 35px;
+  right: 0;
+  background: #0b1220;
+  border-radius: 12px;
+  padding: 8px;
+  width: 180px;
+  display: none;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  z-index: 999;
+}
+
+.account-menu a{
+  display: block;
+  padding: 10px;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 14px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.account-wrapper{ 
+position: relative;
+text-decoration:none ;
+margin-left: 280px;
+display:flex ;
+flex-direction: row;
+}
+.account-wrapper a{
+  text-decoration: none;
+  color: #e6eef8;
+  text-decoration: double;
+}
+
+.account-menu{
+  position: absolute;
+  top: 35px;
+  right: 0;
+  display: none;
+}
+
+.account-menu.active{
+  display: block;
+}
+
+
+.account-menu a:hover{
+  background: rgba(255,255,255,0.08);
+}
+
+.account-menu.active{
+  display: block;
+}
+.ayarlar{
+  color: #e6eef8;
+  border-radius: 5px;
+  width: 220px;
+}
+.settings-wrapper{
+  position: relative;
+ 
+ 
+}
+
+.settings-menu{
+  position: absolute;
+  top: 35px;
+  right: 0;
+  background: #0b1220;
+  border-radius: 12px;
+  padding: 8px;
+  width: 220px;
+  display: none;
+  height: 50px;
+  flex-direction: column;
+  gap: 100px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+.settings-menu.active{
+  display: flex;
+  gap: 5px;
+}
+.settings-menu a{
+  text-decoration:none ;
+  color: #eaf2ff;
+  gap: 20px;
+  font-size: 14px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  display: block;
+  padding: 10px 12px;
+}
+.settings-menu a:hover{
+  background: rgba(255,255,255,0.08);
+  gap: 20px;
+  border-radius: 10px;
+  height: auto;
+}
+.hesabadi{
+  color: #e6eef8;
+  border-radius: 5px;
+  width: 220px;
+
+}
+
+
+
+  </style>
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
 </head>
 <body>
-
+  <div class="container">
+    <div class="card">
 <header>
-    <div class="logo">OFFSİDE24<span style="color:var(--accent)">LİVE</span></div>
-    <input type="text" id="search" class="search-box" placeholder="Komanda və ya liqa..." oninput="filterMatches()">
+        <div class="logo">
+            <img src="https://i.postimg.cc/9Qy6YWFZ/Chat-GPT-Image-Nov-27-2025-09-35-45-PM.png" alt="Logo">
+</div>
+<div class="oyda">
+          <h1>TypingMaster-Söz yazma təcrübəsi</h1>
+  <div class="account-wrapper">
+  <a href="#" id="accountBtn">Hesab</a>
+    <div class="ayarlar">
+  <a href="#" id="settingBtn">Parametrlər</a>
+    </div>
+  
+  
+</div>
+<div id="adminStats" style="display:none; margin-top:10px; font-weight:600;">
+  👁️ Daxil olan istifadəçi sayı: <span id="visitorCount">0</span>
+</div>
+
+  
+  
+   <div class="account-menu" id="accountMenu">
+    <a href="https://typingmasteraz.github.io/ayda/qeydiyyat.html">Qeydiyyat</a>
+    <a href="https://typingmasteraz.github.io/ayda/qeydiyyat.html" id="logoutMenutBtn">Hesabdan çıxış</a>
+    <a href="account.html" id="accountBtn">Hesab Məlumatları</a>
+  
+  </div>
+  <div class="settings-menu" id="settingsMenu">
+    <a href="https://typingmasteraz.github.io/ayda/haqqimizda.html">Haqqımızda</a>
+    
+  </div>
+
+
+
+
+          </div>
+        </div>
 </header>
 
-<div class="container" id="matchList">
-    <div class="loader-wrapper">
-        <div class="goal-container"><div class="goal-net"></div><div class="ball">⚽</div></div>
-        <div style="margin-top:10px; font-weight:700; font-size:12px;">CANLI OYUNLAR...</div>
-    </div>
-</div>
-
-<div id="detailsModal">
-    <div class="modal-header">
-        <span class="close-btn" onclick="closeModal()">✕</span>
-        <div id="leagueM" style="font-size:10px; opacity:0.8; font-weight:700; text-transform:uppercase;"></div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
-            <div style="flex:1"><img id="logoH" src="" style="width:50px;"><br><span id="nameH"></span></div>
-            <div style="font-size:34px; font-weight:800;" id="scoreM">0-0</div>
-            <div style="flex:1"><img id="logoA" src="" style="width:50px;"><br><span id="nameA"></span></div>
+      <div class="top-row">
+        <div class="stats">
+          <div class="stat">Sözlər: <span id="totalWords">0</span></div>
+          <div class="stat">Düz: <span id="correctCount">0</span></div>
+          <div class="stat">Səhv: <span id="wrongCount">0</span></div>
+          <div class="stat">Vaxt: <span id="timer">00:00</span></div>
         </div>
-        <div id="timeM" style="margin-top:12px; font-weight:800; font-size:11px; background:rgba(255,255,255,0.2); display:inline-block; padding:3px 10px; border-radius:12px;"></div>
+        <div>
+          <label style="font-size:13px;color:var(--muted)">Söz sayı:</label>
+          <select id="wordCount" style="padding:8px;border-radius:8px;background:transparent;color:inherit;border:1px solid rgba(255,255,255,0.04);background-color: black;">
+            <option value="20">20</option>
+            <option value="30" selected>30</option>
+            <option value="40">40</option>
+            <option value="60">60</option>
+            
+
+            
+          </select>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="typing-area">
+          <div class="word-stream" id="wordStream" aria-hidden="false"></div>
+
+          <div class="input-row">
+            <input type="text" id="typingInput" placeholder="İndi yazmağa başla..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+            <div class="controls">
+              <button id="startBtn">Başla</button>
+              <button class="ghost" id="resetBtn">Sıfırla</button>
+            </div>
+          </div>
+
+          <footer>
+            İstifadə qaydası: Sözləri yazıb arada boşluq (space) ilə irəlilə. Hər söz üçün hərf-ə-hərf yoxlanacaq. Sonda nəticələr çıxacaq.
+          </footer>
+        </div>
+
+        <aside class="panel">
+          <h3>Nəticələr (canlı)</h3>
+          <div class="list" id="resultList"></div>
+          <hr style="opacity:0.06;border:none;height:1px;margin:12px 0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.03),transparent)">
+          <div style="display:flex;gap:8px;align-items:center;justify-content:space-between">
+            <small style="color:var(--muted)">Sürət hesabatı</small>
+            <strong id="wpm">0 WPM</strong>
+          </div>
+        </aside>
+      </div>
     </div>
-    <div class="modal-tabs">
-        <button class="tab-btn active" onclick="switchTab('goalsBox', this)">HADİSƏLƏR</button>
-        <button class="tab-btn" onclick="switchTab('statsBox', this)">STATİSTİKA</button>
+  </div>
+
+  <!-- modal template -->
+
+  <div id="modal" style="display:none" class="modal" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <h2>Nəticələr</h2>
+      <p style="margin:4px 0 0 0;color:var(--muted)">Aşağıda sənin performansın göstərilir.</p>
+      <div class="results-grid" id="resultsGrid"></div>
+      <div style="margin-top:14px;overflow:auto;max-height:260px;padding-right:8px" id="detailedResults"></div>
+      <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end">
+        <button id="closeModal">Yenidən</button>
+        
+      </div>
     </div>
-    <div id="goalsBox" class="tab-content active"></div>
-    <div id="statsBox" class="tab-content"></div>
+       
+  </div>
+  <div class="huquq">
+  © 2025 TypingMaster. Bütün hüquqlar qorunur.
+  <a href="https://typingmasteraz.github.io/ayda/privacy.html">Məxfilik Siyasəti və Haqqımızda</a>
 </div>
 
-<script>
-    const G_URL = "https://script.google.com/macros/s/AKfycbxcyqVA8trNVID5v5z_PHcqkqYn-21AmlQkXyg4prDAATgBwzB2_EGWTCQG-EzN6i-P/exec"; 
-    let allEvents = [];
+  
 
-    async function fetchData() {
-        try {
-            const res = await fetch(G_URL);
-            const data = await res.json();
-            allEvents = data.events || [];
-            render(allEvents);
-        } catch (e) { console.error(e); }
+ <script>
+  async function updateGlobalCounter() {
+    const name = "typingmaster"; // Saytın üçün unikal ad
+    try {
+        // Alternativ stabil API xidməti
+        const response = await fetch(`https://api.counterapi.dev/v1/${name}/visit/up`);
+        const data = await response.json();
+        
+        // Konsolu təmizləyirik ki, xətalar görünməsin
+        console.clear();
+        
+        // Məlumatı yalnız sən görəcəksən
+        console.log("%c TypingMaster ADMIN PANEL ", "background: #39ff14; color: #000; font-weight: bold; padding: 5px;");
+        console.log("%c Ümumi Qlobal Ziyarətçi Sayı: " + data.count, "color: #39ff14; font-size: 14px;");
+    } catch (error) {
+        console.log("Statistika bazasına qoşulmaq mümkün olmadı.");
+    }
+}
+
+// Səhifə açılan kimi işə sal
+updateGlobalCounter();
+    // Sayğac funksiyası - Səhifə yüklənən kimi işə düşür
+(function() {
+    // 1. Mövcud sayı götür və ya 0-dan başla
+    let count = localStorage.getItem('my_private_counter') || 0;
+    
+    // 2. Sayı 1 vahid artır
+    count = parseInt(count) + 1;
+    
+    // 3. Yeni sayı yadda saxla
+    localStorage.setItem('my_private_counter', count);
+
+    // 4. Konsolu təmizlə və nəticəni göstər
+    console.clear(); // Köhnə xətaları gizlətmək üçün
+    console.log("%c OFFSIDE24 ADMIN PANEL ", "background: #39ff14; color: #000; padding: 5px; font-weight: bold; border-radius: 4px;");
+    console.log("%c Ümumi daxilolma sayı: " + count, "color: #39ff14; font-size: 14px; font-family: sans-serif;");
+})();
+
+  function renderDetailedResults(){
+  const box = document.getElementById("detailedResults");
+  box.innerHTML = "";
+
+  state.perWord.forEach((item, i) => {
+    if (!item) return;
+
+    const row = document.createElement("div");
+    row.style.display = "flex";
+    row.style.justifyContent = "space-between";
+    row.style.alignItems = "center";
+    row.style.padding = "8px 10px";
+    row.style.marginBottom = "6px";
+    row.style.borderRadius = "8px";
+    row.style.fontSize = "14px";
+
+    if (item.correct) {
+      row.style.background = "rgba(34,197,94,0.12)";
+      row.innerHTML = `
+        <span>${i+1}. ${item.word}</span>
+        <strong style="color:#22c55e">✔ düzgün</strong>
+      `;
+    } else {
+      row.style.background = "rgba(239,68,68,0.12)";
+      row.innerHTML = `
+        <span>${i+1}. ${item.word}</span>
+        <strong style="color:#ef4444">✖ səhv</strong>
+      `;
     }
 
-    function render(data) {
-        const list = document.getElementById("matchList");
-        const grouped = data.reduce((acc, ev) => {
-            const groupKey = `${ev.tournament.name}_${ev.tournament.category.name}`;
-            if (!acc[groupKey]) {
-                acc[groupKey] = { id: ev.tournament.id, name: ev.tournament.name, country: ev.tournament.category.name, matches: [] };
-            }
-            acc[groupKey].matches.push(ev);
-            return acc;
-        }, {});
+    box.appendChild(row);
+  });
+    // 🔢 YEKUN STATİSTİKA
+  const summary = document.createElement("div");
+  summary.style.marginTop = "12px";
+  summary.style.paddingTop = "10px";
+  summary.style.borderTop = "1px solid rgba(255,255,255,0.08)";
+  summary.style.display = "flex";
+  summary.style.justifyContent = "space-between";
+  summary.style.fontWeight = "700";
 
-        let html = "";
-        for (const key in grouped) {
-            const group = grouped[key];
-            html += `
-                <div class="league-group">
-                    <div class="league-header">
-                        <img src="https://www.sofascore.com/api/v1/tournament/${group.id}/image">
-                        <span class="league-title">${group.name} (${group.country})</span>
-                    </div>
-                    ${group.matches.map(m => `
-                        <div class="match-card" onclick="openMatch('${m.id}', '${m.homeTeam.id}', '${m.awayTeam.id}', '${m.homeTeam.name.replace(/'/g,"")}', '${m.awayTeam.name.replace(/'/g,"")}', '${m.homeScore.current}:${m.awayScore.current}', '${m.status.description}', '${group.name.replace(/'/g,"")}')">
-                            <div class="time-status">${m.status.description.includes("'") ? m.status.description : 'LIVE'}</div>
-                            <div class="teams-area">
-                                <div class="team-row">
-                                    <div style="display:flex; align-items:center; gap:10px;">
-                                        <img class="team-logo" src="https://www.sofascore.com/api/v1/team/${m.homeTeam.id}/image"> 
-                                        <span class="team-name">${m.homeTeam.name}</span>
-                                    </div>
-                                    <span class="score">${m.homeScore.current}</span>
-                                </div>
-                                <div class="team-row">
-                                    <div style="display:flex; align-items:center; gap:10px;">
-                                        <img class="team-logo" src="https://www.sofascore.com/api/v1/team/${m.awayTeam.id}/image"> 
-                                        <span class="team-name">${m.awayTeam.name}</span>
-                                    </div>
-                                    <span class="score">${m.awayScore.current}</span>
-                                </div>
-                            </div>
-                        </div>`).join("")}
-                </div>`;
-        }
-        list.innerHTML = html || "<center style='padding:50px;'>Oyun yoxdur.</center>";
+  summary.innerHTML = `
+    <span style="color:#22c55e">✔ Düzgün: ${state.correct}</span>
+    <span style="color:#ef4444">✖ Səhv: ${state.wrong}</span>
+  `;
+
+  box.appendChild(summary);
+
+}
+
+/* ===================== WORD LIST ===================== */
+const WORDS = (`salam salamlar komputer kitab internet proqramlaşdırma javascript html css dizayn sürət təcrübə yazmaq düzgün səhv oyun funksiya dəyişən massiv düzbucaqlı tənlik riyaziyyat tarix coğrafiya elm musiqi film sosial media kitabxana universitet alma bal su qapı pəncərə kitab çanta dost yol işıq ev oyun yaz gül dərs telefon kompüter şəkil masa saat məktəb müəllim təcrübə dəftər`).split(' ');
+
+const el = id => document.getElementById(id);
+
+/* ===================== ACCOUNT MENU ===================== */
+const accountBtn = document.getElementById("accountBtn");
+const accountMenu = document.getElementById("accountMenu");
+const settingBtn = document.getElementById("settingBtn");
+const settingsMenu = document.getElementById("settingsMenu");
+const hesabadi = document.getElementById("hesabadi")
+
+accountBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  accountMenu.classList.toggle("active");
+});
+
+settingBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  settingsMenu.classList.toggle("active");
+});
+
+/* kənara klik ediləndə menyular bağlansın */
+document.addEventListener("click", (e) => {
+  if (
+    !e.target.closest(".account-wrapper") &&
+    !e.target.closest("#accountMenu") &&
+    !e.target.closest("#accountInfoBtn")
+  ) {
+    accountMenu.classList.remove("active");
+  }
+
+  if (
+    !e.target.closest("#settingBtn") &&
+    !e.target.closest("#settingsMenu")
+  ) {
+    settingsMenu.classList.remove("active");
+  }
+});
+
+
+/* ===================== STATE ===================== */
+let settings = { count: parseInt(el('wordCount')?.value || 30) };
+let state = {
+  words: [],
+  index: 0,
+  correct: 0,
+  wrong: 0,
+  startTime: null,
+  finished: false,
+  perWord: []
+};
+
+let timerInterval = null;
+
+/* ===================== WORD PICK ===================== */
+function pickWords(n){
+  let pool = [...WORDS];
+  for(let i = pool.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  return pool.slice(0, n);
+}
+
+/* ===================== RENDER ===================== */
+function renderStream(){
+  const stream = el('wordStream');
+  stream.innerHTML = '';
+
+  state.words.forEach((w,i)=>{
+    const span = document.createElement('div');
+    span.className = 'word';
+
+    if(i < state.index) span.classList.add('past');
+    if(i === state.index) span.classList.add('current');
+    if(state.perWord[i]) span.classList.add(state.perWord[i].correct ? 'correct' : 'wrong');
+
+    if(i === state.index){
+      const typed = el('typingInput').value;
+      for(let k=0;k<w.length;k++){
+        const ch = document.createElement('span');
+        ch.textContent = w[k];
+        if(k < typed.length && typed[k] !== w[k]) ch.style.color = '#ffb4b4';
+        span.appendChild(ch);
+      }
+    } else {
+      span.textContent = w;
     }
 
-    async function openMatch(id, idH, idA, nameH, nameA, score, time, league) {
-        document.body.classList.add('modal-open');
-        document.getElementById("detailsModal").style.display = "block";
-        document.getElementById("logoH").src = `https://www.sofascore.com/api/v1/team/${idH}/image`;
-        document.getElementById("logoA").src = `https://www.sofascore.com/api/v1/team/${idA}/image`;
-        document.getElementById("nameH").innerText = nameH;
-        document.getElementById("nameA").innerText = nameA;
-        document.getElementById("scoreM").innerText = score;
-        document.getElementById("timeM").innerText = time;
-        document.getElementById("leagueM").innerText = league;
+    stream.appendChild(span);
+  });
+}
 
-        try {
-            const [resI, resS] = await Promise.all([
-                fetch(`${G_URL}?type=incidents&matchId=${id}`),
-                fetch(`${G_URL}?type=statistics&matchId=${id}`)
-            ]);
-            const dataI = await resI.json();
-            const dataS = await resS.json();
+function updateStats(){
+  el('totalWords').textContent = state.words.length;
+  el('correctCount').textContent = state.correct;
+  el('wrongCount').textContent = state.wrong;
+  el('wpm').textContent = calcWPM() + ' WPM';
+}
 
-            const goals = (dataI.incidents || []).filter(i => i.incidentType === "goal");
-            document.getElementById("goalsBox").innerHTML = goals.length ? goals.map(g => `
-                <div class="inc-item" style="display:flex; padding:10px; border-bottom:1px solid #eee">
-                    <div style="flex:1; text-align:right; padding-right:10px">${g.isHome ? `<b>${g.player?g.player.name:'Qol'}</b> ${g.time}' ⚽` : ''}</div>
-                    <div style="flex:1; text-align:left; padding-left:10px">${!g.isHome ? `⚽ ${g.time}' <b>${g.player?g.player.name:'Qol'}</b>` : ''}</div>
-                </div>`).join("") : "<center style='padding:20px'>Qol yoxdur</center>";
+/* ===================== TIMER ===================== */
+function calcWPM(){
+  if(!state.startTime) return 0;
+  const minutes = (Date.now() - state.startTime) / 60000;
+  return minutes ? Math.round(state.index / minutes) : 0;
+}
 
-            const stats = dataS.statistics ? (dataS.statistics.find(s => s.period === "ALL") || dataS.statistics[0]) : null;
-            if(stats) {
-                let sHtml = "";
-                stats.groups.forEach(group => {
-                    group.statisticsItems.forEach(st => {
-                        const hV = parseFloat(st.homeValue) || 0;
-                        const aV = parseFloat(st.awayValue) || 0;
-                        const hP = (hV + aV) > 0 ? (hV / (hV + aV)) * 100 : 50;
-                        sHtml += `
-                            <div class="stat-box">
-                                <div class="stat-labels"><span>${st.home}</span><span>${st.name}</span><span>${st.away}</span></div>
-                                <div class="stat-bar-outer"><div class="bar-home" style="width:${hP}%"></div><div class="bar-away" style="width:${100-hP}%"></div></div>
-                            </div>`;
-                    });
-                });
-                document.getElementById("statsBox").innerHTML = sHtml;
-            } else { document.getElementById("statsBox").innerHTML = "<center>Məlumat yoxdur</center>"; }
+function startTimer(){
+  clearInterval(timerInterval);
+  state.startTime = Date.now();
+  timerInterval = setInterval(()=>{
+    const sec = Math.floor((Date.now()-state.startTime)/1000);
+    el('timer').textContent =
+      String(Math.floor(sec/60)).padStart(2,'0') + ':' +
+      String(sec%60).padStart(2,'0');
+    el('wpm').textContent = calcWPM() + ' WPM';
+  },500);
+}
 
-        } catch (e) { console.error(e); }
+function stopTimer(){
+  clearInterval(timerInterval);
+}
+
+/* ===================== TEST FLOW ===================== */
+function startTest(){
+  settings.count = parseInt(el('wordCount').value);
+  state.words = pickWords(settings.count);
+  state.index = 0;
+  state.correct = 0;
+  state.wrong = 0;
+  state.perWord = [];
+  state.finished = false;
+
+  el('typingInput').value = '';
+  el('typingInput').disabled = false;
+  el('typingInput').focus();
+
+  renderStream();
+  updateStats();
+  startTimer();
+  renderResultList();
+}
+
+function finishTest(){
+  state.finished = true;
+  el('typingInput').disabled = true;
+  stopTimer();
+  renderDetailedResults();
+  showModal();
+}
+
+/* ===================== INPUT ===================== */
+function handleInput(e){
+  if(state.finished) return;
+
+  if(e.target.value.endsWith(' ')){
+    const typed = e.target.value.trim();
+    const word = state.words[state.index];
+    const correct = typed === word;
+
+    state.perWord[state.index] = {word, typed, correct};
+    correct ? state.correct++ : state.wrong++;
+    state.index++;
+
+    e.target.value = '';
+
+    if(state.index >= state.words.length){
+      finishTest();
     }
 
-    function switchTab(tabId, btn) {
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
-        btn.classList.add('active');
-    }
+    renderStream();
+    updateStats();
+    renderResultList();
+  } else {
+    renderStream();
+  }
+}
 
-    function closeModal() { document.getElementById("detailsModal").style.display = "none"; document.body.classList.remove('modal-open'); }
-    function filterMatches() {
-        const q = document.getElementById("search").value.toLowerCase();
-        render(allEvents.filter(e => e.homeTeam.name.toLowerCase().includes(q) || e.awayTeam.name.toLowerCase().includes(q) || e.tournament.name.toLowerCase().includes(q)));
-    }
+/* ===================== RESULT LIST ===================== */
+function renderResultList(){
+  const list = el('resultList');
+  list.innerHTML = '';
+  state.words.forEach((w,i)=>{
+    const div = document.createElement('div');
+    div.className = 'list-item ' + (state.perWord[i]?.correct ? 'correct' : state.perWord[i] ? 'wrong' : '');
+    div.innerHTML = `<div>${i+1}. ${w}</div><div>${state.perWord[i] ? (state.perWord[i].correct?'✔':'✖'):'—'}</div>`;
+    list.appendChild(div);
+  });
+}
 
-    fetchData();
-    setInterval(fetchData, 30000);
+/* ===================== MODAL ===================== */
+function showModal(){
+  el('modal').style.display = 'flex';
+}
+
+function closeModal(){
+  el('modal').style.display = 'none';
+  startTest();
+}
+
+/* ===================== EVENTS ===================== */
+el('typingInput').addEventListener('input', handleInput);
+el('startBtn').addEventListener('click', startTest);
+el('resetBtn').addEventListener('click', startTest);
+el('wordCount').addEventListener('change', startTest);
+el('closeModal').addEventListener('click', closeModal);
+
+/* ===================== INIT ===================== */
+startTest();
+
+/* ===================== NOTIFICATION ===================== */
+function showNotification(text) {
+  const note = document.createElement("div");
+  note.textContent = text;
+
+  note.style.position = "fixed";
+  note.style.top = "20px";
+  note.style.left = "50%";
+  note.style.transform = "translateX(-50%)";
+  note.style.background = "#dc2626";
+  note.style.color = "#fff";
+  note.style.padding = "12px 20px";
+  note.style.borderRadius = "10px";
+  note.style.fontWeight = "600";
+  note.style.zIndex = "9999";
+  note.style.boxShadow = "0 10px 25px rgba(0,0,0,0.4)";
+
+  document.body.appendChild(note);
+
+  setTimeout(() => note.remove(), 2500);
+}
+
+/* ===================== AUTH LOGIC ===================== */
+const savedEmail = localStorage.getItem("userEmail");
+if (savedEmail) {
+  // əvvəl daxil olanlar siyahısı
+  let visitors = JSON.parse(localStorage.getItem("visitors") || "[]");
+
+  // əgər bu email əvvəllər yox idisə → yeni istifadəçi
+  if (!visitors.includes(savedEmail)) {
+    visitors.push(savedEmail);
+    localStorage.setItem("visitors", JSON.stringify(visitors));
+
+    // sayğacı artır
+    let count = parseInt(localStorage.getItem("visitorCount") || "0");
+    count++;
+    localStorage.setItem("visitorCount", count);
+  }
+}
+
+
+const registerLink = document.querySelector('#accountMenu a[href*="qeydiyyat"]');
+
+const accountBtnTop = document.getElementById("accountBtn");
+
+if (savedEmail) {
+  const username = savedEmail.split("@")[0];
+  accountBtnTop.textContent = username;
+  if (registerLink) registerLink.style.display = "none";
+}
+
+
+/* ===================== REJİM DƏYİŞMƏ ===================== */
+const themeBtn = document.getElementById("themeToggle");
+
+/* əvvəlki seçimi oxu */
+if (localStorage.getItem("theme") === "light") {
+  document.body.classList.add("light");
+}
+
+themeBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+
+  document.body.classList.toggle("light");
+
+  if (document.body.classList.contains("light")) {
+    localStorage.setItem("theme", "light");
+  } else {
+    localStorage.setItem("theme", "dark");
+  }
+});
+document.getElementById("downloadBtn").addEventListener("click", () => {
+  const data = [];
+
+  // başlıq sətri
+  data.push(["#", "Düzgün söz", "Yazılan", "Nəticə"]);
+
+  state.perWord.forEach((item, i) => {
+    if (!item) return;
+
+    data.push([
+      i + 1,
+      item.word,
+      item.typed,
+      item.correct ? "Düzgün" : "Səhv"
+    ]);
+  });
+
+  // Excel sheet yarat
+  const worksheet = XLSX.utils.aoa_to_sheet(data);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Nəticələr");
+
+  // faylı yüklə
+  document.getElementById("downloadBtn").addEventListener("click", () => {
+  const data = [];
+
+  // başlıq
+  data.push(["#", "Düzgün söz", "Yazılan", "Nəticə"]);
+
+  state.perWord.forEach((item, i) => {
+    if (!item) return;
+    data.push([
+      i + 1,
+      item.word,
+      item.typed,
+      item.correct ? "Düzgün" : "Səhv"
+    ]);
+  });
+
+  const worksheet = XLSX.utils.aoa_to_sheet(data);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Nəticələr");
+
+  // ✅ BURA ƏSAS HƏLLDİR
+  const excelBuffer = XLSX.write(workbook, {
+    bookType: "xlsx",
+    type: "array"
+  });
+  
+
+  const blob = new Blob([excelBuffer], {
+    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  });
+
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "typingmaster-neticeler.xlsx";
+
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(link.href);
+});
+
+});
+if (savedEmail === ADMIN_EMAIL) {
+  const count = localStorage.getItem("visitorCount") || "0";
+
+  document.getElementById("visitorCount").textContent = count;
+  document.getElementById("adminStats").style.display = "block";
+}
+
+
+const logoutBtn = document.getElementById("logoutMenutBtn");
+
+logoutBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+
+  // 🔥 BÜTÜN HESAB MƏLUMATLARINI SİL
+  localStorage.removeItem("userEmail");
+  localStorage.removeItem("theme");
+  localStorage.removeItem("username");
+  // əgər başqa saxladıqların varsa, bura əlavə et
+
+  // və ya HAMISINI silmək üçün:
+  // localStorage.clear();
+
+  // səhifəni qeydiyyata yönləndir
+  window.location.href = "https://typingmasteraz.github.io/ayda/qeydiyyat.html";
+});
+
+
+
+
+
 </script>
+
+
 </body>
 </html>
+
