@@ -1,101 +1,107 @@
-
 <!doctype html>
 <html lang="az">
 <head>
+  <!-- AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5663281315926059"
-     crossorigin="anonymous"></script>
+    crossorigin="anonymous"></script>
+
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <!-- Minimal SEO + Dil tanınması -->
+  <meta name="language" content="Azerbaijani">
+  <meta http-equiv="content-language" content="az">
+  <meta name="description" content="TypingMaster — klaviaturada sürətli və düzgün yazmağı öyrənmək üçün typing test. WPM ölç, səhvlərini gör və sürətini artır.">
+  <link rel="canonical" href="https://typingmaster.me/">
+
   <title>Söz Yazma Təcrübəsi — Super Dizayn</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
   <style>
     :root{--bg1:#0f172a;--bg2:#07103a;--card:#0b1220;--accent:#7c3aed;--glass:rgba(255,255,255,0.04);--muted:rgba(255,255,255,0.6)}
     *{box-sizing:border-box;font-family:Inter,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial}
-    /* AÇIQ REJİM (LIGHT MODE) */
-
-
-body.light .card,
-body.light .panel,
-body.light .modal-card {
-  background: #ffffff;
-  color: #0f172a;
-}
 
     html,body{height:100%;margin:0}
     body{
-      background:linear-gradient(135deg,var(--bg1),var(--bg2));
+  background:linear-gradient(135deg,var(--bg1),var(--bg2));
   color:#e6eef8;
   display:flex;
-  align-items:center;
-  justify-content:center;
+  justify-content:center;   /* yalnız üfüqi mərkəz */
   padding:32px;
   flex-direction: column;
   gap: 20px;
-
-  overflow-y: auto;   /* ✅ AŞAĞI SCROLL AÇILDI */
-  overflow-x: hidden; /* yan sürüşmə olmasın */
-}
-    
-/* LIGHT MODE – card və panellər */
-body.light .card,
-body.light .typing-area,
-body.light .panel {
-  background: #ffffff !important;
-  border: 1px solid rgba(0,0,0,0.08);
+  overflow-y:auto;          /* scroll olsun */
+  overflow-x:hidden;
 }
 
-    /* AÇIQ REJİM (LIGHT MODE) */
-body.light {
-  --bg1: #f8fafc;
-  --bg2: #e5e7eb;
-  --card: #ffffff;
-  --accent: #7c3aed;
-  --glass: rgba(0,0,0,0.04);
-  --muted: rgba(0,0,0,0.6);
-  color: #0f172a;
+    /* LIGHT MODE */
+    body.light {
+      --bg1: #f8fafc;
+      --bg2: #e5e7eb;
+      --card: #ffffff;
+      --accent: #7c3aed;
+      --glass: rgba(0,0,0,0.04);
+      --muted: rgba(0,0,0,0.6);
+      color: #0f172a;
+    }
+    body.light .card,
+    body.light .typing-area,
+    body.light .panel,
+    body.light .modal-card {
+      background: #ffffff !important;
+      color: #0f172a !important;
+      border: 1px solid rgba(0,0,0,0.08);
+    }
+
+   .container{
+  width:100%;
+  max-width:980px;
+  margin:0 auto;   /* mərkəz */
 }
-
-    .container{width:100%;max-width:980px}
-
     .card{
       background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
       border-radius:18px;padding:28px;box-shadow:0 10px 30px rgba(2,6,23,0.7);backdrop-filter: blur(6px);
     }
 
-    header{display:flex;align-items:center;gap:18px;margin-bottom:18px}
-    .logo {
-  width: 56px;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 12px;
-  overflow: hidden; /* sekil kənardan daşmasın */
-  background: none; /* köhnə rəngi silirik */
+header{
+  display:grid;
+  grid-template-columns: 56px 1fr auto; /* logo | başlıq | menyu */
+  align-items:center;
+  gap:18px;
+  margin-bottom:18px;
 }
 
-.logo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* şəkil eyilməsin */
+/* Başlıq həqiqi mərkəzdə olsun */
+header h1{
+  margin:0;
+  
 }
-.huquq{
-  align-items: center;
-  justify-content: center;
-  height: auto;
+h1{
+  margin:0;
 }
+/* Menyu sağda qalsın, amma “qaçmasın” */
+.account-wrapper{
+  margin-left:0 !important;  /* əvvəl verdiyin marginləri sıfırla */
+  justify-self:end;
+}
+    .logo {
+      width: 56px;height: 56px;display: flex;align-items: center;justify-content: center;
+      border-radius: 12px;overflow: hidden;background: none;
+    }
+    .logo img {width: 100%;height: 100%;object-fit: cover;}
 
     h1{font-size:20px;margin:0}
-    p.lead{margin:0;color:var(--muted);font-size:13px}
 
     .top-row{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-top:16px}
-    .stats{display:flex;gap:12px;align-items:center}
+    .stats{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
     .stat{background:var(--glass);padding:10px 12px;border-radius:10px;font-weight:600;font-size:13px}
 
     .stage{display:grid;grid-template-columns:1fr 320px;gap:18px;margin-top:18px}
 
-    /* main typing area */
-    .typing-area{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:20px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+    .typing-area{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:20px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)
+    }
     .word-stream{min-height:140px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
     .word{padding:6px 10px;border-radius:8px;background:transparent;color:var(--muted);font-weight:600}
     .word.past{opacity:0.5}
@@ -104,24 +110,30 @@ body.light {
     .word.wrong{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.16);color:#ffd6d6}
 
     .input-row{display:flex;gap:12px;margin-top:16px;align-items:center}
-    input[type=text]{flex:1;padding:14px 16px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit;font-size:16px;outline:none}
+    input[type=text]{
+      flex:1;padding:14px 16px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);
+      background:transparent;color:inherit;font-size:16px;outline:none
+    }
     .controls{display:flex;gap:8px}
     button{background:var(--accent);border:none;color:white;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer}
-    button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06)}
+    button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:inherit}
 
-    /* right panel */
-    .panel{background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+    .panel{
+      background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)
+    }
     .panel h3{margin:0 0 8px 0}
     .list{max-height:240px;overflow:auto;padding-right:8px}
     .list-item{display:flex;justify-content:space-between;padding:8px;border-radius:8px;margin-bottom:6px}
     .list-item.correct{background:rgba(34,197,94,0.04)}
     .list-item.wrong{background:rgba(239,68,68,0.04)}
 
-    /* results modal */
-    .modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(2,6,23,0.6),rgba(2,6,23,0.8));backdrop-filter:blur(4px);}
+    .modal{
+      position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(180deg,rgba(2,6,23,0.6),rgba(2,6,23,0.8));backdrop-filter:blur(4px);
+      padding: 18px;
+    }
     .modal-card{background:linear-gradient(180deg,#071127,#051028);padding:28px;border-radius:14px;max-width:720px;width:92%;color:#eaf2ff}
-    .results-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px}
-    .result-box{background:rgba(255,255,255,0.03);padding:12px;border-radius:10px;text-align:center}
 
     footer{margin-top:14px;color:var(--muted);font-size:13px}
 
@@ -129,203 +141,233 @@ body.light {
       .stage{grid-template-columns:1fr}
       .panel{order:2}
     }
-    .oyda{
-      display: flex;
-      flex-direction: row;
-      margin-right: 30px;
-      
-      
-    }
-    h4{
-      margin-left: 500px;
-    }
-    .account-wrapper{
-      margin-left: 501px;
-      height: 30px;
-    
-      width: 55px;
-      border-radius: 10px;
-      display: flex;
-      gap: 50px;
-      transition: ;
 
-      
-
-    }
-    .account-wrapper:hover{
-      tr
-    }
-    .ayarlar{
-      
-    }
-    .hesab a{
-      text-decoration: none;
-      color: #e6eef8;
-      height: 25px;
-      width: 200px;
-      text-decoration: none;
-      transition: 0.3s ease;
-
-    }
-    .hesab:hover{
-      transform: scale(1.1);
-    }
-    .account-menu{
-  position: absolute;
-  top: 35px;
-  right: 0;
-  background: #0b1220;
-  border-radius: 12px;
-  padding: 8px;
-  width: 180px;
-  display: none;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-  z-index: 999;
+.oyda{
+  display: contents;
 }
 
-.account-menu a{
-  display: block;
-  padding: 10px;
-  color: #fff;
-  text-decoration: none;
-  border-radius: 8px;
-  font-size: 14px;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-.account-wrapper{ 
-position: relative;
-text-decoration:none ;
-margin-left: 280px;
-display:flex ;
-flex-direction: row;
-}
-.account-wrapper a{
-  text-decoration: none;
-  color: #e6eef8;
-  text-decoration: double;
-}
-
-.account-menu{
-  position: absolute;
-  top: 35px;
-  right: 0;
-  display: none;
-}
-
-.account-menu.active{
-  display: block;
-}
-
-
-.account-menu a:hover{
-  background: rgba(255,255,255,0.08);
-}
-
-.account-menu.active{
-  display: block;
-}
-.ayarlar{
-  color: #e6eef8;
-  border-radius: 5px;
-  width: 220px;
-}
-.settings-wrapper{
+.account-wrapper{
   position: relative;
- 
- 
+  display:flex;
+  gap:18px;
+  align-items:center;
+
+  margin-left:40px;  /* ✅ yalnız aranı açır */
+}
+h1{margin-right:30px;}
+    .account-wrapper a{ text-decoration: none; color: #e6eef8; }
+    body.light .account-wrapper a{ color: #0f172a; }
+
+    .account-menu{
+      position: absolute;
+      top: 35px;
+      right: 0;
+      background: #0b1220;
+      border-radius: 12px;
+      padding: 8px;
+      width: 180px;
+      display: none;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      z-index: 999;
+    }
+    body.light .account-menu{ background:#fff; border:1px solid rgba(0,0,0,0.08); }
+
+    .account-menu a{
+      display: block;
+      padding: 10px;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 14px;
+      text-align: center;
+    }
+    body.light .account-menu a{ color:#0f172a; }
+    .account-menu a:hover{ background: rgba(255,255,255,0.08); }
+    body.light .account-menu a:hover{ background: rgba(0,0,0,0.06); }
+    .account-menu.active{ display:block; }
+
+    .settings-menu{
+      position: absolute;
+      top: 35px;
+      right: 0;
+      background: #0b1220;
+      border-radius: 12px;
+      padding: 8px;
+      width: 220px;
+      display: none;
+      flex-direction: column;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      z-index: 999;
+    }
+    body.light .settings-menu{ background:#fff; border:1px solid rgba(0,0,0,0.08); }
+    .settings-menu.active{ display:flex; gap: 5px; }
+
+    .settings-menu a{
+      text-decoration:none;
+      color:#eaf2ff;
+      font-size: 14px;
+      text-align: center;
+      display:block;
+      padding:10px 12px;
+      border-radius: 10px;
+    }
+    body.light .settings-menu a{ color:#0f172a; }
+    .settings-menu a:hover{ background: rgba(255,255,255,0.08); }
+    body.light .settings-menu a:hover{ background: rgba(0,0,0,0.06); }
+
+    .huquq{
+      margin-top: 18px;
+      text-align:center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .huquq a{ color: #7aa8ff; text-decoration: none; }
+    .huquq a:hover{ text-decoration: underline; }
+
+    /* ✅ Açılıb bağlanan kontent düyməsi */
+    .content-toggle{
+      width:100%;
+      margin-top:14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:12px 14px;
+      border-radius:12px;
+      background: rgba(124,58,237,0.14);
+      border: 1px solid rgba(124,58,237,0.22);
+      color:#fff;
+      font-weight:800;
+      cursor:pointer;
+    }
+    body.light .content-toggle{
+      color:#0f172a;
+      background: rgba(124,58,237,0.10);
+      border: 1px solid rgba(124,58,237,0.20);
+    }
+    .content-toggle span{ font-size:14px; }
+    .toggle-icon{
+      width:34px;height:34px;border-radius:10px;
+      display:flex;align-items:center;justify-content:center;
+      background: rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.06);
+      transition: transform .22s ease;
+    }
+    body.light .toggle-icon{
+      background: rgba(0,0,0,0.04);
+      border:1px solid rgba(0,0,0,0.06);
+    }
+    .content-toggle[aria-expanded="true"] .toggle-icon{
+      transform: rotate(180deg);
+    }
+
+    /* ✅ Kontent artıq səhifəni böL-məsin: modal kimi açılır */
+    .content-modal{
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(2,6,23,0.7);
+      backdrop-filter: blur(6px);
+      z-index: 2000;
+    }
+    .content-modal.active{ display:flex; }
+
+    .content-modal-card{
+      width: min(880px, 94vw);
+      max-height: 80vh;
+      overflow: auto;
+      border-radius: 16px;
+      padding: 18px 18px;
+      background: #0b1220;
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.55);
+      color: rgba(255,255,255,0.86);
+      line-height: 1.7;
+    }
+    body.light .content-modal-card{
+      background:#fff;
+      color: rgba(15,23,42,0.92);
+      border: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .content-modal-card h2{ margin: 0 0 8px 0; font-size: 18px; }
+    .content-modal-card h3{ margin: 14px 0 6px 0; font-size: 15px; }
+    .content-modal-card ul{ margin: 8px 0 0 18px; }
+
+    .content-modal-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom: 8px;
+    }
+    .content-close{
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.14);
+      color: inherit;
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    body.light .content-close{
+      border: 1px solid rgba(0,0,0,0.12);
+    }
+
+    /* scroll kilidi */
+    body.modal-open{
+      overflow: hidden;
+    }
+    /* ✅ Kənar reklam */
+.side-ad{
+  position:fixed;
+  top:120px;
+  right:18px;
+  width:160px;
+  z-index:999;
 }
 
-.settings-menu{
-  position: absolute;
-  top: 35px;
-  right: 0;
-  background: #0b1220;
-  border-radius: 12px;
-  padding: 8px;
-  width: 220px;
-  display: none;
-  height: 50px;
-  flex-direction: column;
-  gap: 100px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+@media(max-width:1200px){
+  .side-ad{display:none;} /* mobilde gizlensin */
 }
-
-.settings-menu.active{
-  display: flex;
-  gap: 5px;
-}
-.settings-menu a{
-  text-decoration:none ;
-  color: #eaf2ff;
-  gap: 20px;
-  font-size: 14px;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-  display: block;
-  padding: 10px 12px;
-}
-.settings-menu a:hover{
-  background: rgba(255,255,255,0.08);
-  gap: 20px;
-  border-radius: 10px;
-  height: auto;
-}
-.hesabadi{
-  color: #e6eef8;
-  border-radius: 5px;
-  width: 220px;
-
-}
-
-
-
   </style>
-<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-
 </head>
+
 <body>
   <div class="container">
     <div class="card">
-<header>
+      <header>
         <div class="logo">
-            <img src="https://i.postimg.cc/9Qy6YWFZ/Chat-GPT-Image-Nov-27-2025-09-35-45-PM.png" alt="Logo">
-</div>
-<div class="oyda">
+          <img src="https://i.postimg.cc/9Qy6YWFZ/Chat-GPT-Image-Nov-27-2025-09-35-45-PM.png" alt="Logo">
+        </div>
+
+        <div class="oyda">
           <h1>TypingMaster-Söz yazma təcrübəsi</h1>
-  <div class="account-wrapper">
-  <a href="#" id="accountBtn">Hesab</a>
-    <div class="ayarlar">
-  <a href="#" id="settingBtn">Parametrlər</a>
-    </div>
-  
-  
-</div>
-<div id="adminStats" style="display:none; margin-top:10px; font-weight:600;">
-  👁️ Daxil olan istifadəçi sayı: <span id="visitorCount">0</span>
-</div>
 
-  
-  
-   <div class="account-menu" id="accountMenu">
-    <a href="https://typingmasteraz.github.io/ayda/qeydiyyat.html">Qeydiyyat</a>
-    <a href="https://typingmasteraz.github.io/ayda/qeydiyyat.html" id="logoutMenutBtn">Hesabdan çıxış</a>
-    <a href="account.html" id="accountBtn">Hesab Məlumatları</a>
-  
-  </div>
-  <div class="settings-menu" id="settingsMenu">
-    <a href="https://typingmasteraz.github.io/ayda/haqqimizda.html">Haqqımızda</a>
-    
-  </div>
+          <div class="account-wrapper">
+            <a href="#" id="accountBtn">Hesab</a>
+            <a href="#" id="settingBtn">Parametrlər</a>
+            <a href="https://typingmasteraz.github.io/ayda/telefon.html">Əlqaə</a>
 
+            <div id="adminStats" style="display:none; margin-top:10px; font-weight:600;">
+              👁️ Daxil olan istifadəçi sayı: <span id="visitorCount">0</span>
+            </div>
 
+            <div class="account-menu" id="accountMenu">
+              <a href="https://typingmasteraz.github.io/ayda/qeydiyyat.html">Qeydiyyat</a>
+              <a href="https://typingmasteraz.github.io/ayda/qeydiyyat.html" id="logoutMenutBtn">Hesabdan çıxış</a>
+              <a href="account.html">Hesab Məlumatları</a>
+            </div>
 
-
+            <div class="settings-menu" id="settingsMenu">
+              <a href="https://typingmasteraz.github.io/ayda/haqqimizda.html">Haqqımızda</a>
+            </div>
           </div>
         </div>
-</header>
+      </header>
 
       <div class="top-row">
         <div class="stats">
@@ -334,15 +376,13 @@ flex-direction: row;
           <div class="stat">Səhv: <span id="wrongCount">0</span></div>
           <div class="stat">Vaxt: <span id="timer">00:00</span></div>
         </div>
+
         <div>
           <label style="font-size:13px;color:var(--muted)">Söz sayı:</label>
           <select id="wordCount" style="padding:8px;border-radius:8px;background:transparent;color:inherit;border:1px solid rgba(255,255,255,0.04);background-color: black;">
             <option value="20">20</option>
             <option value="30" selected>30</option>
             <option value="40">40</option>
-            <option value="60">60</option>
-            
-
             
           </select>
         </div>
@@ -363,14 +403,19 @@ flex-direction: row;
           <footer>
             İstifadə qaydası: Sözləri yazıb arada boşluq (space) ilə irəlilə. Hər söz üçün hərf-ə-hərf yoxlanacaq. Sonda nəticələr çıxacaq.
           </footer>
+
+          <!-- ✅ DÜYMƏ (kontenti modalda açır, üst hissə itmir) -->
+          <button class="content-toggle" id="contentToggle" aria-haspopup="dialog" aria-controls="contentModal">
+            <span>TypingMaster haqqında məlumat</span>
+            <div class="toggle-icon">⌄</div>
+          </button>
         </div>
 
         <aside class="panel">
           <h3>Nəticələr (canlı)</h3>
           <div class="list" id="resultList"></div>
           <hr style="opacity:0.06;border:none;height:1px;margin:12px 0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.03),transparent)">
-          <div style="display:flex;gap:8px;align-items:center;justify-content:space-between">
-            <small style="color:var(--muted)">Sürət hesabatı</small>
+          <div style="display:flex;gap:8px;align-items:center;justify-content:flex-end">
             <strong id="wpm">0 WPM</strong>
           </div>
         </aside>
@@ -378,496 +423,327 @@ flex-direction: row;
     </div>
   </div>
 
-  <!-- modal template -->
+  <!-- ✅ KONTENT MODAL (səhifə yarı bölünmür, yuxarı hissə itmir) -->
+  <div class="content-modal" id="contentModal" role="dialog" aria-modal="true" aria-label="TypingMaster haqqında məlumat">
+    <div class="content-modal-card">
+      <div class="content-modal-top">
+        <strong style="opacity:.9">Məlumat</strong>
+        <button class="content-close" id="contentClose">Bağla ✕</button>
+      </div>
 
+      <h2>TypingMaster nədir?</h2>
+      <p>
+        TypingMaster klaviaturada daha sürətli və düzgün yazmağı öyrənmək üçün hazırlanmış onlayn yazı məşqi platformasıdır.
+        Bu səhifədə siz söz yazma testi edərək yazı sürətinizi ölçə, səhvlərinizi görə və gündəlik məşqlə nəticələrinizi yaxşılaşdıra bilərsiniz.
+      </p>
+
+      <h3>WPM nədir?</h3>
+      <p>
+        WPM (Words Per Minute) — 1 dəqiqədə neçə söz yaza bildiyinizi göstərən göstəricidir. Orta yazı sürəti təxminən 35–45 WPM sayılır.
+        Mütəmadi məşq etdikdə 60–80 WPM və daha yüksək nəticələr əldə etmək mümkündür.
+      </p>
+
+      <h3>Necə daha sürətli yazmaq olar?</h3>
+      <ul>
+        <li>Hər gün 5–10 dəqiqə məşq edin.</li>
+        <li>Barmaqların düzgün yerləşməsinə (klaviatura mövqeyi) diqqət edin.</li>
+        <li>Sürətdən çox düzgünlüyə fokuslanın, sonra sürət özü artacaq.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- modal (nəticələr) -->
   <div id="modal" style="display:none" class="modal" role="dialog" aria-modal="true">
     <div class="modal-card">
       <h2>Nəticələr</h2>
       <p style="margin:4px 0 0 0;color:var(--muted)">Aşağıda sənin performansın göstərilir.</p>
-      <div class="results-grid" id="resultsGrid"></div>
       <div style="margin-top:14px;overflow:auto;max-height:260px;padding-right:8px" id="detailedResults"></div>
       <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end">
         <button id="closeModal">Yenidən</button>
-        
       </div>
     </div>
-       
   </div>
+  
+
   <div class="huquq">
-  © 2025 TypingMaster. Bütün hüquqlar qorunur.
-  <a href="https://typingmasteraz.github.io/ayda/privacy.html">Məxfilik Siyasəti və Haqqımızda</a>
+    © 2025 TypingMaster. Bütün hüquqlar qorunur.
+    <a href="https://typingmasteraz.github.io/ayda/privacy.html">Məxfilik Siyasəti və Haqqımızda</a>
+  </div>
+  <!-- ✅ Sağ kənar reklam -->
+<div class="side-ad">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-5663281315926059"
+       data-ad-slot="BURAYA_SLOT_ID"
+       data-ad-format="vertical"></ins>
+  <script>
+       (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
 </div>
 
-  
+  <script>
+    const WORDS = (`salam salamlar komputer kitab internet proqramlaşdırma javascript html css dizayn sürət təcrübə yazmaq düzgün səhv oyun funksiya dəyişən massiv düzbucaqlı tənlik riyaziyyat tarix coğrafiya elm musiqi film sosial media kitabxana universitet alma bal su qapı pəncərə kitab çanta dost yol işıq ev oyun yaz gül dərs telefon kompüter şəkil masa saat məktəb müəllim təcrübə dəftər`).split(' ');
+    const el = id => document.getElementById(id);
 
- <script>
-  async function updateGlobalCounter() {
-    const name = "typingmaster"; // Saytın üçün unikal ad
-    try {
-        // Alternativ stabil API xidməti
-        const response = await fetch(`https://api.counterapi.dev/v1/${name}/visit/up`);
-        const data = await response.json();
-        
-        // Konsolu təmizləyirik ki, xətalar görünməsin
-        console.clear();
-        
-        // Məlumatı yalnız sən görəcəksən
-        console.log("%c TypingMaster ADMIN PANEL ", "background: #39ff14; color: #000; font-weight: bold; padding: 5px;");
-        console.log("%c Ümumi Qlobal Ziyarətçi Sayı: " + data.count, "color: #39ff14; font-size: 14px;");
-    } catch (error) {
-        console.log("Statistika bazasına qoşulmaq mümkün olmadı.");
-    }
-}
+    // Menyular
+    const accountBtn = document.getElementById("accountBtn");
+    const accountMenu = document.getElementById("accountMenu");
+    const settingBtn = document.getElementById("settingBtn");
+    const settingsMenu = document.getElementById("settingsMenu");
 
-// Səhifə açılan kimi işə sal
-updateGlobalCounter();
-    // Sayğac funksiyası - Səhifə yüklənən kimi işə düşür
-(function() {
-    // 1. Mövcud sayı götür və ya 0-dan başla
-    let count = localStorage.getItem('my_private_counter') || 0;
-    
-    // 2. Sayı 1 vahid artır
-    count = parseInt(count) + 1;
-    
-    // 3. Yeni sayı yadda saxla
-    localStorage.setItem('my_private_counter', count);
+    accountBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      accountMenu.classList.toggle("active");
+    });
+    settingBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      settingsMenu.classList.toggle("active");
+    });
 
-    // 4. Konsolu təmizlə və nəticəni göstər
-    console.clear(); // Köhnə xətaları gizlətmək üçün
-    console.log("%c OFFSIDE24 ADMIN PANEL ", "background: #39ff14; color: #000; padding: 5px; font-weight: bold; border-radius: 4px;");
-    console.log("%c Ümumi daxilolma sayı: " + count, "color: #39ff14; font-size: 14px; font-family: sans-serif;");
-})();
-
-  function renderDetailedResults(){
-  const box = document.getElementById("detailedResults");
-  box.innerHTML = "";
-
-  state.perWord.forEach((item, i) => {
-    if (!item) return;
-
-    const row = document.createElement("div");
-    row.style.display = "flex";
-    row.style.justifyContent = "space-between";
-    row.style.alignItems = "center";
-    row.style.padding = "8px 10px";
-    row.style.marginBottom = "6px";
-    row.style.borderRadius = "8px";
-    row.style.fontSize = "14px";
-
-    if (item.correct) {
-      row.style.background = "rgba(34,197,94,0.12)";
-      row.innerHTML = `
-        <span>${i+1}. ${item.word}</span>
-        <strong style="color:#22c55e">✔ düzgün</strong>
-      `;
-    } else {
-      row.style.background = "rgba(239,68,68,0.12)";
-      row.innerHTML = `
-        <span>${i+1}. ${item.word}</span>
-        <strong style="color:#ef4444">✖ səhv</strong>
-      `;
-    }
-
-    box.appendChild(row);
-  });
-    // 🔢 YEKUN STATİSTİKA
-  const summary = document.createElement("div");
-  summary.style.marginTop = "12px";
-  summary.style.paddingTop = "10px";
-  summary.style.borderTop = "1px solid rgba(255,255,255,0.08)";
-  summary.style.display = "flex";
-  summary.style.justifyContent = "space-between";
-  summary.style.fontWeight = "700";
-
-  summary.innerHTML = `
-    <span style="color:#22c55e">✔ Düzgün: ${state.correct}</span>
-    <span style="color:#ef4444">✖ Səhv: ${state.wrong}</span>
-  `;
-
-  box.appendChild(summary);
-
-}
-
-/* ===================== WORD LIST ===================== */
-const WORDS = (`salam salamlar komputer kitab internet proqramlaşdırma javascript html css dizayn sürət təcrübə yazmaq düzgün səhv oyun funksiya dəyişən massiv düzbucaqlı tənlik riyaziyyat tarix coğrafiya elm musiqi film sosial media kitabxana universitet alma bal su qapı pəncərə kitab çanta dost yol işıq ev oyun yaz gül dərs telefon kompüter şəkil masa saat məktəb müəllim təcrübə dəftər`).split(' ');
-
-const el = id => document.getElementById(id);
-
-/* ===================== ACCOUNT MENU ===================== */
-const accountBtn = document.getElementById("accountBtn");
-const accountMenu = document.getElementById("accountMenu");
-const settingBtn = document.getElementById("settingBtn");
-const settingsMenu = document.getElementById("settingsMenu");
-const hesabadi = document.getElementById("hesabadi")
-
-accountBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-  accountMenu.classList.toggle("active");
-});
-
-settingBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-  settingsMenu.classList.toggle("active");
-});
-
-/* kənara klik ediləndə menyular bağlansın */
-document.addEventListener("click", (e) => {
-  if (
-    !e.target.closest(".account-wrapper") &&
-    !e.target.closest("#accountMenu") &&
-    !e.target.closest("#accountInfoBtn")
-  ) {
-    accountMenu.classList.remove("active");
-  }
-
-  if (
-    !e.target.closest("#settingBtn") &&
-    !e.target.closest("#settingsMenu")
-  ) {
-    settingsMenu.classList.remove("active");
-  }
-});
-
-
-/* ===================== STATE ===================== */
-let settings = { count: parseInt(el('wordCount')?.value || 30) };
-let state = {
-  words: [],
-  index: 0,
-  correct: 0,
-  wrong: 0,
-  startTime: null,
-  finished: false,
-  perWord: []
-};
-
-let timerInterval = null;
-
-/* ===================== WORD PICK ===================== */
-function pickWords(n){
-  let pool = [...WORDS];
-  for(let i = pool.length - 1; i > 0; i--){
-    const j = Math.floor(Math.random() * (i + 1));
-    [pool[i], pool[j]] = [pool[j], pool[i]];
-  }
-  return pool.slice(0, n);
-}
-
-/* ===================== RENDER ===================== */
-function renderStream(){
-  const stream = el('wordStream');
-  stream.innerHTML = '';
-
-  state.words.forEach((w,i)=>{
-    const span = document.createElement('div');
-    span.className = 'word';
-
-    if(i < state.index) span.classList.add('past');
-    if(i === state.index) span.classList.add('current');
-    if(state.perWord[i]) span.classList.add(state.perWord[i].correct ? 'correct' : 'wrong');
-
-    if(i === state.index){
-      const typed = el('typingInput').value;
-      for(let k=0;k<w.length;k++){
-        const ch = document.createElement('span');
-        ch.textContent = w[k];
-        if(k < typed.length && typed[k] !== w[k]) ch.style.color = '#ffb4b4';
-        span.appendChild(ch);
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest(".account-wrapper") && !e.target.closest("#accountMenu")) {
+        accountMenu.classList.remove("active");
       }
-    } else {
-      span.textContent = w;
+      if (!e.target.closest("#settingBtn") && !e.target.closest("#settingsMenu")) {
+        settingsMenu.classList.remove("active");
+      }
+    });
+
+    // ✅ Kontent modal aç/bağla
+    const contentToggle = document.getElementById("contentToggle");
+    const contentModal = document.getElementById("contentModal");
+    const contentClose = document.getElementById("contentClose");
+
+    function openContentModal(){
+      contentModal.classList.add("active");
+      document.body.classList.add("modal-open");
+      // fokus
+      contentClose.focus();
+    }
+    function closeContentModal(){
+      contentModal.classList.remove("active");
+      document.body.classList.remove("modal-open");
+      contentToggle.focus();
     }
 
-    stream.appendChild(span);
-  });
-}
+    contentToggle.addEventListener("click", () => openContentModal());
+    contentClose.addEventListener("click", () => closeContentModal());
+    contentModal.addEventListener("click", (e) => {
+      if (e.target === contentModal) closeContentModal();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && contentModal.classList.contains("active")) {
+        closeContentModal();
+      }
+    });
 
-function updateStats(){
-  el('totalWords').textContent = state.words.length;
-  el('correctCount').textContent = state.correct;
-  el('wrongCount').textContent = state.wrong;
-  el('wpm').textContent = calcWPM() + ' WPM';
-}
+    // State
+    let settings = { count: parseInt(el('wordCount')?.value || 30) };
+    let state = {
+      words: [],
+      index: 0,
+      correct: 0,
+      wrong: 0,
+      startTime: null,
+      finished: false,
+      perWord: []
+    };
+    let timerInterval = null;
 
-/* ===================== TIMER ===================== */
-function calcWPM(){
-  if(!state.startTime) return 0;
-  const minutes = (Date.now() - state.startTime) / 60000;
-  return minutes ? Math.round(state.index / minutes) : 0;
-}
-
-function startTimer(){
-  clearInterval(timerInterval);
-  state.startTime = Date.now();
-  timerInterval = setInterval(()=>{
-    const sec = Math.floor((Date.now()-state.startTime)/1000);
-    el('timer').textContent =
-      String(Math.floor(sec/60)).padStart(2,'0') + ':' +
-      String(sec%60).padStart(2,'0');
-    el('wpm').textContent = calcWPM() + ' WPM';
-  },500);
-}
-
-function stopTimer(){
-  clearInterval(timerInterval);
-}
-
-/* ===================== TEST FLOW ===================== */
-function startTest(){
-  settings.count = parseInt(el('wordCount').value);
-  state.words = pickWords(settings.count);
-  state.index = 0;
-  state.correct = 0;
-  state.wrong = 0;
-  state.perWord = [];
-  state.finished = false;
-
-  el('typingInput').value = '';
-  el('typingInput').disabled = false;
-  el('typingInput').focus();
-
-  renderStream();
-  updateStats();
-  startTimer();
-  renderResultList();
-}
-
-function finishTest(){
-  state.finished = true;
-  el('typingInput').disabled = true;
-  stopTimer();
-  renderDetailedResults();
-  showModal();
-}
-
-/* ===================== INPUT ===================== */
-function handleInput(e){
-  if(state.finished) return;
-
-  if(e.target.value.endsWith(' ')){
-    const typed = e.target.value.trim();
-    const word = state.words[state.index];
-    const correct = typed === word;
-
-    state.perWord[state.index] = {word, typed, correct};
-    correct ? state.correct++ : state.wrong++;
-    state.index++;
-
-    e.target.value = '';
-
-    if(state.index >= state.words.length){
-      finishTest();
+    function pickWords(n){
+      let pool = [...WORDS];
+      for(let i = pool.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+      }
+      return pool.slice(0, n);
     }
 
-    renderStream();
-    updateStats();
-    renderResultList();
-  } else {
-    renderStream();
-  }
-}
+    function renderStream(){
+      const stream = el('wordStream');
+      stream.innerHTML = '';
 
-/* ===================== RESULT LIST ===================== */
-function renderResultList(){
-  const list = el('resultList');
-  list.innerHTML = '';
-  state.words.forEach((w,i)=>{
-    const div = document.createElement('div');
-    div.className = 'list-item ' + (state.perWord[i]?.correct ? 'correct' : state.perWord[i] ? 'wrong' : '');
-    div.innerHTML = `<div>${i+1}. ${w}</div><div>${state.perWord[i] ? (state.perWord[i].correct?'✔':'✖'):'—'}</div>`;
-    list.appendChild(div);
-  });
-}
+      state.words.forEach((w,i)=>{
+        const span = document.createElement('div');
+        span.className = 'word';
 
-/* ===================== MODAL ===================== */
-function showModal(){
-  el('modal').style.display = 'flex';
-}
+        if(i < state.index) span.classList.add('past');
+        if(i === state.index) span.classList.add('current');
+        if(state.perWord[i]) span.classList.add(state.perWord[i].correct ? 'correct' : 'wrong');
 
-function closeModal(){
-  el('modal').style.display = 'none';
-  startTest();
-}
+        if(i === state.index){
+          const typed = el('typingInput').value;
+          for(let k=0;k<w.length;k++){
+            const ch = document.createElement('span');
+            ch.textContent = w[k];
+            if(k < typed.length && typed[k] !== w[k]) ch.style.color = '#ffb4b4';
+            span.appendChild(ch);
+          }
+        } else {
+          span.textContent = w;
+        }
+        stream.appendChild(span);
+      });
+    }
 
-/* ===================== EVENTS ===================== */
-el('typingInput').addEventListener('input', handleInput);
-el('startBtn').addEventListener('click', startTest);
-el('resetBtn').addEventListener('click', startTest);
-el('wordCount').addEventListener('change', startTest);
-el('closeModal').addEventListener('click', closeModal);
+    function calcWPM(){
+      if(!state.startTime) return 0;
+      const minutes = (Date.now() - state.startTime) / 60000;
+      return minutes ? Math.round(state.index / minutes) : 0;
+    }
 
-/* ===================== INIT ===================== */
-startTest();
+    function updateStats(){
+      el('totalWords').textContent = state.words.length;
+      el('correctCount').textContent = state.correct;
+      el('wrongCount').textContent = state.wrong;
+      el('wpm').textContent = calcWPM() + ' WPM';
+    }
 
-/* ===================== NOTIFICATION ===================== */
-function showNotification(text) {
-  const note = document.createElement("div");
-  note.textContent = text;
+    function startTimer(){
+      clearInterval(timerInterval);
+      state.startTime = Date.now();
+      timerInterval = setInterval(()=>{
+        const sec = Math.floor((Date.now()-state.startTime)/1000);
+        el('timer').textContent =
+          String(Math.floor(sec/60)).padStart(2,'0') + ':' +
+          String(sec%60).padStart(2,'0');
+        el('wpm').textContent = calcWPM() + ' WPM';
+      },500);
+    }
+    function stopTimer(){ clearInterval(timerInterval); }
 
-  note.style.position = "fixed";
-  note.style.top = "20px";
-  note.style.left = "50%";
-  note.style.transform = "translateX(-50%)";
-  note.style.background = "#dc2626";
-  note.style.color = "#fff";
-  note.style.padding = "12px 20px";
-  note.style.borderRadius = "10px";
-  note.style.fontWeight = "600";
-  note.style.zIndex = "9999";
-  note.style.boxShadow = "0 10px 25px rgba(0,0,0,0.4)";
+    function renderResultList(){
+      const list = el('resultList');
+      list.innerHTML = '';
+      state.words.forEach((w,i)=>{
+        const div = document.createElement('div');
+        div.className = 'list-item ' + (state.perWord[i]?.correct ? 'correct' : state.perWord[i] ? 'wrong' : '');
+        div.innerHTML = `<div>${i+1}. ${w}</div><div>${state.perWord[i] ? (state.perWord[i].correct?'✔':'✖'):'—'}</div>`;
+        list.appendChild(div);
+      });
+    }
 
-  document.body.appendChild(note);
+    function showModal(){ el('modal').style.display = 'flex'; }
+    function closeModal(){ el('modal').style.display = 'none'; startTest(); }
 
-  setTimeout(() => note.remove(), 2500);
-}
+    function renderDetailedResults(){
+      const box = document.getElementById("detailedResults");
+      box.innerHTML = "";
 
-/* ===================== AUTH LOGIC ===================== */
-const savedEmail = localStorage.getItem("userEmail");
-if (savedEmail) {
-  // əvvəl daxil olanlar siyahısı
-  let visitors = JSON.parse(localStorage.getItem("visitors") || "[]");
+      state.perWord.forEach((item, i) => {
+        if (!item) return;
+        const row = document.createElement("div");
+        row.style.display = "flex";
+        row.style.justifyContent = "space-between";
+        row.style.alignItems = "center";
+        row.style.padding = "8px 10px";
+        row.style.marginBottom = "6px";
+        row.style.borderRadius = "8px";
+        row.style.fontSize = "14px";
 
-  // əgər bu email əvvəllər yox idisə → yeni istifadəçi
-  if (!visitors.includes(savedEmail)) {
-    visitors.push(savedEmail);
-    localStorage.setItem("visitors", JSON.stringify(visitors));
+        if (item.correct) {
+          row.style.background = "rgba(34,197,94,0.12)";
+          row.innerHTML = `<span>${i+1}. ${item.word}</span><strong style="color:#22c55e">✔ düzgün</strong>`;
+        } else {
+          row.style.background = "rgba(239,68,68,0.12)";
+          row.innerHTML = `<span>${i+1}. ${item.word}</span><strong style="color:#ef4444">✖ səhv</strong>`;
+        }
+        box.appendChild(row);
+      });
 
-    // sayğacı artır
-    let count = parseInt(localStorage.getItem("visitorCount") || "0");
-    count++;
-    localStorage.setItem("visitorCount", count);
-  }
-}
+      const summary = document.createElement("div");
+      summary.style.marginTop = "12px";
+      summary.style.paddingTop = "10px";
+      summary.style.borderTop = "1px solid rgba(255,255,255,0.08)";
+      summary.style.display = "flex";
+      summary.style.justifyContent = "space-between";
+      summary.style.fontWeight = "700";
+      summary.innerHTML = `
+        <span style="color:#22c55e">✔ Düzgün: ${state.correct}</span>
+        <span style="color:#ef4444">✖ Səhv: ${state.wrong}</span>
+      `;
+      box.appendChild(summary);
+    }
 
+    function startTest(){
+      settings.count = parseInt(el('wordCount').value);
+      state.words = pickWords(settings.count);
+      state.index = 0;
+      state.correct = 0;
+      state.wrong = 0;
+      state.perWord = [];
+      state.finished = false;
 
-const registerLink = document.querySelector('#accountMenu a[href*="qeydiyyat"]');
+      el('typingInput').value = '';
+      el('typingInput').disabled = false;
+      el('typingInput').focus();
 
-const accountBtnTop = document.getElementById("accountBtn");
+      renderStream();
+      updateStats();
+      startTimer();
+      renderResultList();
+    }
 
-if (savedEmail) {
-  const username = savedEmail.split("@")[0];
-  accountBtnTop.textContent = username;
-  if (registerLink) registerLink.style.display = "none";
-}
+    function finishTest(){
+      state.finished = true;
+      el('typingInput').disabled = true;
+      stopTimer();
+      renderDetailedResults();
+      showModal();
+    }
 
+    function handleInput(e){
+      if(state.finished) return;
 
-/* ===================== REJİM DƏYİŞMƏ ===================== */
-const themeBtn = document.getElementById("themeToggle");
+      if(e.target.value.endsWith(' ')){
+        const typed = e.target.value.trim();
+        const word = state.words[state.index];
+        const correct = typed === word;
 
-/* əvvəlki seçimi oxu */
-if (localStorage.getItem("theme") === "light") {
-  document.body.classList.add("light");
-}
+        state.perWord[state.index] = {word, typed, correct};
+        correct ? state.correct++ : state.wrong++;
+        state.index++;
 
-themeBtn.addEventListener("click", (e) => {
-  e.preventDefault();
+        e.target.value = '';
 
-  document.body.classList.toggle("light");
+        if(state.index >= state.words.length){
+          finishTest();
+        }
 
-  if (document.body.classList.contains("light")) {
-    localStorage.setItem("theme", "light");
-  } else {
-    localStorage.setItem("theme", "dark");
-  }
-});
-document.getElementById("downloadBtn").addEventListener("click", () => {
-  const data = [];
+        renderStream();
+        updateStats();
+        renderResultList();
+      } else {
+        renderStream();
+      }
+    }
 
-  // başlıq sətri
-  data.push(["#", "Düzgün söz", "Yazılan", "Nəticə"]);
+    el('typingInput').addEventListener('input', handleInput);
+    el('startBtn').addEventListener('click', startTest);
+    el('resetBtn').addEventListener('click', startTest);
+    el('wordCount').addEventListener('change', startTest);
+    el('closeModal').addEventListener('click', closeModal);
 
-  state.perWord.forEach((item, i) => {
-    if (!item) return;
+    startTest();
 
-    data.push([
-      i + 1,
-      item.word,
-      item.typed,
-      item.correct ? "Düzgün" : "Səhv"
-    ]);
-  });
+    // Username show
+    const savedEmail = localStorage.getItem("userEmail");
+    const registerLink = document.querySelector('#accountMenu a[href*="qeydiyyat"]');
+    if (savedEmail) {
+      const username = savedEmail.split("@")[0];
+      accountBtn.textContent = username;
+      if (registerLink) registerLink.style.display = "none";
+    }
 
-  // Excel sheet yarat
-  const worksheet = XLSX.utils.aoa_to_sheet(data);
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "Nəticələr");
-
-  // faylı yüklə
-  document.getElementById("downloadBtn").addEventListener("click", () => {
-  const data = [];
-
-  // başlıq
-  data.push(["#", "Düzgün söz", "Yazılan", "Nəticə"]);
-
-  state.perWord.forEach((item, i) => {
-    if (!item) return;
-    data.push([
-      i + 1,
-      item.word,
-      item.typed,
-      item.correct ? "Düzgün" : "Səhv"
-    ]);
-  });
-
-  const worksheet = XLSX.utils.aoa_to_sheet(data);
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "Nəticələr");
-
-  // ✅ BURA ƏSAS HƏLLDİR
-  const excelBuffer = XLSX.write(workbook, {
-    bookType: "xlsx",
-    type: "array"
-  });
-  
-
-  const blob = new Blob([excelBuffer], {
-    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-  });
-
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = "typingmaster-neticeler.xlsx";
-
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(link.href);
-});
-
-});
-if (savedEmail === ADMIN_EMAIL) {
-  const count = localStorage.getItem("visitorCount") || "0";
-
-  document.getElementById("visitorCount").textContent = count;
-  document.getElementById("adminStats").style.display = "block";
-}
-
-
-const logoutBtn = document.getElementById("logoutMenutBtn");
-
-logoutBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-
-  // 🔥 BÜTÜN HESAB MƏLUMATLARINI SİL
-  localStorage.removeItem("userEmail");
-  localStorage.removeItem("theme");
-  localStorage.removeItem("username");
-  // əgər başqa saxladıqların varsa, bura əlavə et
-
-  // və ya HAMISINI silmək üçün:
-  // localStorage.clear();
-
-  // səhifəni qeydiyyata yönləndir
-  window.location.href = "https://typingmasteraz.github.io/ayda/qeydiyyat.html";
-});
-
-
-
-
-
-</script>
-
-
+    // Logout
+    const logoutBtn = document.getElementById("logoutMenutBtn");
+    logoutBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      localStorage.removeItem("userEmail");
+      localStorage.removeItem("theme");
+      localStorage.removeItem("username");
+      window.location.href = "https://typingmasteraz.github.io/ayda/qeydiyyat.html";
+    });
+  </script>
 </body>
 </html>
-
