@@ -14,6 +14,41 @@
   <meta name="description" content="TypingMaster — klaviaturada sürətli və düzgün yazmağı öyrənmək üçün typing test. WPM ölç, səhvlərini gör və sürətini artır.">
   <link rel="canonical" href="https://typingmaster.me/">
 
+  <!-- Search Console və indeks üçün əlavə SEO -->
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="googlebot" content="index, follow">
+  <meta name="author" content="TypingMaster">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <link rel="sitemap" type="application/xml" title="Sitemap" href="https://typingmaster.me/sitemap.xml">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="az_AZ">
+  <meta property="og:site_name" content="TypingMaster">
+  <meta property="og:title" content="TypingMaster — Sürətli yazma təcrübəsi">
+  <meta property="og:description" content="TypingMaster ilə sürətli və düzgün yazmağı öyrən, WPM ölç və nəticələrini yaxşılaşdır.">
+  <meta property="og:url" content="https://typingmaster.me/">
+  <meta property="og:image" content="https://i.postimg.cc/9Qy6YWFZ/Chat-GPT-Image-Nov-27-2025-09-35-45-PM.png">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="TypingMaster — Sürətli yazma təcrübəsi">
+  <meta name="twitter:description" content="TypingMaster ilə sürətli və düzgün yazmağı öyrən, WPM ölç və nəticələrini yaxşılaşdır.">
+  <meta name="twitter:image" content="https://i.postimg.cc/9Qy6YWFZ/Chat-GPT-Image-Nov-27-2025-09-35-45-PM.png">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebSite",
+    "name":"TypingMaster",
+    "url":"https://typingmaster.me/",
+    "inLanguage":"az",
+    "description":"TypingMaster klaviaturada sürətli və düzgün yazmağı öyrənmək üçün typing test platformasıdır."
+  }
+  </script>
+
   <title>Söz Yazma Təcrübəsi — Super Dizayn</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 
@@ -352,9 +387,7 @@ h1{margin-right:30px;}
             <a href="#" id="settingBtn">Parametrlər</a>
             <a href="telefon.html">Əlaqə</a>
 
-            <div id="adminStats" style="display:none; margin-top:10px; font-weight:600;">
-              👁️ Daxil olan istifadəçi sayı: <span id="visitorCount">0</span>
-            </div>
+          
 
             <div class="account-menu" id="accountMenu">
               <a href="qeydiyyat.html">Qeydiyyat</a>
@@ -368,6 +401,7 @@ h1{margin-right:30px;}
           </div>
         </div>
       </header>
+ 
 
       <div class="top-row">
         <div class="stats">
@@ -683,14 +717,19 @@ h1{margin-right:30px;}
       startTimer();
       renderResultList();
     }
+    
 
     function finishTest(){
-      state.finished = true;
-      el('typingInput').disabled = true;
-      stopTimer();
-      renderDetailedResults();
-      showModal();
-    }
+  state.finished = true;
+  el('typingInput').disabled = true;
+  stopTimer();
+
+  saveTypingResult(state.correct, state.wrong, calcWPM());
+
+  renderDetailedResults();
+  showModal();
+}
+    
 
     function handleInput(e){
       if(state.finished) return;
@@ -725,6 +764,15 @@ h1{margin-right:30px;}
     el('closeModal').addEventListener('click', closeModal);
 
     startTest();
+    if (typeof saveVisitorEntry === "function") {
+  saveVisitorEntry();
+} else {
+  window.addEventListener("load", () => {
+    if (typeof saveVisitorEntry === "function") {
+      saveVisitorEntry();
+    }
+  });
+}
 
     // Username show
     const savedEmail = localStorage.getItem("userEmail");
@@ -744,11 +792,70 @@ h1{margin-right:30px;}
       localStorage.removeItem("username");
       window.location.href = "qeydiyyat.html";
     });
+
+    // =========================
+    // SAYĞAC - yalnız sən gör
+    // =========================
+   
   </script>
+ <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCPUyl6EbO8dvJBTWofVBQg1a1xJHM4_08",
+  authDomain: "salam-58d0a.firebaseapp.com",
+  projectId: "salam-58d0a",
+  storageBucket: "salam-58d0a.firebasestorage.app",
+  messagingSenderId: "703442504339",
+  appId: "1:703442504339:web:4d7757d08bb37189829b66",
+  measurementId: "G-M94QKEHNJF"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+window.saveTypingResult = async function(correct, wrong, wpm) {
+  try {
+    const user = auth.currentUser;
+
+    await addDoc(collection(db, "results"), {
+      email: user?.email || localStorage.getItem("userEmail") || "anonim",
+      correct: correct,
+      wrong: wrong,
+      wpm: wpm,
+      createdAt: serverTimestamp()
+    });
+
+    console.log("✅ nəticə yazıldı");
+  } catch (err) {
+    console.error("❌ yazılmadı:", err);
+  }
+};
+
+window.saveVisitorEntry = async function() {
+  try {
+    const sessionKey = "typingmaster_visit_saved";
+
+    if (sessionStorage.getItem(sessionKey)) return;
+
+    const user = auth.currentUser;
+
+    await addDoc(collection(db, "visitors"), {
+      email: user?.email || localStorage.getItem("userEmail") || "anonim",
+      page: "home",
+      visitedAt: serverTimestamp(),
+      userAgent: navigator.userAgent
+    });
+
+    sessionStorage.setItem(sessionKey, "1");
+    console.log("✅ ziyarətçi Firestore-a yazıldı");
+  } catch (err) {
+    console.error("❌ ziyarətçi yazılmadı:", err);
+  }
+};
+</script>
 </body>
 </html>
-
-
-
-
-
