@@ -64,9 +64,9 @@ button:hover{background:green;color:#fff;transform:scale(1.05)}
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
-import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-firestore.js";
+import { getFirestore, collection, query, where, getDocs, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-firestore.js";
 
-// ✅ YENİ Firebase (salam-58d0a)
+// Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyCYWC8P0meXFbyRoSA4uHkJmJRkPFlhwSQ",
   authDomain: "salam-58d0a.firebaseapp.com",
@@ -79,7 +79,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// ✅ EmailJS init (səndəki kimi)
+// EmailJS
 emailjs.init("57Dy9aY2JxE2QQ9dL");
 const serviceID = "service_v54lvys";
 const templateID = "template_fcigrcp";
@@ -98,10 +98,10 @@ const otpMessage = document.getElementById("otpMessage");
 const timerText = document.getElementById("timerText");
 const otpInputs = [...document.querySelectorAll(".otp-input")];
 
-function setSendState(disabled, text){
+function setSendState(disabled, text) {
   sendBtn.disabled = disabled;
   sendBtn.style.opacity = disabled ? "0.7" : "1";
-  if(text) sendBtn.textContent = text;
+  if (text) sendBtn.textContent = text;
 }
 
 function startOtpTimer() {
@@ -109,6 +109,7 @@ function startOtpTimer() {
 
   timerInterval = setInterval(() => {
     const remaining = otpExpireTime - Date.now();
+
     if (remaining <= 0) {
       clearInterval(timerInterval);
       timerText.innerText = "⛔ Vaxt bitdi!";
@@ -117,26 +118,28 @@ function startOtpTimer() {
       resendBtn.style.display = "block";
       return;
     }
+
     const m = Math.floor(remaining / 60000);
     const s = Math.floor((remaining % 60000) / 1000);
     timerText.innerText = `⏳ ${m}:${s.toString().padStart(2, "0")}`;
   }, 1000);
 }
 
-// ✅ OTP auto-keçid + yalnız rəqəm
+// OTP input
 document.addEventListener("input", (e) => {
   if (!e.target.classList.contains("otp-input")) return;
   e.target.value = e.target.value.replace(/\D/g, "");
   const idx = otpInputs.indexOf(e.target);
   if (e.target.value && idx < otpInputs.length - 1) otpInputs[idx + 1].focus();
 });
+
 document.addEventListener("keydown", (e) => {
   if (!e.target.classList.contains("otp-input")) return;
   const idx = otpInputs.indexOf(e.target);
   if (e.key === "Backspace" && !e.target.value && idx > 0) otpInputs[idx - 1].focus();
 });
 
-async function sendOtp(email){
+async function sendOtp(email) {
   generatedCode = Math.floor(1000 + Math.random() * 9000).toString();
 
   await emailjs.send(serviceID, templateID, {
@@ -146,7 +149,11 @@ async function sendOtp(email){
   });
 
   otpExpireTime = Date.now() + 60 * 1000;
-  otpInputs.forEach(i => { i.value = ""; i.disabled = false; });
+  otpInputs.forEach(i => {
+    i.value = "";
+    i.disabled = false;
+  });
+
   verifyBtn.disabled = false;
   resendBtn.style.display = "none";
   startOtpTimer();
@@ -154,19 +161,22 @@ async function sendOtp(email){
   emailSection.style.display = "none";
   codeSection.style.display = "block";
   otpMessage.style.display = "block";
+
   setTimeout(() => otpInputs[0].focus(), 100);
 }
 
-// ✅ Kodu göndər
+// Kodu göndər
 sendBtn.addEventListener("click", async () => {
   const email = emailInput.value.trim().toLowerCase();
 
-  if (!email) return alert("Email daxil edin!");
+  if (!email) {
+    alert("Email daxil edin!");
+    return;
+  }
 
   try {
     setSendState(true, "Göndərilir...");
 
-    // ✅ Firestore-da email var?
     const q = query(collection(db, "users"), where("email", "==", email));
     const snap = await getDocs(q);
 
@@ -177,7 +187,6 @@ sendBtn.addEventListener("click", async () => {
     }
 
     await sendOtp(email);
-
   } catch (err) {
     console.error(err);
     alert("Xəta: " + (err?.message || "OTP göndərilmədi"));
@@ -186,7 +195,7 @@ sendBtn.addEventListener("click", async () => {
   }
 });
 
-// ✅ Yenidən göndər
+// Yenidən göndər
 resendBtn.addEventListener("click", async () => {
   const email = emailInput.value.trim().toLowerCase();
   if (!email) return;
@@ -202,21 +211,50 @@ resendBtn.addEventListener("click", async () => {
   }
 });
 
-// ✅ Yoxla
-verifyBtn.addEventListener("click", () => {
+// Yoxla
+verifyBtn.addEventListener("click", async () => {
   const entered = otpInputs.map(i => i.value).join("");
-
-  if (Date.now() > otpExpireTime) return alert("OTP vaxtı bitib!");
-  if (entered !== generatedCode) return alert("OTP səhvdir!");
-
   const email = emailInput.value.trim().toLowerCase();
-  localStorage.setItem("loggedInEmail", email);
 
-  alert("Doğrulama uğurludur!");
-  window.location.href = "account.html";
+  if (Date.now() > otpExpireTime) {
+    alert("OTP vaxtı bitib!");
+    return;
+  }
+
+  if (entered !== generatedCode) {
+    alert("OTP səhvdir!");
+    return;
+  }
+
+  try {
+    localStorage.setItem("userEmail", email);
+    localStorage.setItem("username", email.split("@")[0]);
+
+    // enteredEmails kolleksiyasında ID birbaşa email olacaq
+    await setDoc(doc(db, "enteredEmails", email), {
+      email: email,
+      loginType: "otp",
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    // users kolleksiyasında da ID email olacaq
+    await setDoc(doc(db, "users", email), {
+      email: email,
+      name: email.split("@")[0],
+      updatedAt: serverTimestamp(),
+      loginType: "otp"
+    }, { merge: true });
+
+    alert("Doğrulama uğurludur!");
+    window.location.href = "account.html";
+  } catch (err) {
+    console.error("Firestore yazılmadı:", err);
+    alert("Giriş oldu, amma databazaya yazılmadı.");
+    window.location.href = "account.html";
+  }
 });
 </script>
 
 </body>
-
 </html>
