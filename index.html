@@ -514,6 +514,21 @@ h1{margin-right:30px;}
        (adsbygoogle = window.adsbygoogle || []).push({});
   </script>
 </div>
+<!-- Qeydiyyat xəbərdarlıq paneli -->
+<div id="authModal" class="modal" style="display:none" role="dialog" aria-modal="true">
+  <div class="modal-card" style="max-width:520px">
+    <h2>Qeydiyyat tələb olunur</h2>
+    <p style="margin:8px 0 0 0;color:var(--muted);line-height:1.6">
+      Oyuna başlamaq üçün əvvəlcə qeydiyyatdan keçməlisən və ya hesabına daxil olmalısan.
+    </p>
+
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap">
+      <button class="ghost" id="closeAuthModal">Bağla</button>
+      <button id="goLoginBtn">Daxil ol</button>
+      <button id="goRegisterBtn">Qeydiyyat</button>
+    </div>
+  </div>
+</div>
 
   <script>
     const WORDS = (`salam salamlar komputer kitab internet proqramlaşdırma javascript html css dizayn sürət təcrübə yazmaq düzgün səhv oyun funksiya dəyişən massiv düzbucaqlı tənlik riyaziyyat tarix coğrafiya elm musiqi film sosial media kitabxana universitet alma bal su qapı pəncərə kitab çanta dost yol işıq ev oyun yaz gül dərs telefon kompüter şəkil masa saat məktəb müəllim təcrübə dəftər`).split(' ');
@@ -570,18 +585,57 @@ h1{margin-right:30px;}
         closeContentModal();
       }
     });
+        // Auth modal
+    const authModal = document.getElementById("authModal");
+    const closeAuthModalBtn = document.getElementById("closeAuthModal");
+    const goRegisterBtn = document.getElementById("goRegisterBtn");
+    const goLoginBtn = document.getElementById("goLoginBtn");
+
+    function isUserLoggedIn() {
+      const savedEmail = localStorage.getItem("userEmail");
+      return !!savedEmail;
+    }
+
+    function openAuthModal() {
+  authModal.style.display = "flex";
+  document.body.classList.add("modal-open");
+  el('typingInput').disabled = true;
+}
+
+    function closeAuthModal() {
+  authModal.style.display = "none";
+  document.body.classList.remove("modal-open");
+
+  if (!isUserLoggedIn()) {
+    el('typingInput').disabled = true;
+  }
+}
+    closeAuthModalBtn.addEventListener("click", closeAuthModal);
+
+    authModal.addEventListener("click", (e) => {
+      if (e.target === authModal) closeAuthModal();
+    });
+
+    goRegisterBtn.addEventListener("click", () => {
+      window.location.href = "qeydiyyat.html";
+    });
+
+    goLoginBtn.addEventListener("click", () => {
+      window.location.href = "daxil ol.html";
+    });
 
     // State
     let settings = { count: parseInt(el('wordCount')?.value || 30) };
     let state = {
-      words: [],
-      index: 0,
-      correct: 0,
-      wrong: 0,
-      startTime: null,
-      finished: false,
-      perWord: []
-    };
+  words: [],
+  index: 0,
+  correct: 0,
+  wrong: 0,
+  startTime: null,
+  finished: false,
+  perWord: [],
+  started: false
+};
     let timerInterval = null;
 
     function pickWords(n){
@@ -633,18 +687,32 @@ h1{margin-right:30px;}
       el('wpm').textContent = calcWPM() + ' WPM';
     }
 
-    function startTimer(){
+    function startTimer() {
+  clearInterval(timerInterval);
+  timerInterval = null;
+
+  state.startTime = Date.now();
+
+  timerInterval = setInterval(() => {
+    if (!state.started || state.finished || !state.startTime) {
       clearInterval(timerInterval);
-      state.startTime = Date.now();
-      timerInterval = setInterval(()=>{
-        const sec = Math.floor((Date.now()-state.startTime)/1000);
-        el('timer').textContent =
-          String(Math.floor(sec/60)).padStart(2,'0') + ':' +
-          String(sec%60).padStart(2,'0');
-        el('wpm').textContent = calcWPM() + ' WPM';
-      },500);
+      timerInterval = null;
+      el('timer').textContent = '00:00';
+      return;
     }
-    function stopTimer(){ clearInterval(timerInterval); }
+
+    const sec = Math.floor((Date.now() - state.startTime) / 1000);
+    el('timer').textContent =
+      String(Math.floor(sec / 60)).padStart(2, '0') + ':' +
+      String(sec % 60).padStart(2, '0');
+
+    el('wpm').textContent = calcWPM() + ' WPM';
+  }, 500);
+}
+function stopTimer() {
+  clearInterval(timerInterval);
+  timerInterval = null;
+}
 
     function renderResultList(){
       const list = el('resultList');
@@ -658,7 +726,17 @@ h1{margin-right:30px;}
     }
 
     function showModal(){ el('modal').style.display = 'flex'; }
-    function closeModal(){ el('modal').style.display = 'none'; startTest(); }
+    function closeModal(){
+  el('modal').style.display = 'none';
+
+  if (!isUserLoggedIn()) {
+    el('typingInput').disabled = true;
+    openAuthModal();
+    return;
+  }
+
+  startTest();
+}
 
     function renderDetailedResults(){
       const box = document.getElementById("detailedResults");
@@ -698,25 +776,56 @@ h1{margin-right:30px;}
       `;
       box.appendChild(summary);
     }
+   function preparePreview() {
+  clearInterval(timerInterval);
+  timerInterval = null;
 
-    function startTest(){
-      settings.count = parseInt(el('wordCount').value);
-      state.words = pickWords(settings.count);
-      state.index = 0;
-      state.correct = 0;
-      state.wrong = 0;
-      state.perWord = [];
-      state.finished = false;
+  settings.count = parseInt(el('wordCount').value);
+  state.words = pickWords(settings.count);
+  state.index = 0;
+  state.correct = 0;
+  state.wrong = 0;
+  state.perWord = [];
+  state.finished = false;
+  state.started = false;
+  state.startTime = null;
 
-      el('typingInput').value = '';
-      el('typingInput').disabled = false;
-      el('typingInput').focus();
+  el('typingInput').value = '';
+  el('typingInput').disabled = true;
 
-      renderStream();
-      updateStats();
-      startTimer();
-      renderResultList();
-    }
+  el('timer').textContent = '00:00';
+  el('wpm').textContent = '0 WPM';
+
+  renderStream();
+  updateStats();
+  renderResultList();
+}
+  function startTest() {
+  clearInterval(timerInterval);
+  timerInterval = null;
+
+  settings.count = parseInt(el('wordCount').value);
+  state.words = pickWords(settings.count);
+  state.index = 0;
+  state.correct = 0;
+  state.wrong = 0;
+  state.perWord = [];
+  state.finished = false;
+  state.started = true;
+  state.startTime = null;
+
+  el('typingInput').value = '';
+  el('typingInput').disabled = false;
+  el('typingInput').focus();
+
+  el('timer').textContent = '00:00';
+  el('wpm').textContent = '0 WPM';
+
+  renderStream();
+  updateStats();
+  startTimer();
+  renderResultList();
+}
     
 
     function finishTest(){
@@ -724,7 +833,9 @@ h1{margin-right:30px;}
   el('typingInput').disabled = true;
   stopTimer();
 
+  if (typeof saveTypingResult === "function") {
   saveTypingResult(state.correct, state.wrong, calcWPM());
+}
 
   renderDetailedResults();
   showModal();
@@ -732,38 +843,61 @@ h1{margin-right:30px;}
     
 
     function handleInput(e){
-      if(state.finished) return;
+  if (!state.started) return;
+  if(state.finished) return;
 
-      if(e.target.value.endsWith(' ')){
-        const typed = e.target.value.trim();
-        const word = state.words[state.index];
-        const correct = typed === word;
+  if(e.target.value.endsWith(' ')){
+    const typed = e.target.value.trim();
+    const word = state.words[state.index];
+    const correct = typed === word;
 
-        state.perWord[state.index] = {word, typed, correct};
-        correct ? state.correct++ : state.wrong++;
-        state.index++;
+    state.perWord[state.index] = {word, typed, correct};
+    correct ? state.correct++ : state.wrong++;
+    state.index++;
 
-        e.target.value = '';
+    e.target.value = '';
 
-        if(state.index >= state.words.length){
-          finishTest();
-        }
-
-        renderStream();
-        updateStats();
-        renderResultList();
-      } else {
-        renderStream();
-      }
+    if(state.index >= state.words.length){
+      finishTest();
     }
 
+    renderStream();
+    updateStats();
+    renderResultList();
+  } else {
+    renderStream();
+  }
+}
+
     el('typingInput').addEventListener('input', handleInput);
-    el('startBtn').addEventListener('click', startTest);
-    el('resetBtn').addEventListener('click', startTest);
-    el('wordCount').addEventListener('change', startTest);
+    el('startBtn').addEventListener('click', () => {
+  if (!isUserLoggedIn()) {
+    openAuthModal();
+    return;
+  }
+  startTest();
+});
+el('resetBtn').addEventListener('click', () => {
+  if (!isUserLoggedIn()) {
+    preparePreview();
+    openAuthModal();
+    return;
+  }
+  preparePreview();
+});
+
+el('wordCount').addEventListener('change', () => {
+  if (!isUserLoggedIn()) {
+    preparePreview();
+    openAuthModal();
+    return;
+  }
+  preparePreview();
+});
     el('closeModal').addEventListener('click', closeModal);
 
-    startTest();
+preparePreview();
+el('typingInput').disabled = true;
     if (typeof saveVisitorEntry === "function") {
   saveVisitorEntry();
 } else {
@@ -800,7 +934,12 @@ h1{margin-right:30px;}
   </script>
  <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
@@ -820,16 +959,24 @@ const auth = getAuth(app);
 window.saveTypingResult = async function(correct, wrong, wpm) {
   try {
     const user = auth.currentUser;
+    const finalEmail = user?.email || localStorage.getItem("userEmail");
 
-    await addDoc(collection(db, "results"), {
-      email: user?.email || localStorage.getItem("userEmail") || "anonim",
+    if (!finalEmail) {
+      console.log("İstifadəçi tanınmadı, result yazılmadı");
+      return;
+    }
+
+    const resultDocId = `${finalEmail}_${Date.now()}`;
+
+    await setDoc(doc(db, "results", resultDocId), {
+      email: finalEmail,
       correct: correct,
       wrong: wrong,
       wpm: wpm,
       createdAt: serverTimestamp()
     });
 
-    console.log("✅ nəticə yazıldı");
+    console.log("✅ nəticə Firestore-a ayrıca yazıldı");
   } catch (err) {
     console.error("❌ yazılmadı:", err);
   }
@@ -837,21 +984,32 @@ window.saveTypingResult = async function(correct, wrong, wpm) {
 
 window.saveVisitorEntry = async function() {
   try {
-    const sessionKey = "typingmaster_visit_saved";
-
-    if (sessionStorage.getItem(sessionKey)) return;
-
     const user = auth.currentUser;
+    const savedEmail = localStorage.getItem("userEmail");
+    const savedUsername = localStorage.getItem("username");
 
-    await addDoc(collection(db, "visitors"), {
-      email: user?.email || localStorage.getItem("userEmail") || "anonim",
+    const finalEmail = user?.email || savedEmail;
+    const finalName =
+      user?.displayName ||
+      savedUsername ||
+      (finalEmail ? finalEmail.split("@")[0] : null);
+
+    if (!finalEmail) {
+      console.log("İstifadəçi tanınmadı, visitors-a yazılmadı");
+      return;
+    }
+
+    const visitDocId = `${finalEmail}_${Date.now()}`;
+
+    await setDoc(doc(db, "visitors", visitDocId), {
+      email: finalEmail,
+      name: finalName || "Naməlum",
       page: "home",
       visitedAt: serverTimestamp(),
       userAgent: navigator.userAgent
     });
 
-    sessionStorage.setItem(sessionKey, "1");
-    console.log("✅ ziyarətçi Firestore-a yazıldı");
+    console.log("✅ ziyarətçi Firestore-a ayrıca yazıldı");
   } catch (err) {
     console.error("❌ ziyarətçi yazılmadı:", err);
   }
