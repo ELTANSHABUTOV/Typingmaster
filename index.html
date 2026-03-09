@@ -959,12 +959,7 @@ const auth = getAuth(app);
 window.saveTypingResult = async function(correct, wrong, wpm) {
   try {
     const user = auth.currentUser;
-    const finalEmail = user?.email || localStorage.getItem("userEmail");
-
-    if (!finalEmail) {
-      console.log("İstifadəçi tanınmadı, result yazılmadı");
-      return;
-    }
+    const finalEmail = user?.email || localStorage.getItem("userEmail") || "anonim";
 
     const resultDocId = `${finalEmail}_${Date.now()}`;
 
@@ -988,22 +983,17 @@ window.saveVisitorEntry = async function() {
     const savedEmail = localStorage.getItem("userEmail");
     const savedUsername = localStorage.getItem("username");
 
-    const finalEmail = user?.email || savedEmail;
+    const finalEmail = user?.email || savedEmail || "anonim";
     const finalName =
       user?.displayName ||
       savedUsername ||
-      (finalEmail ? finalEmail.split("@")[0] : null);
-
-    if (!finalEmail) {
-      console.log("İstifadəçi tanınmadı, visitors-a yazılmadı");
-      return;
-    }
+      (finalEmail !== "anonim" ? finalEmail.split("@")[0] : "anonim");
 
     const visitDocId = `${finalEmail}_${Date.now()}`;
 
     await setDoc(doc(db, "visitors", visitDocId), {
       email: finalEmail,
-      name: finalName || "Naməlum",
+      name: finalName || "anonim",
       page: "home",
       visitedAt: serverTimestamp(),
       userAgent: navigator.userAgent
@@ -1032,4 +1022,5 @@ window.saveVisitorEntry = async function() {
 </script>
 </body>
 </html>
+
 
