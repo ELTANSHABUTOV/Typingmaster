@@ -174,7 +174,7 @@
       return email.replace(/[.#$\\[\\]/]/g, "_");
     }
 
-    const userDocRef = doc(db, "users", safeEmailKey(email));
+    const userDocRef = doc(db, "melumatlar", safeEmailKey(email));
     let userData = null;
 
     function renderViewMode(data) {
