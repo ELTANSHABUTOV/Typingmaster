@@ -55,7 +55,8 @@
     }
 
     input {
-      width: 300px;
+      width: 100%;
+      box-sizing: border-box;
       padding: 10px;
       border-radius: 10px;
       border: 1px solid #1e293b;
@@ -68,7 +69,6 @@
 
     input:focus {
       border-color: #2563eb;
-      width: 300px;
     }
 
     button {
@@ -108,14 +108,12 @@
   <div class="card">
     <h1>Hesab Məlumatları</h1>
 
-    <!-- AD -->
     <div class="info">
       <div class="label">Ad</div>
       <div class="value" id="nameText"></div>
       <input type="text" id="nameInput" style="display:none;">
     </div>
 
-    <!-- SOYAD -->
     <div class="info">
       <div class="label">Soyad</div>
       <div class="value" id="surnameText"></div>
@@ -130,102 +128,170 @@
     </button>
 
     <button class="logout" id="logoutBtn">
-      Məlumatları sil
+      Çıxış et
     </button>
   </div>
 
- <script>
-  
-  const nameText = document.getElementById("nameText");
-  const surnameText = document.getElementById("surnameText");
-  const nameInput = document.getElementById("nameInput");
-  const surnameInput = document.getElementById("surnameInput");
-  const editBtn = document.getElementById("editBtn");
-  const saveBtn = document.getElementById("saveBtn");
-  const logoutBtn = document.getElementById("logoutBtn");
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import {
+      getFirestore,
+      doc,
+      getDoc,
+      updateDoc,
+      deleteDoc,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  // 1) Login email yoxlanır
-  const email = localStorage.getItem("loggedInEmail");
-  if (!email) {
-    window.location.href = "daxil ol.html";
-  }
+    const firebaseConfig = {
+      apiKey: "AIzaSyCPUyl6EbO8dvJBTWofVBQg1a1xJHM4_08",
+      authDomain: "salam-58d0a.firebaseapp.com",
+      projectId: "salam-58d0a",
+      storageBucket: "salam-58d0a.firebasestorage.app",
+      messagingSenderId: "703442504339",
+      appId: "1:703442504339:web:4d7757d08bb37189829b66",
+      measurementId: "G-M94QKEHNJF"
+    };
 
-  // 2) Email-ə bağlı məlumat oxunur
-  function getUserData() {
-    const raw = localStorage.getItem("userData_" + email);
-    return raw ? JSON.parse(raw) : null;
-  }
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-  function renderViewMode(userData) {
-    nameText.textContent = userData?.name || "Məlumat yoxdur";
-    surnameText.textContent = userData?.surname || "Məlumat yoxdur";
+    const nameText = document.getElementById("nameText");
+    const surnameText = document.getElementById("surnameText");
+    const nameInput = document.getElementById("nameInput");
+    const surnameInput = document.getElementById("surnameInput");
+    const editBtn = document.getElementById("editBtn");
+    const saveBtn = document.getElementById("saveBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
 
-    nameText.style.display = "block";
-    surnameText.style.display = "block";
-    nameInput.style.display = "none";
-    surnameInput.style.display = "none";
+    const email = localStorage.getItem("loggedInEmail");
 
-    editBtn.style.display = "block";
-    saveBtn.style.display = "none";
-  }
-
-  function renderEditMode(userData) {
-    nameInput.value = userData?.name || "";
-    surnameInput.value = userData?.surname || "";
-
-    nameText.style.display = "none";
-    surnameText.style.display = "none";
-    nameInput.style.display = "block";
-    surnameInput.style.display = "block";
-
-    editBtn.style.display = "none";
-    saveBtn.style.display = "block";
-  }
-
-  // 3) Əgər məlumat yoxdursa → adiviyaz.html (səndə bu səhifə adiviyaz idi)
-  let userData = getUserData();
-  if (!userData) {
-    window.location.href = "adiviyaz.html";
-  }
-
-  // 4) Səhifə açılan kimi məlumatı göstər
-  renderViewMode(userData);
-
-  // ✏️ Edit
-  editBtn.addEventListener("click", () => {
-    userData = getUserData();
-    renderEditMode(userData);
-  });
-
-  // 💾 Save (yenilə)
-  saveBtn.addEventListener("click", () => {
-    const newName = nameInput.value.trim();
-    const newSurname = surnameInput.value.trim();
-
-    if (!newName || !newSurname) {
-      alert("Ad və soyad boş ola bilməz!");
-      return;
+    if (!email) {
+      window.location.href = "daxil%20ol.html";
     }
 
-    const updated = { name: newName, surname: newSurname };
-    localStorage.setItem("userData_" + email, JSON.stringify(updated));
+    function safeEmailKey(email) {
+      return email.replace(/[.#$\\[\\]/]/g, "_");
+    }
 
-    alert("Məlumatlar yeniləndi ✅");
+    const userDocRef = doc(db, "users", safeEmailKey(email));
+    let userData = null;
 
-    userData = updated;
-    renderViewMode(userData);
-  });
+    function renderViewMode(data) {
+      nameText.textContent = data?.name || "Məlumat yoxdur";
+      surnameText.textContent = data?.surname || "Məlumat yoxdur";
 
-  // 🗑️ Sil (logout / delete)
-  logoutBtn.addEventListener("click", () => {
-    localStorage.removeItem("userData_" + email);
-    localStorage.removeItem("loggedInEmail");
+      nameText.style.display = "block";
+      surnameText.style.display = "block";
+      nameInput.style.display = "none";
+      surnameInput.style.display = "none";
 
-    alert("Məlumatlar silindi 🗑️");
-    window.location.href = "login.html";
-  });
-</script>
+      editBtn.style.display = "block";
+      saveBtn.style.display = "none";
+    }
+
+    function renderEditMode(data) {
+      nameInput.value = data?.name || "";
+      surnameInput.value = data?.surname || "";
+
+      nameText.style.display = "none";
+      surnameText.style.display = "none";
+      nameInput.style.display = "block";
+      surnameInput.style.display = "block";
+
+      editBtn.style.display = "none";
+      saveBtn.style.display = "block";
+    }
+
+    async function loadUserData() {
+      try {
+        const snap = await getDoc(userDocRef);
+
+        if (!snap.exists()) {
+          window.location.href = "adiviyaz.html";
+          return;
+        }
+
+        userData = snap.data();
+
+        // İstəsən localStorage-a da yaz
+        localStorage.setItem(
+          "userData_" + email,
+          JSON.stringify({
+            name: userData.name,
+            surname: userData.surname
+          })
+        );
+
+        renderViewMode(userData);
+      } catch (error) {
+        console.error("Oxuma xətası:", error);
+        alert("Məlumatlar oxunmadı!");
+      }
+    }
+
+    await loadUserData();
+
+    editBtn.addEventListener("click", () => {
+      renderEditMode(userData);
+    });
+
+    saveBtn.addEventListener("click", async () => {
+      const newName = nameInput.value.trim();
+      const newSurname = surnameInput.value.trim();
+
+      if (!newName || !newSurname) {
+        alert("Ad və soyad boş ola bilməz!");
+        return;
+      }
+
+      try {
+        await updateDoc(userDocRef, {
+          name: newName,
+          surname: newSurname,
+          updatedAt: serverTimestamp()
+        });
+
+        userData = {
+          ...userData,
+          name: newName,
+          surname: newSurname
+        };
+
+        localStorage.setItem(
+          "userData_" + email,
+          JSON.stringify({
+            name: newName,
+            surname: newSurname
+          })
+        );
+
+        alert("Məlumatlar yeniləndi ✅");
+        renderViewMode(userData);
+      } catch (error) {
+        console.error("Yeniləmə xətası:", error);
+        alert("Məlumatlar yenilənmədi!");
+      }
+    });
+
+    logoutBtn.addEventListener("click", async () => {
+      const confirmDelete = confirm("Hesab məlumatları silinsin?");
+      if (!confirmDelete) return;
+
+      try {
+        await deleteDoc(userDocRef);
+
+        localStorage.removeItem("userData_" + email);
+        localStorage.removeItem("loggedInEmail");
+
+        alert("Məlumatlar silindi 🗑️");
+        window.location.href = "daxil%20ol.html";
+      } catch (error) {
+        console.error("Silmə xətası:", error);
+        alert("Məlumatlar silinmədi!");
+      }
+    });
+  </script>
 
 </body>
 </html>
-
