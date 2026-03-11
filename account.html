@@ -1,92 +1,53 @@
 <!DOCTYPE html>
 <html lang="az">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Mənim Hesabım</title>
   <style>
-    body { margin: 0; font-family: Poppins, sans-serif; background: #0f172a; color: #fff; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-    .card { background: #020617; padding: 25px; border-radius: 16px; width: 350px; display: flex; flex-direction: column; gap: 12px; }
-    .info-box { background: #1e293b; padding: 10px; border-radius: 8px; }
-    .label { font-size: 12px; color: #94a3b8; }
-    .val { font-size: 16px; font-weight: 600; }
-    input { width: 100%; padding: 8px; margin-top: 5px; display: none; border-radius: 5px; border: 1px solid #334155; background: #0f172a; color: #fff; }
-    button { width: 100%; padding: 10px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; }
-    .edit-btn { background: #facc15; }
-    .save-btn { background: #22c55e; display: none; }
-    .logout-btn { background: #ef4444; margin-top: 10px; }
+    body{ background:#0f172a; color:white; font-family:sans-serif; display:flex; justify-content:center; align-items:center; height:100vh; }
+    .card{ background:#020617; padding:30px; border-radius:15px; width:350px; text-align:center; }
+    .btn{ padding:10px; margin:5px; border-radius:5px; border:none; cursor:pointer; width:100%; font-weight:bold; }
+    .davam{ background:blue; color:white; }
+    .cixis{ background:red; color:white; }
   </style>
 </head>
 <body>
-  <div class="card" id="mainCard" style="display:none">
-    <h2 style="text-align:center">Profilim</h2>
-    <div class="info-box">
-      <div class="label">Email</div>
-      <div class="val" id="userEmail"></div>
-    </div>
-    <div class="info-box">
-      <div class="label">Ad</div>
-      <div class="val" id="nameVal"></div>
-      <input type="text" id="nameInp">
-    </div>
-    <div class="info-box">
-      <div class="label">Soyad</div>
-      <div class="val" id="surnameVal"></div>
-      <input type="text" id="surnameInp">
-    </div>
-    <button class="edit-btn" id="editBtn">Redaktə et</button>
-    <button class="save-btn" id="saveBtn">Yadda saxla</button>
-    <button class="logout-btn" id="logoutBtn">Çıxış</button>
+  <div class="card">
+    <h2>Xoş gəldiniz</h2>
+    <p id="uEmail"></p>
+    <p id="uName"></p>
+    <button class="btn davam" onclick="window.location.href='main-index.html'">Davam et</button>
+    <button class="btn cixis" id="logout">Çıxış et</button>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCYWC8P0meXFbyRoSA4uHkJmJRkPFlhwSQ",
-      authDomain: "salam-58d0a.firebaseapp.com",
-      projectId: "salam-58d0a",
-      storageBucket: "salam-58d0a.firebasestorage.app",
-      messagingSenderId: "703442504339",
-      appId: "1:703442504339:web:f9a6b1f54db80c4c829b66"
-    };
-
+    const firebaseConfig = { apiKey: "AIzaSyCYWC8P0meXFbyRoSA4uHkJmJRkPFlhwSQ", authDomain: "salam-58d0a.firebaseapp.com", projectId: "salam-58d0a", storageBucket: "salam-58d0a.firebasestorage.app", messagingSenderId: "703442504339", appId: "1:703442504339:web:f9a6b1f54db80c4c829b66" };
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
 
     onAuthStateChanged(auth, async (user) => {
-      if (!user) window.location.href = "index.html";
-      const snap = await getDoc(doc(db, "melumatlar", user.uid));
-      if (!snap.exists()) window.location.href = "adiviyaz.html";
+      let email = user ? user.email : localStorage.getItem("tempEmail");
+      if (!email) { window.location.href = "index.html"; return; }
+
+      const q = query(collection(db, "melumatlar"), where("email", "==", email));
+      const snap = await getDocs(q);
       
-      const data = snap.data();
-      document.getElementById("userEmail").textContent = user.email;
-      document.getElementById("nameVal").textContent = data.name;
-      document.getElementById("surnameVal").textContent = data.surname;
-      document.getElementById("mainCard").style.display = "flex";
+      snap.forEach(doc => {
+        document.getElementById("uEmail").textContent = "Email: " + doc.data().email;
+        document.getElementById("uName").textContent = "Ad: " + doc.data().name + " " + doc.data().surname;
+      });
     });
 
-    document.getElementById("editBtn").onclick = () => {
-      document.getElementById("nameInp").style.display = "block";
-      document.getElementById("surnameInp").style.display = "block";
-      document.getElementById("nameVal").style.display = "none";
-      document.getElementById("surnameVal").style.display = "none";
-      document.getElementById("saveBtn").style.display = "block";
-      document.getElementById("editBtn").style.display = "none";
-      document.getElementById("nameInp").value = document.getElementById("nameVal").textContent;
-      document.getElementById("surnameInp").value = document.getElementById("surnameVal").textContent;
+    document.getElementById("logout").onclick = () => {
+      signOut(auth);
+      localStorage.clear();
+      window.location.href = "index.html";
     };
-
-    document.getElementById("saveBtn").onclick = async () => {
-      const n = document.getElementById("nameInp").value;
-      const s = document.getElementById("surnameInp").value;
-      await updateDoc(doc(db, "melumatlar", auth.currentUser.uid), { name: n, surname: s });
-      location.reload();
-    };
-
-    document.getElementById("logoutBtn").onclick = () => signOut(auth);
   </script>
 </body>
 </html>
