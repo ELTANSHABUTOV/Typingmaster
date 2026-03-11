@@ -27,27 +27,24 @@
 
     header { 
       display: flex; justify-content: space-between; align-items: center; 
-      padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
-      width: 100%;
+      padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05); width: 100%;
     }
 
     .brand { display: flex; align-items: center; gap: 10px; }
     .brand img { border-radius: 8px; width: 35px; }
-    .brand h2 { margin: 0; font-size: 1.2rem; }
 
     .nav-links { display: flex; gap: 12px; align-items: center; }
     .nav-links a { 
       color: var(--text); text-decoration: none; font-size: 13px; font-weight: 500;
       padding: 8px 15px; border-radius: 10px; background: rgba(255,255,255,0.05);
     }
-    .nav-links a:hover { background: rgba(255,255,255,0.1); }
-    
-    /* ÇIXIŞ DÜYMƏSİ - Qırmızı və Görünən */
-    .nav-links a#logoutBtn { 
-      color: #fff; 
-      background: var(--error); 
-      display: none; /* JS ilə daxil olanda block ediləcək */
-      font-weight: 600;
+
+    /* ÇIXIŞ DÜYMƏSİ - Qırmızı və Məcburi Görünən */
+    #logoutBtn { 
+      background: var(--error) !important; 
+      color: white !important; 
+      font-weight: 800 !important;
+      display: none; /* JS tərəfindən idarə olunacaq */
     }
 
     .game-card { 
@@ -57,7 +54,6 @@
     }
 
     .control-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-
     .mode-selector { display: flex; background: rgba(0,0,0,0.3); padding: 4px; border-radius: 12px; }
     .mode-selector button { 
       background: transparent; border: none; color: var(--muted); padding: 6px 15px; 
@@ -68,7 +64,7 @@
     .live-stats { display: flex; gap: 8px; }
     .stat-pill { background: rgba(0,0,0,0.2); padding: 6px 12px; border-radius: 10px; text-align: center; min-width: 65px; }
     .stat-pill label { display: block; font-size: 8px; color: var(--muted); text-transform: uppercase; }
-    .stat-pill span { color: var(--accent); font-weight: 700; font-size: 0.95rem; }
+    .stat-pill span { color: var(--accent); font-weight: 700; font-size: 1rem; }
 
     .word-display { 
       background: rgba(0,0,0,0.2); border-radius: 20px; padding: 25px; 
@@ -79,9 +75,6 @@
     .word.active { color: #fff; border-bottom: 2px solid var(--accent); }
     .word.correct { color: var(--success); }
     .word.wrong { color: var(--error); }
-    
-    .char-correct { color: var(--success); }
-    .char-wrong { color: var(--error); text-decoration: underline; }
 
     .input-box { display: flex; gap: 12px; }
     input[type="text"] { 
@@ -100,6 +93,9 @@
 
     .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 999; }
     .modal-content { background: #1e293b; padding: 35px; border-radius: 25px; text-align: center; border: 1px solid var(--accent); width: 320px; }
+    
+    .char-correct { color: var(--success); }
+    .char-wrong { color: var(--error); text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -107,7 +103,7 @@
 <div class="app-container">
   <header>
     <div class="brand">
-      <img src="https://i.postimg.cc/9Qy6YWFZ/Chat-GPT-Image-Nov-27-2025-09-35-45-PM.png">
+      <img src="https://i.postimg.cc/9Qy6YWFZ/Chat-GPT-Image-Nov-27-2025-09-35-45-PM.png" alt="logo">
       <h2>TypingMaster</h2>
     </div>
     <nav class="nav-links">
@@ -180,6 +176,8 @@
 
   const wordPool = "salam dünya kitab klaviatura sürət texnologiya məktəb həyat proqramist uğur gələcək internet məlumat inkişaf azərbaycan musiqi günəş ulduz dəniz qələm dəftər kompyuter zəfər bilik hədəf arzu ekran sistem şəbəkə kod yazı sürətli dahi yaradıcı qüvvə fəza zaman məkan rəqəmsal".split(" ");
   let state = { words: [], currentIdx: 0, correct: 0, wrong: 0, startTime: null, isActive: false, limit: 25 };
+  
+  // Qlobal İstifadəçi Obyekti
   let currentUser = null;
 
   const inputEl = document.getElementById("mainInput");
@@ -187,26 +185,37 @@
   const logoutBtn = document.getElementById("logoutBtn");
   const userLabel = document.getElementById("userDisplayName");
 
-  // Auth Statusu Yoxla
+  // Auth Statusu Yoxla (GÜCLƏNDİRİLMİŞ)
   onAuthStateChanged(auth, async (user) => {
-    currentUser = user; // BU ÇOX VACİBDİR
     if (user) {
-      logoutBtn.style.display = "block"; // Daxil olanda ÇIXIŞI göstər
+      currentUser = user; // Global dəyişəni mütləq mənimsət
+      logoutBtn.style.setProperty('display', 'block', 'important'); // CSS !important-ı aktiv et
+      
       const docRef = doc(db, "melumatlar", user.uid);
-      const docSnap = await getDoc(docRef);
-      userLabel.innerText = docSnap.exists() ? docSnap.data().name : user.email.split('@')[0];
+      try {
+        const docSnap = await getDoc(docRef);
+        userLabel.innerText = docSnap.exists() ? docSnap.data().name : user.email.split('@')[0];
+      } catch(e) {
+        userLabel.innerText = user.email.split('@')[0];
+      }
+      
       inputEl.placeholder = "BAŞLA düyməsinə klikləyin";
+      inputEl.disabled = true; // Yalnız BAŞLA-dan sonra aktiv olar
     } else {
+      currentUser = null;
       logoutBtn.style.display = "none";
       userLabel.innerText = "Hesab";
       inputEl.placeholder = "Məşq üçün daxil olun";
     }
   });
 
-  logoutBtn.onclick = (e) => {
+  // Çıxış Funksiyası
+  logoutBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    signOut(auth).then(() => window.location.reload());
-  };
+    signOut(auth).then(() => {
+      window.location.reload();
+    });
+  });
 
   function setupWords() {
     state.words = [...wordPool].sort(() => Math.random() - 0.5).slice(0, state.limit);
@@ -214,34 +223,31 @@
     wordBox.innerHTML = state.words.map((w, i) => `<span class="word ${i === 0 ? 'active' : ''}">${w}</span>`).join("");
   }
 
-  document.querySelectorAll("#modeSelector button").forEach(btn => {
-    btn.onclick = () => {
-      if (state.isActive) return;
-      document.querySelectorAll("#modeSelector button").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      state.limit = parseInt(btn.dataset.val);
-      setupWords();
-    };
-  });
-
+  // Başlat düyməsi (Yoxlanışlı)
   document.getElementById("startAction").onclick = () => {
-    if (currentUser) {
-      state.isActive = true; state.startTime = Date.now();
-      inputEl.disabled = false; inputEl.placeholder = "Yazın..."; inputEl.focus();
+    if (currentUser || auth.currentUser) {
+      if(!currentUser) currentUser = auth.currentUser; // Hər ehtimala qarşı Firebase-dən bir də çək
+      
+      state.isActive = true; 
+      state.startTime = Date.now();
+      inputEl.disabled = false; 
+      inputEl.placeholder = "Yazın..."; 
+      inputEl.focus();
       document.getElementById("startAction").style.display = "none";
       document.getElementById("modeSelector").style.opacity = "0.2";
       startTimer();
     } else {
-      alert("Zəhmət olmasa daxil olun!");
+      alert("Oyuna başlamaq üçün əvvəlcə daxil olmalısınız!");
       window.location.href = "qeydiyyat.html";
     }
   };
 
+  // Digər Oyun Məntiqləri (Dəyişməz qalır)
   function startTimer() {
     const timer = setInterval(() => {
       if (!state.isActive) { clearInterval(timer); return; }
-      const elapsed = Math.floor((Date.now() - state.startTime) / 1000);
-      document.getElementById("timerDisplay").innerText = `${Math.floor(elapsed/60).toString().padStart(2,'0')}:${(elapsed%60).toString().padStart(2,'0')}`;
+      const elapsed = (Date.now() - state.startTime) / 1000;
+      document.getElementById("timerDisplay").innerText = `${Math.floor(elapsed/60).toString().padStart(2,'0')}:${Math.floor(elapsed%60).toString().padStart(2,'0')}`;
       if(elapsed > 0) document.getElementById("wpmDisplay").innerText = Math.round(state.currentIdx / (elapsed / 60));
     }, 1000);
   }
@@ -252,9 +258,9 @@
     const wordEls = document.querySelectorAll(".word");
     let colored = "";
     for (let i = 0; i < target.length; i++) {
-      if (i < typed.length) {
-        colored += typed[i] === target[i] ? `<span class="char-correct">${target[i]}</span>` : `<span class="char-wrong">${target[i]}</span>`;
-      } else colored += target[i];
+        if (i < typed.length) {
+            colored += typed[i] === target[i] ? `<span class="char-correct">${target[i]}</span>` : `<span class="char-wrong">${target[i]}</span>`;
+        } else colored += target[i];
     }
     wordEls[state.currentIdx].innerHTML = colored;
   };
@@ -274,7 +280,7 @@
       inputEl.value = "";
       if (state.currentIdx >= state.words.length) endGame();
       else {
-        wordEls.forEach((el, i) => i === state.currentIdx ? el.classList.add("active") : el.classList.remove("active"));
+        wordEls.forEach((el, i) => i === state.currentIdx ? el.classList.add('active') : el.classList.remove('active'));
         wordEls[state.currentIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
       document.getElementById("correctDisplay").innerText = state.correct;
@@ -283,12 +289,14 @@
   };
 
   async function endGame() {
-    state.isActive = false; inputEl.disabled = true;
+    state.isActive = false; 
+    inputEl.disabled = true;
     const finalWpm = document.getElementById("wpmDisplay").innerText;
     document.getElementById("wpm-highlight").innerText = finalWpm;
     document.getElementById("finalCorrect").innerText = state.correct;
     document.getElementById("finalWrong").innerText = state.wrong;
     document.getElementById("resultModal").style.display = "flex";
+    
     if (currentUser) {
       await setDoc(doc(db, "results", `${currentUser.email}_${Date.now()}`), {
         email: currentUser.email, wpm: parseInt(finalWpm), correct: state.correct, wrong: state.wrong, createdAt: serverTimestamp()
