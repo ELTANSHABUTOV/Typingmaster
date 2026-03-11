@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>Hesab Məlumatları</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <style>
     body {
       box-sizing: border-box;
@@ -17,6 +18,12 @@
       justify-content: center;
       padding: 20px;
     }
+
+    #loadingText {
+      color: #fff;
+      font-size: 18px;
+    }
+
     .card {
       background: #020617;
       padding: 28px;
@@ -24,24 +31,28 @@
       width: 100%;
       max-width: 360px;
       box-shadow: 0 20px 40px rgba(0,0,0,.5);
-      display: flex;
+      display: none;
       flex-direction: column;
       gap: 16px;
     }
+
     h1 {
       margin: 0 0 8px 0;
       font-size: 22px;
       text-align: center;
     }
+
     .info {
       display: flex;
       flex-direction: column;
       gap: 6px;
     }
+
     label {
       color: #94a3b8;
       font-size: 13px;
     }
+
     input {
       width: 100%;
       padding: 10px 12px;
@@ -53,9 +64,11 @@
       font-size: 15px;
       outline: none;
     }
+
     input:focus {
       border-color: #2563eb;
     }
+
     button {
       width: 100%;
       padding: 12px;
@@ -65,6 +78,7 @@
       font-weight: 600;
       cursor: pointer;
     }
+
     .save {
       background: #22c55e;
       color: #022c22;
@@ -73,7 +87,9 @@
 </head>
 <body>
 
-  <div class="card">
+  <div id="loadingText">Yüklənir...</div>
+
+  <div class="card" id="card">
     <h1>Hesab Məlumatları</h1>
 
     <div class="info">
@@ -114,6 +130,8 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
+    const loadingText = document.getElementById("loadingText");
+    const card = document.getElementById("card");
     const nameInput = document.getElementById("nameInput");
     const surnameInput = document.getElementById("surnameInput");
     const saveBtn = document.getElementById("saveBtn");
@@ -127,12 +145,13 @@
       }
 
       currentUser = user;
+      loadingText.style.display = "none";
+      card.style.display = "flex";
 
       try {
         const userRef = doc(db, "melumatlar", user.uid);
         const snap = await getDoc(userRef);
 
-        // Əgər məlumat artıq varsa account-a keç
         if (snap.exists()) {
           window.location.href = "account.html";
         }
@@ -162,8 +181,8 @@
         await setDoc(userRef, {
           uid: currentUser.uid,
           email: currentUser.email || "",
-          name,
-          surname,
+          name: name,
+          surname: surname,
           createdAt: serverTimestamp(),
           updatedAt: serverTimestamp()
         });
