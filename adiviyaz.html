@@ -109,72 +109,74 @@
     <button class="back" onclick="window.location.href='account.html'">Davam Et</button>
   </div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import {
-      getFirestore,
-      doc,
-      setDoc,
-      serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+ <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import {
+    getFirestore,
+    doc,
+    setDoc,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCPUyl6EbO8dvJBTWofVBQg1a1xJHM4_08",
-      authDomain: "salam-58d0a.firebaseapp.com",
-      projectId: "salam-58d0a",
-      storageBucket: "salam-58d0a.firebasestorage.app",
-      messagingSenderId: "703442504339",
-      appId: "1:703442504339:web:4d7757d08bb37189829b66",
-      measurementId: "G-M94QKEHNJF"
-    };
+  const firebaseConfig = {
+    apiKey: "AIzaSyCPUyl6EbO8dvJBTWofVBQg1a1xJHM4_08",
+    authDomain: "salam-58d0a.firebaseapp.com",
+    projectId: "salam-58d0a",
+    storageBucket: "salam-58d0a.firebasestorage.app",
+    messagingSenderId: "703442504339",
+    appId: "1:703442504339:web:4d7757d08bb37189829b66",
+    measurementId: "G-M94QKEHNJF"
+  };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
-    const nameInput = document.getElementById("nameInput");
-    const surnameInput = document.getElementById("surnameInput");
-    const saveBtn = document.getElementById("saveBtn");
+  const nameInput = document.getElementById("nameInput");
+  const surnameInput = document.getElementById("surnameInput");
+  const saveBtn = document.getElementById("saveBtn");
 
-    const email = localStorage.getItem("loggedInEmail");
+  const email = localStorage.getItem("loggedInEmail");
+  console.log("EMAIL:", email);
 
-    if (!email) {
-      alert("Sessiya tapılmadı!");
-      window.location.href = "login.html";
+  if (!email) {
+    alert("Sessiya tapılmadı!");
+    window.location.href = "login.html";
+    throw new Error("Email tapılmadı");
+  }
+
+  function safeEmailKey(email) {
+    return email.replace(/[.#$\[\]/]/g, "_");
+  }
+
+  saveBtn.addEventListener("click", async () => {
+    const name = nameInput.value.trim();
+    const surname = surnameInput.value.trim();
+
+    if (!name || !surname) {
+      alert("Ad və soyad boş ola bilməz!");
+      return;
     }
 
-    function safeEmailKey(email) {
-      return email.replace(/[.#$\[\]/]/g, "_");
+    try {
+      const userDocRef = doc(db, "melumatlar", safeEmailKey(email));
+
+      await setDoc(userDocRef, {
+        email: email,
+        name: name,
+        surname: surname,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp()
+      });
+
+      localStorage.setItem("userData_" + email, JSON.stringify({ name, surname }));
+
+      alert("Məlumatlar yadda saxlanıldı ✅");
+      window.location.href = "account.html";
+    } catch (error) {
+      console.error("Yazma xətası:", error);
+      alert("Xəta: " + error.message);
     }
-
-    saveBtn.addEventListener("click", async () => {
-      const name = nameInput.value.trim();
-      const surname = surnameInput.value.trim();
-
-      if (!name || !surname) {
-        alert("Ad və soyad boş ola bilməz!");
-        return;
-      }
-
-      try {
-        const userDocRef = doc(db, "melumatlar", safeEmailKey(email));
-
-        await setDoc(userDocRef, {
-          email: email,
-          name: name,
-          surname: surname,
-          createdAt: serverTimestamp(),
-          updatedAt: serverTimestamp()
-        });
-
-        localStorage.setItem("userData_" + email, JSON.stringify({ name, surname }));
-
-        alert("Məlumatlar yadda saxlanıldı ✅");
-        window.location.href = "account.html";
-      } catch (error) {
-        console.error("Yazma xətası:", error);
-        alert("Xəta baş verdi!");
-      }
-    });
-  </script>
+  });
+</script>
 </body>
 </html>
