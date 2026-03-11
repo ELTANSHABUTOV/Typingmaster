@@ -1,64 +1,58 @@
 <!DOCTYPE html>
 <html lang="az">
 <head>
-  <meta charset="UTF-8">
-  <title>TypingMaster - Qeydiyyat</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    body{ display:flex; margin:0; height:100vh; font-family:'Poppins', sans-serif; overflow:hidden; }
-    .esas{ background-color:aqua; width:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px; }
-    .picture{ width:50%; } .picture img{ width:100%; height:100vh; object-fit:cover; }
-    button{ padding:15px 25px; border-radius:20px; border:none; cursor:pointer; font-size:18px; display:flex; align-items:center; gap:10px; transition: 0.3s; }
-    button:hover{ transform: scale(1.05); background: #eee; }
-    a{ color: chocolate; font-weight: 600; text-decoration: none; }
-  </style>
+    <meta charset="UTF-8">
+    <title>TypingMaster - Qeydiyyat</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --main: #00d2ff; --grad: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%); }
+        body { margin: 0; font-family: 'Poppins', sans-serif; background: #0b0f19; color: white; display: flex; height: 100vh; overflow: hidden; }
+        .hero { width: 55%; background: url('https://images.unsplash.com/photo-1587829741301-dc798b83aca2?q=80&w=1470&auto=format&fit=crop') center/cover; position: relative; }
+        .hero::after { content: ''; position: absolute; inset: 0; background: rgba(11, 15, 25, 0.6); }
+        .hero-text { position: absolute; bottom: 50px; left: 50px; z-index: 2; }
+        .auth-side { width: 45%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px; }
+        .card { background: rgba(255, 255, 255, 0.05); padding: 40px; border-radius: 24px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); text-align: center; width: 100%; max-width: 400px; }
+        .google-btn { background: white; color: #1e293b; border: none; padding: 15px 30px; border-radius: 12px; font-size: 18px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 12px; width: 100%; justify-content: center; transition: 0.3s; }
+        .google-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0, 210, 255, 0.3); }
+        a { color: var(--main); text-decoration: none; font-weight: 600; }
+    </style>
 </head>
 <body>
-  <div class="esas">
-    <h2 style="text-align:center; padding:0 20px;">TypingMaster ilə klaviatura bacarığını inkişaf etdir!</h2>
-    <button id="googleBtn">
-      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20">
-      <span>Google ilə Qeydiyyat</span>
-    </button>
-    <h4>Hesabın var? <a href="daxil ol.html">Daxil ol</a></h4>
-  </div>
-  <div class="picture"><img src="https://cdn.mos.cms.futurecdn.net/3kQCtpnfHoUq5cBsLqKTFk.jpg"></div>
+    <div class="hero">
+        <div class="hero-text">
+            <h1 style="font-size: 3rem; margin: 0;">TypingMaster</h1>
+            <p style="font-size: 1.2rem; color: #cbd5e1;">Sürətli yazma sənətinə sahib ol.</p>
+        </div>
+    </div>
+    <div class="auth-side">
+        <div class="card">
+            <h2>Yeni Hesab Yarat</h2>
+            <p style="color: #94a3b8; margin-bottom: 30px;">Google ilə bir kliklə qeydiyyatdan keçin.</p>
+            <button class="google-btn" id="regBtn">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="24">
+                Google ilə Qeydiyyat
+            </button>
+            <p style="margin-top: 30px;">Hesabın var? <a href="daxil-ol.html">Daxil ol</a></p>
+        </div>
+    </div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCYWC8P0meXFbyRoSA4uHkJmJRkPFlhwSQ",
-      authDomain: "salam-58d0a.firebaseapp.com",
-      projectId: "salam-58d0a",
-      storageBucket: "salam-58d0a.firebasestorage.app",
-      messagingSenderId: "703442504339",
-      appId: "1:703442504339:web:f9a6b1f54db80c4c829b66"
-    };
+        const firebaseConfig = { apiKey: "AIzaSyCYWC8P0meXFbyRoSA4uHkJmJRkPFlhwSQ", authDomain: "salam-58d0a.firebaseapp.com", projectId: "salam-58d0a", storageBucket: "salam-58d0a.firebasestorage.app", messagingSenderId: "703442504339", appId: "1:703442504339:web:f9a6b1f54db80c4c829b66" };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const provider = new GoogleAuthProvider();
-
-    document.getElementById("googleBtn").onclick = async () => {
-      try {
-        const result = await signInWithPopup(auth, provider);
-        const user = result.user;
-        const userRef = doc(db, "melumatlar", user.uid);
-        const snap = await getDoc(userRef);
-
-        if (snap.exists()) {
-          alert("Hesab artıq mövcuddur! Hesaba keçid edilir...");
-          window.location.href = "account.html";
-        } else {
-          window.location.href = "adiviyaz.html";
-        }
-      } catch (err) { alert(err.message); }
-    };
-  </script>
+        document.getElementById("regBtn").onclick = async () => {
+            try {
+                const res = await signInWithPopup(auth, new GoogleAuthProvider());
+                const snap = await getDoc(doc(db, "melumatlar", res.user.uid));
+                window.location.href = snap.exists() ? "account.html" : "adiviyaz.html";
+            } catch (err) { alert(err.message); }
+        };
+    </script>
 </body>
 </html>
-
