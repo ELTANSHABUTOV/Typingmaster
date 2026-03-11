@@ -2,280 +2,91 @@
 <html lang="az">
 <head>
   <meta charset="UTF-8" />
-  <title>Hesab Məlumatları</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+  <title>Mənim Hesabım</title>
   <style>
-    body {
-      margin: 0;
-      font-family: Poppins, Arial, sans-serif;
-      background: #0f172a;
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    #loadingText {
-      color: #fff;
-      font-size: 18px;
-    }
-
-    .card {
-      background: #020617;
-      padding: 28px;
-      border-radius: 16px;
-      width: 100%;
-      max-width: 360px;
-      box-shadow: 0 20px 40px rgba(0,0,0,.5);
-      display: none;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    h1 {
-      margin: 0 0 6px;
-      font-size: 22px;
-      text-align: center;
-    }
-
-    .info {
-      background: #020617;
-      border: 1px solid #1e293b;
-      border-radius: 12px;
-      padding: 12px;
-    }
-
-    .label {
-      font-size: 13px;
-      color: #94a3b8;
-    }
-
-    .value {
-      font-size: 16px;
-      font-weight: 600;
-      margin-top: 4px;
-    }
-
-    input {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 10px;
-      border-radius: 10px;
-      border: 1px solid #1e293b;
-      background: #020617;
-      color: #fff;
-      font-size: 15px;
-      outline: none;
-      margin-top: 6px;
-      display: none;
-    }
-
-    input:focus {
-      border-color: #2563eb;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      border-radius: 10px;
-      border: none;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .edit {
-      background: #facc15;
-      color: #422006;
-    }
-
-    .save {
-      background: #22c55e;
-      color: #022c22;
-      display: none;
-    }
-
-    .back {
-      background: #2563eb;
-      color: #fff;
-    }
-
-    .logout {
-      background: #dc2626;
-      color: #fff;
-    }
+    body { margin: 0; font-family: Poppins, sans-serif; background: #0f172a; color: #fff; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .card { background: #020617; padding: 25px; border-radius: 16px; width: 350px; display: flex; flex-direction: column; gap: 12px; }
+    .info-box { background: #1e293b; padding: 10px; border-radius: 8px; }
+    .label { font-size: 12px; color: #94a3b8; }
+    .val { font-size: 16px; font-weight: 600; }
+    input { width: 100%; padding: 8px; margin-top: 5px; display: none; border-radius: 5px; border: 1px solid #334155; background: #0f172a; color: #fff; }
+    button { width: 100%; padding: 10px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; }
+    .edit-btn { background: #facc15; }
+    .save-btn { background: #22c55e; display: none; }
+    .logout-btn { background: #ef4444; margin-top: 10px; }
   </style>
 </head>
 <body>
-
-  <div id="loadingText">Yüklənir...</div>
-
-  <div class="card" id="card">
-    <h1>Hesab Məlumatları</h1>
-
-    <div class="info">
+  <div class="card" id="mainCard" style="display:none">
+    <h2 style="text-align:center">Profilim</h2>
+    <div class="info-box">
       <div class="label">Email</div>
-      <div class="value" id="emailText"></div>
+      <div class="val" id="userEmail"></div>
     </div>
-
-    <div class="info">
+    <div class="info-box">
       <div class="label">Ad</div>
-      <div class="value" id="nameText"></div>
-      <input type="text" id="nameInput">
+      <div class="val" id="nameVal"></div>
+      <input type="text" id="nameInp">
     </div>
-
-    <div class="info">
+    <div class="info-box">
       <div class="label">Soyad</div>
-      <div class="value" id="surnameText"></div>
-      <input type="text" id="surnameInput">
+      <div class="val" id="surnameVal"></div>
+      <input type="text" id="surnameInp">
     </div>
-
-    <button class="edit" id="editBtn">Redaktə et</button>
-    <button class="save" id="saveBtn">Yadda saxla</button>
-
-    <button class="back" onclick="window.location.href='index.html'">Davam et</button>
-    <button class="logout" id="logoutBtn">Çıxış et</button>
+    <button class="edit-btn" id="editBtn">Redaktə et</button>
+    <button class="save-btn" id="saveBtn">Yadda saxla</button>
+    <button class="logout-btn" id="logoutBtn">Çıxış</button>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, doc, getDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
-      apiKey: "AIzaSyCPUyl6EbO8dvJBTWofVBQg1a1xJHM4_08",
+      apiKey: "AIzaSyCYWC8P0meXFbyRoSA4uHkJmJRkPFlhwSQ",
       authDomain: "salam-58d0a.firebaseapp.com",
       projectId: "salam-58d0a",
       storageBucket: "salam-58d0a.firebasestorage.app",
       messagingSenderId: "703442504339",
-      appId: "1:703442504339:web:4d7757d08bb37189829b66",
-      measurementId: "G-M94QKEHNJF"
+      appId: "1:703442504339:web:f9a6b1f54db80c4c829b66"
     };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    const loadingText = document.getElementById("loadingText");
-    const card = document.getElementById("card");
-    const emailText = document.getElementById("emailText");
-    const nameText = document.getElementById("nameText");
-    const surnameText = document.getElementById("surnameText");
-    const nameInput = document.getElementById("nameInput");
-    const surnameInput = document.getElementById("surnameInput");
-    const editBtn = document.getElementById("editBtn");
-    const saveBtn = document.getElementById("saveBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
-
-    let currentUser = null;
-    let userRef = null;
-    let userData = null;
-
-    function renderViewMode(data) {
-      emailText.textContent = currentUser?.email || "Email yoxdur";
-      nameText.textContent = data?.name || "Məlumat yoxdur";
-      surnameText.textContent = data?.surname || "Məlumat yoxdur";
-
-      nameText.style.display = "block";
-      surnameText.style.display = "block";
-      nameInput.style.display = "none";
-      surnameInput.style.display = "none";
-
-      editBtn.style.display = "block";
-      saveBtn.style.display = "none";
-      card.style.display = "flex";
-      loadingText.style.display = "none";
-    }
-
-    function renderEditMode(data) {
-      nameInput.value = data?.name || "";
-      surnameInput.value = data?.surname || "";
-
-      nameText.style.display = "none";
-      surnameText.style.display = "none";
-      nameInput.style.display = "block";
-      surnameInput.style.display = "block";
-
-      editBtn.style.display = "none";
-      saveBtn.style.display = "block";
-    }
-
-    async function loadUserProfile() {
-      try {
-        const snap = await getDoc(userRef);
-
-        if (!snap.exists()) {
-          window.location.href = "adiviyaz.html";
-          return;
-        }
-
-        userData = snap.data();
-        renderViewMode(userData);
-      } catch (error) {
-        console.error("Oxuma xətası:", error);
-        alert("Məlumat oxunmadı: " + error.message);
-      }
-    }
-
     onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        window.location.href = "daxil%20ol.html";
-        return;
-      }
-
-      currentUser = user;
-      userRef = doc(db, "melumatlar", user.uid);
-
-      await loadUserProfile();
+      if (!user) window.location.href = "index.html";
+      const snap = await getDoc(doc(db, "melumatlar", user.uid));
+      if (!snap.exists()) window.location.href = "adiviyaz.html";
+      
+      const data = snap.data();
+      document.getElementById("userEmail").textContent = user.email;
+      document.getElementById("nameVal").textContent = data.name;
+      document.getElementById("surnameVal").textContent = data.surname;
+      document.getElementById("mainCard").style.display = "flex";
     });
 
-    editBtn.addEventListener("click", () => {
-      if (!userData) return;
-      renderEditMode(userData);
-    });
+    document.getElementById("editBtn").onclick = () => {
+      document.getElementById("nameInp").style.display = "block";
+      document.getElementById("surnameInp").style.display = "block";
+      document.getElementById("nameVal").style.display = "none";
+      document.getElementById("surnameVal").style.display = "none";
+      document.getElementById("saveBtn").style.display = "block";
+      document.getElementById("editBtn").style.display = "none";
+      document.getElementById("nameInp").value = document.getElementById("nameVal").textContent;
+      document.getElementById("surnameInp").value = document.getElementById("surnameVal").textContent;
+    };
 
-    saveBtn.addEventListener("click", async () => {
-      const newName = nameInput.value.trim();
-      const newSurname = surnameInput.value.trim();
+    document.getElementById("saveBtn").onclick = async () => {
+      const n = document.getElementById("nameInp").value;
+      const s = document.getElementById("surnameInp").value;
+      await updateDoc(doc(db, "melumatlar", auth.currentUser.uid), { name: n, surname: s });
+      location.reload();
+    };
 
-      if (!newName || !newSurname) {
-        alert("Ad və soyad boş ola bilməz!");
-        return;
-      }
-
-      try {
-        await updateDoc(userRef, {
-          name: newName,
-          surname: newSurname,
-          updatedAt: serverTimestamp()
-        });
-
-        userData = {
-          ...userData,
-          name: newName,
-          surname: newSurname
-        };
-
-        alert("Məlumatlar database-də yeniləndi ✅");
-        renderViewMode(userData);
-      } catch (error) {
-        console.error("Yeniləmə xətası:", error);
-        alert("Yenilənmə xətası: " + error.message);
-      }
-    });
-
-    logoutBtn.addEventListener("click", async () => {
-      try {
-        await signOut(auth);
-        window.location.href = "daxil%20ol.html";
-      } catch (error) {
-        console.error("Çıxış xətası:", error);
-        alert("Çıxış alınmadı: " + error.message);
-      }
-    });
+    document.getElementById("logoutBtn").onclick = () => signOut(auth);
   </script>
 </body>
 </html>
