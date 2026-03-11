@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>Hesab Məlumatları</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <style>
     body {
       box-sizing: border-box;
@@ -17,6 +18,7 @@
       justify-content: center;
       padding: 20px;
     }
+
     .card {
       background: #020617;
       padding: 28px;
@@ -28,20 +30,24 @@
       flex-direction: column;
       gap: 16px;
     }
+
     h1 {
       margin: 0 0 8px 0;
       font-size: 22px;
       text-align: center;
     }
+
     .info {
       display: flex;
       flex-direction: column;
       gap: 6px;
     }
+
     label {
       color: #94a3b8;
       font-size: 13px;
     }
+
     input {
       width: 100%;
       padding: 10px 12px;
@@ -53,9 +59,11 @@
       font-size: 15px;
       outline: none;
     }
+
     input:focus {
       border-color: #2563eb;
     }
+
     button {
       width: 100%;
       padding: 12px;
@@ -64,109 +72,111 @@
       font-size: 15px;
       font-weight: 600;
       cursor: pointer;
+      transition: transform .15s ease, opacity .15s ease;
     }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
     .save {
       background: #22c55e;
       color: #022c22;
     }
+
+    .back {
+      background: #2563eb;
+      color: #fff;
+    }
   </style>
 </head>
 <body>
+
   <div class="card">
     <h1>Hesab Məlumatları</h1>
 
     <div class="info">
       <label>Ad</label>
-      <input type="text" id="nameInput" placeholder="Adınızı daxil edin">
+      <input type="text" id="nameInput" placeholder="Adınızı daxil edin" />
     </div>
 
     <div class="info">
       <label>Soyad</label>
-      <input type="text" id="surnameInput" placeholder="Soyadınızı daxil edin">
+      <input type="text" id="surnameInput" placeholder="Soyadınızı daxil edin" />
     </div>
 
     <button class="save" id="saveBtn">Yadda saxla</button>
+    <button class="back" onclick="window.location.href='account.html'">Davam Et</button>
   </div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+ <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import {
+    getFirestore,
+    doc,
+    setDoc,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCPUyl6EbO8dvJBTWofVBQg1a1xJHM4_08",
-      authDomain: "salam-58d0a.firebaseapp.com",
-      projectId: "salam-58d0a",
-      storageBucket: "salam-58d0a.firebasestorage.app",
-      messagingSenderId: "703442504339",
-      appId: "1:703442504339:web:4d7757d08bb37189829b66",
-      measurementId: "G-M94QKEHNJF"
-    };
+  const firebaseConfig = {
+    apiKey: "AIzaSyCPUyl6EbO8dvJBTWofVBQg1a1xJHM4_08",
+    authDomain: "salam-58d0a.firebaseapp.com",
+    projectId: "salam-58d0a",
+    storageBucket: "salam-58d0a.firebasestorage.app",
+    messagingSenderId: "703442504339",
+    appId: "1:703442504339:web:4d7757d08bb37189829b66",
+    measurementId: "G-M94QKEHNJF"
+  };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
-    const nameInput = document.getElementById("nameInput");
-    const surnameInput = document.getElementById("surnameInput");
-    const saveBtn = document.getElementById("saveBtn");
+  const nameInput = document.getElementById("nameInput");
+  const surnameInput = document.getElementById("surnameInput");
+  const saveBtn = document.getElementById("saveBtn");
 
-    let currentUser = null;
+  const email = localStorage.getItem("loggedInEmail");
+  console.log("EMAIL:", email);
 
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        window.location.href = "daxil%20ol.html";
-        return;
-      }
+  if (!email) {
+    alert("Sessiya tapılmadı!");
+    window.location.href = "login.html";
+    throw new Error("Email tapılmadı");
+  }
 
-      currentUser = user;
+  function safeEmailKey(email) {
+    return email.replace(/[.#$\[\]/]/g, "_");
+  }
 
-      try {
-        const userRef = doc(db, "melumatlar", user.uid);
-        const snap = await getDoc(userRef);
+  saveBtn.addEventListener("click", async () => {
+    const name = nameInput.value.trim();
+    const surname = surnameInput.value.trim();
 
-        if (snap.exists()) {
-          window.location.href = "account.html";
-        }
-      } catch (error) {
-        console.error("Oxuma xətası:", error);
-        alert("Məlumat yoxlanarkən xəta baş verdi: " + error.message);
-      }
-    });
+    if (!name || !surname) {
+      alert("Ad və soyad boş ola bilməz!");
+      return;
+    }
 
-    saveBtn.addEventListener("click", async () => {
-      if (!currentUser) {
-        alert("İstifadəçi tapılmadı.");
-        return;
-      }
+    try {
+      const userDocRef = doc(db, "melumatlar", safeEmailKey(email));
 
-      const name = nameInput.value.trim();
-      const surname = surnameInput.value.trim();
+      await setDoc(userDocRef, {
+        email: email,
+        name: name,
+        surname: surname,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp()
+      });
 
-      if (!name || !surname) {
-        alert("Ad və soyad boş ola bilməz!");
-        return;
-      }
+      localStorage.setItem("userData_" + email, JSON.stringify({ name, surname }));
 
-      try {
-        const userRef = doc(db, "melumatlar", currentUser.uid);
-
-        await setDoc(userRef, {
-          uid: currentUser.uid,
-          email: currentUser.email || "",
-          name,
-          surname,
-          createdAt: serverTimestamp(),
-          updatedAt: serverTimestamp()
-        });
-
-        alert("Məlumatlar uğurla yadda saxlanıldı ✅");
-        window.location.href = "account.html";
-      } catch (error) {
-        console.error("Yazma xətası:", error);
-        alert("Xəta: " + error.message);
-      }
-    });
-  </script>
+      alert("Məlumatlar yadda saxlanıldı ✅");
+      window.location.href = "account.html";
+    } catch (error) {
+      console.error("Yazma xətası:", error);
+      alert("Xəta: " + error.message);
+    }
+  });
+</script>
 </body>
 </html>
