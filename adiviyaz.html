@@ -97,115 +97,84 @@
 
     <div class="info">
       <label>Ad</label>
-      <input type="text" id="nameInput" placeholder="Adınızı daxil edin">
+      <input type="text" id="nameInput" placeholder="Adınızı daxil edin" />
     </div>
 
     <div class="info">
       <label>Soyad</label>
-      <input type="text" id="surnameInput" placeholder="Soyadınızı daxil edin">
+      <input type="text" id="surnameInput" placeholder="Soyadınızı daxil edin" />
     </div>
 
     <button class="save" id="saveBtn">Yadda saxla</button>
-
-    <button class="back" onclick="window.location.href='account.html'">
-      Davam Et
-    </button>
+    <button class="back" onclick="window.location.href='account.html'">Davam Et</button>
   </div>
 
   <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import {
-    getFirestore,
-    doc,
-    getDoc,
-    setDoc,
-    serverTimestamp
-  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyCPUyl6EbO8dvJBTWofVBQg1a1xJHM4_08",
-    authDomain: "salam-58d0a.firebaseapp.com",
-    projectId: "salam-58d0a",
-    storageBucket: "salam-58d0a.firebasestorage.app",
-    messagingSenderId: "703442504339",
-    appId: "1:703442504339:web:4d7757d08bb37189829b66",
-    measurementId: "G-M94QKEHNJF"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyCPUyl6EbO8dvJBTWofVBQg1a1xJHM4_08",
+      authDomain: "salam-58d0a.firebaseapp.com",
+      projectId: "salam-58d0a",
+      storageBucket: "salam-58d0a.firebasestorage.app",
+      messagingSenderId: "703442504339",
+      appId: "1:703442504339:web:4d7757d08bb37189829b66",
+      measurementId: "G-M94QKEHNJF"
+    };
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-  const nameInput = document.getElementById("nameInput");
-  const surnameInput = document.getElementById("surnameInput");
-  const saveBtn = document.getElementById("saveBtn");
+    const nameInput = document.getElementById("nameInput");
+    const surnameInput = document.getElementById("surnameInput");
+    const saveBtn = document.getElementById("saveBtn");
 
-  const email = localStorage.getItem("loggedInEmail");
+    const email = localStorage.getItem("loggedInEmail");
 
-  if (!email) {
-    alert("Sessiya tapılmadı!");
-    window.location.href = "login.html"; // buranı öz login səhifənə uyğun dəyiş
-    throw new Error("İstifadəçi email tapılmadı");
-  }
+    if (!email) {
+      alert("Sessiya tapılmadı!");
+      window.location.href = "login.html";
+    }
 
-  function safeEmailKey(email) {
-    return email.replace(/[.#$\[\]/]/g, "_");
-  }
+    function safeEmailKey(email) {
+      return email.replace(/[.#$\[\]/]/g, "_");
+    }
 
-  const userDocRef = doc(db, "melumatlar", safeEmailKey(email));
+    saveBtn.addEventListener("click", async () => {
+      const name = nameInput.value.trim();
+      const surname = surnameInput.value.trim();
 
-  async function checkExistingUser() {
-    try {
-      const snap = await getDoc(userDocRef);
-      if (snap.exists()) {
-        window.location.href = "account.html";
-        return true;
+      if (!name || !surname) {
+        alert("Ad və soyad boş ola bilməz!");
+        return;
       }
-      return false;
-    } catch (error) {
-      console.error("Oxuma xətası:", error);
-      alert("Məlumat yoxlanarkən xəta baş verdi!");
-      return false;
-    }
-  }
 
-  const userExists = await checkExistingUser();
-  if (userExists) {
-    throw new Error("İstifadəçi artıq mövcuddur, account.html-a yönləndirildi");
-  }
+      try {
+        const userDocRef = doc(db, "melumatlar", safeEmailKey(email));
 
-  saveBtn.addEventListener("click", async () => {
-    const name = nameInput.value.trim();
-    const surname = surnameInput.value.trim();
+        await setDoc(userDocRef, {
+          email: email,
+          name: name,
+          surname: surname,
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        });
 
-    if (!name || !surname) {
-      alert("Ad və soyad boş ola bilməz!");
-      return;
-    }
+        localStorage.setItem("userData_" + email, JSON.stringify({ name, surname }));
 
-    try {
-      const userData = {
-        email,
-        name,
-        surname,
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp()
-      };
-
-      await setDoc(userDocRef, userData);
-
-      localStorage.setItem(
-        "userData_" + email,
-        JSON.stringify({ name, surname })
-      );
-
-      alert("Məlumatlar Firestore-da yadda saxlanıldı ✅");
-      window.location.href = "account.html";
-    } catch (error) {
-      console.error("Yazma xətası:", error);
-      alert("Məlumatlar yadda saxlanılmadı!");
-    }
-  });
-</script>
-
+        alert("Məlumatlar yadda saxlanıldı ✅");
+        window.location.href = "account.html";
+      } catch (error) {
+        console.error("Yazma xətası:", error);
+        alert("Xəta baş verdi!");
+      }
+    });
+  </script>
 </body>
 </html>
