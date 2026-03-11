@@ -4,33 +4,104 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5663281315926059" crossorigin="anonymous"></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>TypingMaster — Professional Yazı Təcrübəsi</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <title>TypingMaster — Professional Yazı Platforması</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
   <style>
-    :root { --bg1: #0f172a; --bg2: #07103a; --card: rgba(30, 41, 59, 0.7); --accent: #00d2ff; --glass: rgba(255, 255, 255, 0.05); --muted: rgba(255, 255, 255, 0.5); }
-    body { margin: 0; background: linear-gradient(135deg, var(--bg1), var(--bg2)); color: #f8fafc; font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 20px; overflow-x: hidden; }
-    .container { width: 100%; max-width: 1000px; }
-    .main-card { background: var(--card); backdrop-filter: blur(15px); border-radius: 24px; padding: 30px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
-    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid var(--glass); padding-bottom: 15px; }
-    .user-section { display: flex; gap: 15px; align-items: center; }
-    .user-section a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 14px; transition: 0.3s; }
-    .user-section a:hover { color: var(--accent); }
-    .stats-bar { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
-    .stat-box { background: var(--glass); padding: 12px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); flex: 1; min-width: 120px; text-align: center; }
-    .stat-box span { color: var(--accent); font-weight: 800; font-size: 1.2rem; display: block; }
-    .word-stream { background: rgba(0,0,0,0.2); border-radius: 15px; padding: 25px; min-height: 120px; display: flex; flex-wrap: wrap; gap: 12px; font-size: 22px; line-height: 1.6; margin-bottom: 20px; user-select: none; }
-    .word { color: var(--muted); transition: 0.2s; padding: 2px 8px; border-radius: 6px; }
-    .word.current { color: #fff; background: rgba(0, 210, 255, 0.2); border-bottom: 2px solid var(--accent); }
+    :root { 
+      --bg: #0b0f19; --card-bg: rgba(22, 30, 46, 0.8); 
+      --accent: #00d2ff; --text: #f8fafc; --muted: #94a3b8;
+    }
+    
+    * { box-sizing: border-box; transition: all 0.3s ease; }
+    
+    body { 
+      margin: 0; background: var(--bg); color: var(--text); 
+      font-family: 'Poppins', sans-serif; display: flex; flex-direction: column; 
+      align-items: center; min-height: 100vh; overflow-x: hidden;
+    }
+
+    /* Animasiya üçün giriş */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .container { width: 100%; max-width: 1000px; padding: 20px; animation: fadeInUp 0.8s ease-out; }
+
+    .main-card { 
+      background: var(--card-bg); backdrop-filter: blur(20px); 
+      border-radius: 28px; padding: 35px; border: 1px solid rgba(255,255,255,0.05);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+    }
+
+    header { 
+      display: flex; justify-content: space-between; align-items: center; 
+      margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; 
+    }
+
+    .user-section { display: flex; gap: 20px; align-items: center; }
+    .user-section a { 
+      color: var(--accent); text-decoration: none; font-weight: 600; 
+      font-size: 15px; padding: 8px 15px; border-radius: 10px; background: rgba(0, 210, 255, 0.1);
+    }
+    .user-section a:hover { background: var(--accent); color: var(--bg); }
+
+    .stats-bar { display: flex; gap: 15px; margin-bottom: 25px; }
+    .stat-box { 
+      background: rgba(0,0,0,0.3); padding: 15px; border-radius: 18px; 
+      flex: 1; text-align: center; border: 1px solid rgba(255,255,255,0.03);
+    }
+    .stat-box span { color: var(--accent); font-weight: 800; font-size: 1.4rem; display: block; }
+
+    .word-stream { 
+      background: rgba(0,0,0,0.4); border-radius: 20px; padding: 30px; 
+      min-height: 140px; display: flex; flex-wrap: wrap; gap: 12px; 
+      font-size: 24px; line-height: 1.6; margin-bottom: 25px; user-select: none;
+    }
+    .word { color: var(--muted); padding: 2px 8px; border-radius: 8px; }
+    .word.current { color: #fff; background: rgba(0, 210, 255, 0.25); box-shadow: 0 0 15px rgba(0, 210, 255, 0.2); }
     .word.correct { color: #22c55e; }
     .word.wrong { color: #ef4444; text-decoration: line-through; }
+
     .input-area { display: flex; gap: 15px; }
-    input[type="text"] { flex: 1; background: #0f172a; border: 2px solid #334155; border-radius: 12px; padding: 15px; color: white; font-size: 18px; outline: none; transition: 0.3s; }
-    input[type="text"]:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(0, 210, 255, 0.2); }
-    .btn { padding: 12px 25px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; transition: 0.3s; font-family: inherit; }
-    .btn-primary { background: var(--accent); color: #07103a; width: 150px; }
-    .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 20px; }
-    .modal-content { background: #1e293b; padding: 40px; border-radius: 24px; width: 100%; max-width: 450px; text-align: center; border: 1px solid rgba(0,210,255,0.3); }
-    #wpm-highlight { font-size: 4rem; color: var(--accent); display: block; margin: 10px 0; font-weight: 800; }
+    input[type="text"] { 
+      flex: 1; background: #0b0f19; border: 2px solid #1e293b; border-radius: 15px; 
+      padding: 18px; color: white; font-size: 18px; outline: none;
+    }
+    input[type="text"]:focus { border-color: var(--accent); box-shadow: 0 0 20px rgba(0, 210, 255, 0.1); }
+
+    .btn { 
+      padding: 15px 35px; border-radius: 15px; border: none; 
+      font-weight: 700; cursor: pointer; background: var(--accent); color: var(--bg);
+    }
+    .btn:hover { transform: scale(1.05); filter: brightness(1.1); }
+
+    /* İstifadə Qaydaları */
+    .how-to-play {
+      margin-top: 30px; background: rgba(255,255,255,0.02); 
+      border-radius: 20px; padding: 20px; border: 1px dashed rgba(255,255,255,0.1);
+    }
+    .how-to-play h3 { margin-top: 0; color: var(--accent); font-size: 18px; }
+    .how-to-play ul { margin: 0; padding-left: 20px; color: var(--muted); font-size: 14px; line-height: 2; }
+
+    /* Footer & Privacy */
+    footer { 
+      margin-top: auto; padding: 40px 20px; width: 100%; 
+      text-align: center; border-top: 1px solid rgba(255,255,255,0.05); 
+    }
+    .footer-links { margin-bottom: 15px; }
+    .footer-links a { color: var(--muted); text-decoration: none; margin: 0 15px; font-size: 13px; }
+    .footer-links a:hover { color: var(--accent); }
+
+    .modal { 
+      position: fixed; inset: 0; background: rgba(0,0,0,0.9); 
+      backdrop-filter: blur(10px); display: none; justify-content: center; 
+      align-items: center; z-index: 2000; 
+    }
+    .modal-content { 
+      background: #161e2e; padding: 40px; border-radius: 30px; 
+      width: 100%; max-width: 450px; text-align: center; border: 1px solid var(--accent);
+    }
   </style>
 </head>
 <body>
@@ -39,13 +110,12 @@
   <div class="main-card">
     <header>
       <div style="display:flex; align-items:center; gap:12px;">
-        <img src="https://i.postimg.cc/9Qy6YWFZ/Chat-GPT-Image-Nov-27-2025-09-35-45-PM.png" width="45" style="border-radius:8px">
-        <h2 style="margin:0; font-size:1.4rem; letter-spacing: -0.5px;">TypingMaster</h2>
+        <img src="https://i.postimg.cc/9Qy6YWFZ/Chat-GPT-Image-Nov-27-2025-09-35-45-PM.png" width="45" style="border-radius:10px">
+        <h2 style="margin:0; font-size:1.5rem; background: linear-gradient(to right, #fff, #00d2ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">TypingMaster</h2>
       </div>
       <div class="user-section">
         <a href="account.html" id="userDisplayName">Hesab</a>
         <a href="telefon.html">Əlaqə</a>
-        <a href="#" id="logoutBtn" style="color:#ef4444">Çıxış</a>
       </div>
     </header>
 
@@ -59,74 +129,85 @@
     <div class="word-stream" id="wordBox"></div>
 
     <div class="input-area">
-      <input type="text" id="mainInput" placeholder="Sözləri yazın..." disabled autocomplete="off">
-      <button class="btn btn-primary" id="startAction">BAŞLA</button>
+      <input type="text" id="mainInput" placeholder="Sözləri yazmağa başlayın..." disabled autocomplete="off">
+      <button class="btn" id="startAction">BAŞLA</button>
+    </div>
+
+    <div class="how-to-play">
+      <h3>🎮 Necə Oynanılır?</h3>
+      <ul>
+        <li><strong>BAŞLA</strong> düyməsinə klikləyərək oyunu başladın.</li>
+        <li>Ekranda görünən sözləri ardıcıllıqla daxil edin.</li>
+        <li>Hər sözdən sonra <strong>Boşluq (Space)</strong> düyməsini sıxaraq növbəti sözə keçin.</li>
+        <li>Səhv yazdığınız sözlər qırmızı, düzgünlər yaşıl rəngdə qeyd olunacaq.</li>
+      </ul>
     </div>
   </div>
 </div>
 
 <div id="resultModal" class="modal">
   <div class="modal-content">
-    <h2 style="margin:0">Nəticə</h2>
-    <strong id="wpm-highlight">0</strong>
-    <p style="color:var(--muted)">Söz / Dəqiqə (WPM)</p>
-    <div style="display:flex; justify-content: space-around; margin: 20px 0;">
-        <div>Düz: <b id="finalCorrect" style="color:#22c55e">0</b></div>
-        <div>Səhv: <b id="finalWrong" style="color:#ef4444">0</b></div>
-    </div>
-    <button class="btn btn-primary" style="width:100%" onclick="location.reload()">Yenidən Başla</button>
+    <h2 style="margin:0">Məşq Bitdi!</h2>
+    <span id="wpm-highlight" style="font-size: 4rem; color: var(--accent); font-weight: 800; display: block; margin: 15px 0;">0</span>
+    <p style="color:var(--muted)">Söz / Dəqiqə (Sürət)</p>
+    <button class="btn" style="width:100%" onclick="location.reload()">Yenidən Sına</button>
   </div>
 </div>
 
+<footer>
+  <div class="footer-links">
+    <a href="privacy.html">Məxfilik Siyasəti</a>
+    <a href="terms.html">İstifadə Şərtləri</a>
+    <a href="haqqimizda.html">Haqqımızda</a>
+  </div>
+  <p style="color:var(--muted); font-size: 12px;">© 2026 TypingMaster. Bütün hüquqlar qorunur.</p>
+</footer>
+
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
   const firebaseConfig = { 
-    apiKey: "AIzaSyCPUyl6EbO8dvJBTWofVBQg1a1xJHM4_08", 
-    authDomain: "salam-58d0a.firebaseapp.com", 
-    projectId: "salam-58d0a", 
-    storageBucket: "salam-58d0a.firebasestorage.app", 
-    messagingSenderId: "703442504339", 
-    appId: "1:703442504339:web:4d7757d08bb37189829b66" 
+    apiKey: "AIzaSyCPUyl6EbO8dvJBTWofVBQg1a1xJHM4_08", authDomain: "salam-58d0a.firebaseapp.com", 
+    projectId: "salam-58d0a", storageBucket: "salam-58d0a.firebasestorage.app", 
+    messagingSenderId: "703442504339", appId: "1:703442504339:web:4d7757d08bb37189829b66" 
   };
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
   const auth = getAuth(app);
 
-  const wordPool = "salam dünya kitab klaviatura sürət texnologiya məktəb həyat proqramist uğur gələcək internet məlumat inkişaf azərbaycan musiqi günəş ulduz dəniz qələm dəftər paytaxt elm oyun yazı funksiya sistem kod ekran".split(" ");
+  const wordPool = "salam dünya kitab klaviatura sürət texnologiya məktəb həyat proqramist uğur gələcək internet məlumat inkişaf azərbaycan musiqi günəş ulduz dəniz qələm dəftər".split(" ");
   let state = { words: [], currentIdx: 0, correct: 0, wrong: 0, startTime: null, isActive: false };
   let currentUser = null;
+
+  // İstifadəçi adını Firestore-dan çəkmək
+  onAuthStateChanged(auth, async (user) => {
+    currentUser = user;
+    if (user) {
+      const docRef = doc(db, "melumatlar", user.uid);
+      const docSnap = await getDoc(docRef);
+      
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        document.getElementById("userDisplayName").innerText = `${data.name} ${data.surname}`;
+      } else {
+        document.getElementById("userDisplayName").innerText = user.email.split('@')[0];
+      }
+    }
+  });
 
   const inputEl = document.getElementById("mainInput");
   const wordBox = document.getElementById("wordBox");
 
-  onAuthStateChanged(auth, (user) => {
-    currentUser = user;
-    if (user) {
-      document.getElementById("userDisplayName").innerText = user.email.split('@')[0];
-      saveVisitorEntry(user);
-    }
-  });
-
-  async function saveVisitorEntry(user) {
-    try {
-      const email = user?.email || localStorage.getItem("tempEmail");
-      if (!email) return;
-      await setDoc(doc(db, "visitors", `${email}_${Date.now()}`), {
-        email, name: user?.displayName || email.split("@")[0], page: "home", visitedAt: serverTimestamp(), userAgent: navigator.userAgent
-      });
-    } catch (err) { console.error("Visitor error:", err); }
-  }
-
   function initGame() {
-    state.words = [...wordPool].sort(() => Math.random() - 0.5).slice(0, 30);
+    state.words = [...wordPool].sort(() => Math.random() - 0.5).slice(0, 25);
     state.currentIdx = 0; state.correct = 0; state.wrong = 0;
     state.isActive = true; state.startTime = Date.now();
     inputEl.disabled = false; inputEl.value = ""; inputEl.focus();
     renderWords(); startTimer();
+    document.getElementById("startAction").style.display = "none";
   }
 
   function renderWords() {
@@ -134,8 +215,8 @@
   }
 
   function startTimer() {
-    const timerInt = setInterval(() => {
-      if (!state.isActive) return clearInterval(timerInt);
+    setInterval(() => {
+      if (!state.isActive) return;
       const elapsed = Math.floor((Date.now() - state.startTime) / 1000);
       document.getElementById("timerDisplay").innerText = `${Math.floor(elapsed/60).toString().padStart(2,'0')}:${(elapsed%60).toString().padStart(2,'0')}`;
       if(elapsed > 0) document.getElementById("wpmDisplay").innerText = Math.round(state.currentIdx / (elapsed / 60));
@@ -165,8 +246,6 @@
     state.isActive = false; inputEl.disabled = true;
     const finalWpm = document.getElementById("wpmDisplay").innerText;
     document.getElementById("wpm-highlight").innerText = finalWpm;
-    document.getElementById("finalCorrect").innerText = state.correct;
-    document.getElementById("finalWrong").innerText = state.wrong;
     document.getElementById("resultModal").style.display = "flex";
 
     const email = currentUser?.email || localStorage.getItem("tempEmail");
@@ -178,21 +257,12 @@
   }
 
   document.getElementById("startAction").onclick = () => {
-    if (currentUser || localStorage.getItem("tempEmail") || localStorage.getItem("userEmail")) {
+    if (currentUser || localStorage.getItem("tempEmail")) {
       initGame();
-      document.getElementById("startAction").style.display = "none";
     } else {
-      alert("Oyuna başlamaq üçün qeydiyyatdan keçməlisiniz!");
+      alert("Zəhmət olmasa, əvvəlcə qeydiyyatdan keçin!");
       window.location.href = "qeydiyyat.html";
     }
-  };
-
-  document.getElementById("logoutBtn").onclick = (e) => {
-    e.preventDefault();
-    signOut(auth).then(() => {
-      localStorage.clear();
-      window.location.href = "qeydiyyat.html";
-    });
   };
 </script>
 </body>
