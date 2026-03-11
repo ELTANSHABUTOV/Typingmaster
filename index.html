@@ -20,7 +20,6 @@
       align-items: center; min-height: 100vh; overflow-x: hidden;
     }
 
-    /* Animasiya üçün giriş */
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
@@ -58,10 +57,13 @@
       min-height: 140px; display: flex; flex-wrap: wrap; gap: 12px; 
       font-size: 24px; line-height: 1.6; margin-bottom: 25px; user-select: none;
     }
-    .word { color: var(--muted); padding: 2px 8px; border-radius: 8px; }
-    .word.current { color: #fff; background: rgba(0, 210, 255, 0.25); box-shadow: 0 0 15px rgba(0, 210, 255, 0.2); }
+    .word { color: var(--muted); padding: 2px 8px; border-radius: 8px; position: relative; }
+    .word.current { color: #fff; background: rgba(255, 255, 255, 0.05); border-bottom: 2px solid var(--accent); }
     .word.correct { color: #22c55e; }
-    .word.wrong { color: #ef4444; text-decoration: line-through; }
+    .word.wrong { color: #ef4444; }
+    
+    /* Hərf səhvi rəngi */
+    .char-error { color: #ef4444 !important; text-decoration: underline; }
 
     .input-area { display: flex; gap: 15px; }
     input[type="text"] { 
@@ -76,7 +78,6 @@
     }
     .btn:hover { transform: scale(1.05); filter: brightness(1.1); }
 
-    /* İstifadə Qaydaları */
     .how-to-play {
       margin-top: 30px; background: rgba(255,255,255,0.02); 
       border-radius: 20px; padding: 20px; border: 1px dashed rgba(255,255,255,0.1);
@@ -84,7 +85,6 @@
     .how-to-play h3 { margin-top: 0; color: var(--accent); font-size: 18px; }
     .how-to-play ul { margin: 0; padding-left: 20px; color: var(--muted); font-size: 14px; line-height: 2; }
 
-    /* Footer & Privacy */
     footer { 
       margin-top: auto; padding: 40px 20px; width: 100%; 
       text-align: center; border-top: 1px solid rgba(255,255,255,0.05); 
@@ -137,9 +137,8 @@
       <h3>🎮 Necə Oynanılır?</h3>
       <ul>
         <li><strong>BAŞLA</strong> düyməsinə klikləyərək oyunu başladın.</li>
-        <li>Ekranda görünən sözləri ardıcıllıqla daxil edin.</li>
-        <li>Hər sözdən sonra <strong>Boşluq (Space)</strong> düyməsini sıxaraq növbəti sözə keçin.</li>
-        <li>Səhv yazdığınız sözlər qırmızı, düzgünlər yaşıl rəngdə qeyd olunacaq.</li>
+        <li>Hər hərf səhvi etdikdə söz anında <strong>qırmızı</strong> rəngə boyanacaq.</li>
+        <li>Hər sözdən sonra <strong>Boşluq (Space)</strong> düyməsini sıxın.</li>
       </ul>
     </div>
   </div>
@@ -182,27 +181,33 @@
   let state = { words: [], currentIdx: 0, correct: 0, wrong: 0, startTime: null, isActive: false };
   let currentUser = null;
 
-  // İstifadəçi adını Firestore-dan çəkmək
+  const inputEl = document.getElementById("mainInput");
+  const wordBox = document.getElementById("wordBox");
+
+  // İlk olaraq sözləri göstər
+  state.words = [...wordPool].sort(() => Math.random() - 0.5).slice(0, 25);
+  renderWords();
+
+  // İstifadəçi məlumatlarını yoxla
   onAuthStateChanged(auth, async (user) => {
     currentUser = user;
     if (user) {
       const docRef = doc(db, "melumatlar", user.uid);
       const docSnap = await getDoc(docRef);
-      
       if (docSnap.exists()) {
         const data = docSnap.data();
         document.getElementById("userDisplayName").innerText = `${data.name} ${data.surname}`;
       } else {
-        document.getElementById("userDisplayName").innerText = user.email.split('@')[0];
+        document.getElementById("userDisplayName").innerText = user.displayName || user.email.split('@')[0];
       }
     }
   });
 
-  const inputEl = document.getElementById("mainInput");
-  const wordBox = document.getElementById("wordBox");
+  function renderWords() {
+    wordBox.innerHTML = state.words.map((w, i) => `<span class="word ${i === state.currentIdx ? 'current' : ''}">${w}</span>`).join("");
+  }
 
   function initGame() {
-    state.words = [...wordPool].sort(() => Math.random() - 0.5).slice(0, 25);
     state.currentIdx = 0; state.correct = 0; state.wrong = 0;
     state.isActive = true; state.startTime = Date.now();
     inputEl.disabled = false; inputEl.value = ""; inputEl.focus();
@@ -210,13 +215,9 @@
     document.getElementById("startAction").style.display = "none";
   }
 
-  function renderWords() {
-    wordBox.innerHTML = state.words.map((w, i) => `<span class="word ${i === state.currentIdx ? 'current' : ''}">${w}</span>`).join("");
-  }
-
   function startTimer() {
-    setInterval(() => {
-      if (!state.isActive) return;
+    const timer = setInterval(() => {
+      if (!state.isActive) { clearInterval(timer); return; }
       const elapsed = Math.floor((Date.now() - state.startTime) / 1000);
       document.getElementById("timerDisplay").innerText = `${Math.floor(elapsed/60).toString().padStart(2,'0')}:${(elapsed%60).toString().padStart(2,'0')}`;
       if(elapsed > 0) document.getElementById("wpmDisplay").innerText = Math.round(state.currentIdx / (elapsed / 60));
@@ -224,16 +225,32 @@
   }
 
   inputEl.addEventListener("input", (e) => {
+    const typedValue = inputEl.value;
+    const currentWord = state.words[state.currentIdx];
+    const wordEls = document.querySelectorAll(".word");
+    const currentEl = wordEls[state.currentIdx];
+
+    // Real-vaxt hərf yoxlanışı (Hərf səhvdirsə qırmızı elə)
+    if (typedValue.trim() !== currentWord.substring(0, typedValue.trim().length)) {
+      currentEl.classList.add("char-error");
+    } else {
+      currentEl.classList.remove("char-error");
+    }
+
     if (e.data === " ") {
-      const typed = inputEl.value.trim();
-      if (!typed) { inputEl.value = ""; return; }
-      const target = state.words[state.currentIdx];
-      const wordEls = document.querySelectorAll(".word");
+      const finalTyped = typedValue.trim();
+      if (!finalTyped) { inputEl.value = ""; return; }
+
+      if (finalTyped === currentWord) {
+        state.correct++;
+        currentEl.className = "word correct";
+      } else {
+        state.wrong++;
+        currentEl.className = "word wrong";
+      }
       
-      if (typed === target) { state.correct++; wordEls[state.currentIdx].classList.add("correct"); }
-      else { state.wrong++; wordEls[state.currentIdx].classList.add("wrong"); }
-      
-      state.currentIdx++; inputEl.value = "";
+      state.currentIdx++;
+      inputEl.value = "";
       if (state.currentIdx >= state.words.length) endGame();
       else renderWords();
       
