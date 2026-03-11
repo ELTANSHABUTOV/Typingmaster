@@ -6,94 +6,88 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
+    body {
+      box-sizing: border-box;
+      margin: 0;
+      font-family: Poppins, Arial, sans-serif;
+      background: #0f172a;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
 
-body {
-  box-sizing: border-box;
-  margin: 0;
-  font-family: Poppins, Arial, sans-serif;
-  background: #0f172a;
-  color: #fff;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px; /* kiçik ekranlarda daşma olmasın */
-  align-items: center;
-  
+    .card {
+      background: #020617;
+      padding: 28px;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 360px;
+      box-shadow: 0 20px 40px rgba(0,0,0,.5);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
 
-}
+    h1 {
+      margin: 0 0 8px 0;
+      font-size: 22px;
+      text-align: center;
+    }
 
-.card {
-  background: #020617;
-  padding: 28px;
-  border-radius: 16px;
-  width: 100%;
-  max-width: 360px;
-  box-shadow: 0 20px 40px rgba(0,0,0,.5);
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  justify-content: center;
-  
-}
+    .info {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
 
-h1 {
-  margin: 0 0 8px 0;
-  font-size: 22px;
-  text-align: center;
-}
+    label {
+      color: #94a3b8;
+      font-size: 13px;
+    }
 
-.info {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      box-sizing: border-box;
+      border-radius: 10px;
+      border: 1px solid #1e293b;
+      background: #020617;
+      color: #fff;
+      font-size: 15px;
+      outline: none;
+    }
 
-label {
-  color: #94a3b8;
-  font-size: 13px;
-}
+    input:focus {
+      border-color: #2563eb;
+    }
 
-input {
-  width: 100%;
-  padding: 10px 0px;
-  border-radius: 10px;
-  border: 1px solid #1e293b;
-  background: #020617;
-  color: #fff;
-  font-size: 15px;
-  outline: none;
-}
+    button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform .15s ease, opacity .15s ease;
+    }
 
-input:focus {
-  border-color: #2563eb;
-}
+    button:active {
+      transform: scale(0.98);
+    }
 
-button {
-  width: 100%;
-  padding: 12px;
-  border-radius: 10px;
-  border: none;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform .15s ease, opacity .15s ease;
-}
+    .save {
+      background: #22c55e;
+      color: #022c22;
+    }
 
-button:active {
-  transform: scale(0.98);
-}
-
-.save {
-  background: #22c55e;
-  color: #022c22;
-}
-
-.back {
-  background: #2563eb;
-  color: #fff;
-}
-
+    .back {
+      background: #2563eb;
+      color: #fff;
+    }
   </style>
 </head>
 <body>
@@ -118,50 +112,92 @@ button:active {
     </button>
   </div>
 
-  <script>
-  const nameInput = document.getElementById("nameInput");
-  const surnameInput = document.getElementById("surnameInput");
-  const saveBtn = document.getElementById("saveBtn");
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import {
+      getFirestore,
+      doc,
+      getDoc,
+      setDoc,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  // 1) Login email yoxlanır
-  const email = localStorage.getItem("loggedInEmail");
-  if (!email) {
-    alert("Sessiya tapılmadı!");
-    window.location.href = "login.html";
-  }
+    const firebaseConfig = {
+      apiKey: "AIzaSyCPUyl6EbO8dvJBTWofVBQg1a1xJHM4_08",
+      authDomain: "salam-58d0a.firebaseapp.com",
+      projectId: "salam-58d0a",
+      storageBucket: "salam-58d0a.firebasestorage.app",
+      messagingSenderId: "703442504339",
+      appId: "1:703442504339:web:4d7757d08bb37189829b66",
+      measurementId: "G-M94QKEHNJF"
+    };
 
-  // 2) Əgər bu email üçün əvvəl məlumat varsa, bu səhifəni açma
-  const key = "userData_" + email;
-  const existing = localStorage.getItem(key);
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-  if (existing) {
-    // artıq məlumat var → birbaşa profil
-    window.location.href = "account.html"; // profil səhifən budursa
-  }
+    const nameInput = document.getElementById("nameInput");
+    const surnameInput = document.getElementById("surnameInput");
+    const saveBtn = document.getElementById("saveBtn");
 
-  // 3) Save (ilk dəfə məlumat daxil etmək)
-  saveBtn.addEventListener("click", () => {
-    const name = nameInput.value.trim();
-    const surname = surnameInput.value.trim();
+    const email = localStorage.getItem("loggedInEmail");
 
-    if (!name || !surname) {
-      alert("Ad və soyad boş ola bilməz!");
-      return;
+    if (!email) {
+      alert("Sessiya tapılmadı!");
+      window.location.href = "login.html";
     }
 
-    const userData = { name, surname };
+    function safeEmailKey(email) {
+      return email.replace(/[.#$\\[\\]/]/g, "_");
+    }
 
-    // EMAIL-Ə BAĞLI SAXLA
-    localStorage.setItem(key, JSON.stringify(userData));
+    const userDocRef = doc(db, "users", safeEmailKey(email));
 
-    alert("Məlumatlar yadda saxlanıldı ✅");
+    async function checkExistingUser() {
+      try {
+        const snap = await getDoc(userDocRef);
 
-    // profil səhifəsinə keç
-    window.location.href = "index.html";
-  });
-</script>
+        if (snap.exists()) {
+          window.location.href = "account.html";
+        }
+      } catch (error) {
+        console.error("Oxuma xətası:", error);
+        alert("Məlumat yoxlanarkən xəta baş verdi!");
+      }
+    }
 
+    checkExistingUser();
+
+    saveBtn.addEventListener("click", async () => {
+      const name = nameInput.value.trim();
+      const surname = surnameInput.value.trim();
+
+      if (!name || !surname) {
+        alert("Ad və soyad boş ola bilməz!");
+        return;
+      }
+
+      try {
+        const userData = {
+          email: email,
+          name: name,
+          surname: surname,
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        };
+
+        await setDoc(userDocRef, userData);
+
+        // İstəsən localStorage-da da saxla
+        localStorage.setItem("userData_" + email, JSON.stringify({ name, surname }));
+
+        alert("Məlumatlar Firestore-da yadda saxlanıldı ✅");
+        window.location.href = "account.html";
+      } catch (error) {
+        console.error("Yazma xətası:", error);
+        alert("Məlumatlar yadda saxlanılmadı!");
+      }
+    });
+  </script>
 
 </body>
 </html>
-
