@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>Hesab Məlumatları</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <style>
     body {
       margin: 0;
@@ -16,6 +17,12 @@
       justify-content: center;
       padding: 20px;
     }
+
+    #loadingText {
+      color: #fff;
+      font-size: 18px;
+    }
+
     .card {
       background: #020617;
       padding: 28px;
@@ -23,30 +30,35 @@
       width: 100%;
       max-width: 360px;
       box-shadow: 0 20px 40px rgba(0,0,0,.5);
-      display: flex;
+      display: none;
       flex-direction: column;
       gap: 14px;
     }
+
     h1 {
       margin: 0 0 6px;
       font-size: 22px;
       text-align: center;
     }
+
     .info {
       background: #020617;
       border: 1px solid #1e293b;
       border-radius: 12px;
       padding: 12px;
     }
+
     .label {
       font-size: 13px;
       color: #94a3b8;
     }
+
     .value {
       font-size: 16px;
       font-weight: 600;
       margin-top: 4px;
     }
+
     input {
       width: 100%;
       box-sizing: border-box;
@@ -60,9 +72,11 @@
       margin-top: 6px;
       display: none;
     }
+
     input:focus {
       border-color: #2563eb;
     }
+
     button {
       width: 100%;
       padding: 12px;
@@ -72,19 +86,23 @@
       font-weight: 600;
       cursor: pointer;
     }
+
     .edit {
       background: #facc15;
       color: #422006;
     }
+
     .save {
       background: #22c55e;
       color: #022c22;
       display: none;
     }
+
     .back {
       background: #2563eb;
       color: #fff;
     }
+
     .logout {
       background: #dc2626;
       color: #fff;
@@ -93,7 +111,9 @@
 </head>
 <body>
 
-  <div class="card">
+  <div id="loadingText">Yüklənir...</div>
+
+  <div class="card" id="card">
     <h1>Hesab Məlumatları</h1>
 
     <div class="info">
@@ -139,6 +159,8 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
+    const loadingText = document.getElementById("loadingText");
+    const card = document.getElementById("card");
     const emailText = document.getElementById("emailText");
     const nameText = document.getElementById("nameText");
     const surnameText = document.getElementById("surnameText");
@@ -164,6 +186,8 @@
 
       editBtn.style.display = "block";
       saveBtn.style.display = "none";
+      card.style.display = "flex";
+      loadingText.style.display = "none";
     }
 
     function renderEditMode(data) {
