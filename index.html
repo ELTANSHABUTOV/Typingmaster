@@ -984,6 +984,13 @@ window.saveVisitorEntry = async function() {
     const savedUsername = localStorage.getItem("username");
 
     const finalEmail = user?.email || savedEmail || "anonim";
+
+    // ❗ Sənin şəxsi emailin — visitor yazılmasın
+    if (finalEmail === "typingmaster.az@gmail.com") {
+      console.log("⚙️ admin girişidir, visitors-a yazılmadı");
+      return;
+    }
+
     const finalName =
       user?.displayName ||
       savedUsername ||
@@ -1000,6 +1007,7 @@ window.saveVisitorEntry = async function() {
     });
 
     console.log("✅ ziyarətçi Firestore-a ayrıca yazıldı");
+
   } catch (err) {
     console.error("❌ ziyarətçi yazılmadı:", err);
   }
@@ -1022,5 +1030,4 @@ window.saveVisitorEntry = async function() {
 </script>
 </body>
 </html>
-
 
