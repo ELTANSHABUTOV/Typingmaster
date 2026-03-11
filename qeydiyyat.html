@@ -52,6 +52,11 @@
       background-color:aquamarine;
       transform:scale(1.05);
     }
+    button:disabled{
+      opacity:0.7;
+      cursor:not-allowed;
+      transform:none;
+    }
     button img{
       width:26px;
       height:26px;
@@ -77,75 +82,43 @@
   </style>
 
   <script type="module">
-    // ✅ Firebase imports (CDN)
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
-    import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-    // ✅ SƏNİN YENİ FIREBASE CONFIG (salam-58d0a)
     const firebaseConfig = {
-      apiKey: "AIzaSyCYWC8P0meXFbyRoSA4uHkJmJRkPFlhwSQ",
+      apiKey: "AIzaSyCPUyl6EbO8dvJBTWofVBQg1a1xJHM4_08",
       authDomain: "salam-58d0a.firebaseapp.com",
       projectId: "salam-58d0a",
       storageBucket: "salam-58d0a.firebasestorage.app",
       messagingSenderId: "703442504339",
-      appId: "1:703442504339:web:f9a6b1f54db80c4c829b66",
-      measurementId: "G-G1QX2TVF0C"
+      appId: "1:703442504339:web:4d7757d08bb37189829b66",
+      measurementId: "G-M94QKEHNJF"
     };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    const db = getFirestore(app);
     const provider = new GoogleAuthProvider();
 
-    // ✅ Düymə disable/enable üçün helper
     function setBtnState(disabled, text) {
       const btn = document.getElementById("googleBtn");
       if (!btn) return;
       btn.disabled = disabled;
-      btn.style.opacity = disabled ? "0.7" : "1";
-      btn.style.cursor = disabled ? "not-allowed" : "pointer";
-      if (text) btn.querySelector("span").textContent = text;
+      const span = btn.querySelector("span");
+      if (span && text) span.textContent = text;
     }
 
-    // ✅ Google login funksiyası
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        window.location.href = "account.html";
+      }
+    });
+
     window.googleLogin = async function () {
       try {
         setBtnState(true, "Gözləyin...");
-
-        const result = await signInWithPopup(auth, provider);
-        const user = result.user;
-
-        if (!user) throw new Error("User tapılmadı.");
-
-        // ✅ users/{uid}
-        const userRef = doc(db, "users", user.uid);
-        const snap = await getDoc(userRef);
-
-        // Əgər user artıq varsa, sadəcə yönləndir
-        if (snap.exists()) {
-          localStorage.setItem("loggedInEmail", user.email || "");
-          localStorage.setItem("loggedInUid", user.uid);
-          window.location.href = "daxil ol.html";
-          return;
-        }
-
-        // ✅ İlk dəfədirsə — Firestore-a yaz
-        await setDoc(userRef, {
-          uid: user.uid,
-          email: user.email || "",
-          name: user.displayName || "",
-          photoURL: user.photoURL || "",
-          provider: "google",
-          createdAt: serverTimestamp()
-        });
-
-        localStorage.setItem("loggedInEmail", user.email || "");
-        localStorage.setItem("loggedInUid", user.uid);
-
+        await signInWithPopup(auth, provider);
         alert("Qeydiyyat uğurla tamamlandı!");
-        window.location.href = "adiviyaz.html";
-
+        window.location.href = "account.html";
       } catch (error) {
         console.error(error);
         alert("Xəta: " + (error?.message || "Naməlum xəta"));
@@ -174,6 +147,4 @@
     <img src="https://cdn.mos.cms.futurecdn.net/3kQCtpnfHoUq5cBsLqKTFk.jpg" alt="cover">
   </div>
 </body>
-
 </html>
-
