@@ -72,6 +72,7 @@
   </style>
 </head>
 <body>
+
   <div class="card">
     <h1>Hesab Məlumatları</h1>
 
@@ -91,7 +92,13 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import {
+      getFirestore,
+      doc,
+      getDoc,
+      setDoc,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCPUyl6EbO8dvJBTWofVBQg1a1xJHM4_08",
@@ -125,18 +132,19 @@
         const userRef = doc(db, "melumatlar", user.uid);
         const snap = await getDoc(userRef);
 
+        // Əgər məlumat artıq varsa account-a keç
         if (snap.exists()) {
           window.location.href = "account.html";
         }
       } catch (error) {
-        console.error("Oxuma xətası:", error);
-        alert("Məlumat yoxlanarkən xəta baş verdi: " + error.message);
+        console.error("Yoxlama xətası:", error);
+        alert("Xəta: " + error.message);
       }
     });
 
     saveBtn.addEventListener("click", async () => {
       if (!currentUser) {
-        alert("İstifadəçi tapılmadı.");
+        alert("İstifadəçi tapılmadı");
         return;
       }
 
@@ -160,7 +168,7 @@
           updatedAt: serverTimestamp()
         });
 
-        alert("Məlumatlar uğurla yadda saxlanıldı ✅");
+        alert("Məlumatlar yadda saxlanıldı ✅");
         window.location.href = "account.html";
       } catch (error) {
         console.error("Yazma xətası:", error);
