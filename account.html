@@ -139,7 +139,6 @@
       doc,
       getDoc,
       updateDoc,
-      deleteDoc,
       serverTimestamp
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -257,21 +256,9 @@
       }
     });
 
-    logoutBtn.addEventListener("click", async () => {
-      const confirmDelete = confirm("Hesab məlumatları silinsin?");
-      if (!confirmDelete) return;
-
-      try {
-        await deleteDoc(userDocRef);
-
-        localStorage.removeItem("loggedInEmail");
-
-        alert("Məlumatlar silindi 🗑️");
-        window.location.href = "daxil%20ol.html";
-      } catch (error) {
-        console.error("Silmə xətası:", error);
-        alert("Məlumatlar silinmədi!");
-      }
+    logoutBtn.addEventListener("click", () => {
+      localStorage.removeItem("loggedInEmail");
+      window.location.href = "daxil%20ol.html";
     });
   </script>
 </body>
