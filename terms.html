@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="az">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>İstifadə Şərtləri — TypingMaster</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root { 
+      --bg: #0b0f19; --card-bg: rgba(22, 30, 46, 0.8); 
+      --accent: #00d2ff; --text: #f8fafc; --muted: #94a3b8;
+    }
+
+    * { box-sizing: border-box; transition: all 0.3s ease; }
+
+    body { 
+      margin: 0; background: var(--bg); color: var(--text); 
+      font-family: 'Poppins', sans-serif; display: flex; flex-direction: column; 
+      align-items: center; min-height: 100vh; padding: 40px 20px;
+    }
+
+    .container { 
+      width: 100%; max-width: 800px; 
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card { 
+      background: var(--card-bg); backdrop-filter: blur(20px); 
+      border-radius: 28px; padding: 40px; border: 1px solid rgba(255,255,255,0.05);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    h1 { 
+      font-size: 2rem; color: var(--accent); margin-bottom: 30px; 
+      text-align: center; font-weight: 800;
+    }
+
+    h2 { font-size: 1.2rem; color: #fff; margin-top: 25px; border-left: 4px solid var(--accent); padding-left: 15px; }
+
+    p { line-height: 1.8; color: var(--muted); font-size: 15px; }
+
+    ul { padding-left: 20px; color: var(--muted); }
+    li { margin-bottom: 10px; line-height: 1.6; }
+
+    .back-btn {
+      display: inline-block; margin-top: 30px; color: var(--accent); 
+      text-decoration: none; font-weight: 600; font-size: 14px;
+      padding: 10px 20px; border: 1px solid var(--accent); border-radius: 12px;
+    }
+
+    .back-btn:hover { background: var(--accent); color: var(--bg); }
+
+    footer { margin-top: 40px; text-align: center; color: var(--muted); font-size: 12px; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="card">
+    <h1>İstifadə Şərtləri</h1>
+    
+    <p>TypingMaster platformasına xoş gəlmisiniz. Saytımızdan istifadə edərək aşağıdakı şərtlərlə razılaşdığınızı bəyan edirsiniz.</p>
+
+    <h2>1. Ümumi Qaydalar</h2>
+    <p>Bu platforma istifadəçilərin klaviatura yazı sürətini artırmaq və məşq etmək məqsədi ilə yaradılmışdır. Saytdan qeyri-qanuni məqsədlər üçün istifadə qadağandır.</p>
+
+    <h2>2. Hesabın Qorunması</h2>
+    <ul>
+      <li>İstifadəçi qeydiyyat zamanı təqdim etdiyi məlumatların doğruluğuna görə məsuliyyət daşıyır.</li>
+      <li>Hesab məlumatlarının (email və şifrə) məxfiliyini qorumaq istifadəçinin öz öhdəliyidir.</li>
+      <li>Platforma daxilində saxta profillərin yaradılması və ya başqasının adından istifadə qadağandır.</li>
+    </ul>
+
+    <h2>3. Məsuliyyətin Məhdudlaşdırılması</h2>
+    <p>TypingMaster xidmətin fasiləsiz olacağına zəmanət vermir. Texniki nasazlıqlar və ya server yenilənmələri zamanı baş verə biləcək məlumat itkisinə görə platforma məsuliyyət daşımır.</p>
+
+    <h2>4. Əqli Mülkiyyət</h2>
+    <p>Saytın dizaynı, kodu, loqosu və məzmunu TypingMaster layihəsinə məxsusdur. İcazəsiz kopyalanması və ya digər resurslarda istifadəsi hüquqi məsuliyyət yaradır.</p>
+
+    <h2>5. Şərtlərin Dəyişdirilməsi</h2>
+    <p>Biz istənilən vaxt bu şərtləri yeniləmə hüququnu özümüzdə saxlayırıq. Yenilənmiş şərtlər saytda dərc edildiyi andan qüvvəyə minir.</p>
+
+    <a href="index.html" class="back-btn">← Ana Səhifəyə Qayıt</a>
+  </div>
+
+  <footer>
+    <p>© 2026 TypingMaster. Bütün hüquqlar qorunur.</p>
+  </footer>
+</div>
+
+</body>
+</html>
