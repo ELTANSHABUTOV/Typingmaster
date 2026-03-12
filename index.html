@@ -192,18 +192,20 @@
     let docId;
 
     if (email) {
-        // ID formatı: email_zaman (Məs: elten@gmail.com_171026)
         docId = `${email}_${now}`;
-        await setDoc(doc(db, "visitors", docId), {
-            identity: email,
-            type: "registered",
-            timestamp: serverTimestamp()
-        });
+        try {
+            await setDoc(doc(db, "visitors", docId), {
+                identity: email,
+                type: "registered",
+                timestamp: serverTimestamp()
+            });
+            sessionStorage.setItem("visited_logged", "true");
+        } catch(e) { console.error("Track error:", e); }
     } else {
         const counterRef = doc(db, "counters", "visitor_stats");
         await setDoc(counterRef, { anonCount: increment(1) }, { merge: true });
         const snap = await getDoc(counterRef);
-        const currentNumber = snap.data().anonCount || 1;
+        const currentNumber = snap.data()?.anonCount || 1;
         
         docId = `anonim_${currentNumber}_${now}`;
         await setDoc(doc(db, "visitors", docId), {
@@ -211,17 +213,22 @@
             type: "anonymous",
             timestamp: serverTimestamp()
         });
+        sessionStorage.setItem("visited_logged", "true");
     }
-    sessionStorage.setItem("visited_logged", "true");
   }
 
-  async function checkUserStatus(user) {
+  // Google və ya Normal girişi tanıyan əsas hissə
+  onAuthStateChanged(auth, async (user) => {
+    // Əgər Google ilə giriş varsa və ya köhnə tempEmail varsa onu götür
     const email = user ? user.email : localStorage.getItem("tempEmail");
-    trackVisitor(email); 
     
     if (email) {
       activeEmail = email;
       logoutBtn.style.display = "block";
+      
+      // Google-dan yeni gələnləri də track edirik
+      await trackVisitor(email);
+
       const q = query(collection(db, "melumatlar"), where("email", "==", email));
       const snap = await getDocs(q);
       
@@ -239,14 +246,11 @@
       document.getElementById("userDisplayName").innerText = "Hesab";
       inputEl.placeholder = "Daxil olun...";
       inputEl.disabled = true;
+      // Heç kim yoxdursa anonim kimi track et
+      trackVisitor(null);
     }
-  }
-
-  onAuthStateChanged(auth, (user) => {
-    checkUserStatus(user);
   });
 
-  // --- ÇIXIŞ FUNKSİYASI: SIFIRLAMA VƏ YÖNLƏNDİRMƏ ---
   logoutBtn.onclick = () => {
     signOut(auth).then(() => {
         localStorage.clear();
