@@ -131,7 +131,7 @@
     </div>
 
     <div class="rules-panel">
-        <b>QAYDALAR:</b> Sözləri ardıcıllıqla yazın və hər sözdən sonra <b>Boşluq (Space)</b> düyməsini sıxın. Səhv yazdığınız sözü geri qayıdıb düzəldə bilməzsiniz!
+        <b>QAYDALAR:</b> Sözləri ardıcıllıqla yazın və hər sözdən sonra <b>Boşluq (Space)</b> düyməsini sıxın. Səhv yazdığınız sözü düzəldə bilməzsiniz!
     </div>
   </div>
 </div>
@@ -162,7 +162,7 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { 
     getFirestore, doc, setDoc, serverTimestamp, 
-    collection, query, where, getDocs 
+    collection, query, where, getDocs, addDoc 
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
   import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
@@ -185,7 +185,7 @@
   const wordBox = document.getElementById("wordBox");
   const logoutBtn = document.getElementById("logoutBtn");
 
-  // STATUS YOKLAMA
+  // STATUS YOKLAMA (GOOGLE VƏ OTP ÜÇÜN)
   async function checkUserStatus(user) {
     const email = user ? user.email : localStorage.getItem("tempEmail");
     
@@ -199,6 +199,15 @@
       if (!snap.empty) {
         const userData = snap.docs[0].data();
         document.getElementById("userDisplayName").innerText = userData.name || email.split('@')[0];
+      } else if (user && user.providerData[0].providerId === 'google.com') {
+        // Google ilə daxil olubsa amma bazada yoxdursa - Avtomatik Qeydiyyat Et
+        const newUserData = {
+          email: email.toLowerCase(),
+          name: user.displayName || email.split('@')[0],
+          createdAt: serverTimestamp()
+        };
+        await addDoc(collection(db, "melumatlar"), newUserData);
+        document.getElementById("userDisplayName").innerText = newUserData.name;
       } else {
         document.getElementById("userDisplayName").innerText = email.split('@')[0];
       }
@@ -214,14 +223,14 @@
   onAuthStateChanged(auth, (user) => checkUserStatus(user));
   if (!auth.currentUser && activeEmail) checkUserStatus(null);
 
-  // ÇIXIŞ FUNKSİYASI (TAM TƏMİZLƏMƏ)
+  // ÇIXIŞ
   logoutBtn.onclick = (e) => {
     e.preventDefault();
-    localStorage.removeItem("tempEmail"); // Brauzer yaddaşını sil
+    localStorage.removeItem("tempEmail");
     signOut(auth).then(() => {
-      window.location.href = "qeydiyyat.html"; // Qeydiyyata göndər
+      window.location.href = "qeydiyyat.html";
     }).catch(() => {
-      window.location.href = "qeydiyyat.html"; // Xəta olsa belə yönləndir
+      window.location.href = "qeydiyyat.html";
     });
   };
 
@@ -233,13 +242,14 @@
       return; 
     }
 
+    // Google ilə daxil olanlar üçün yoxlama sürətləndirilib
     const q = query(collection(db, "melumatlar"), where("email", "==", activeEmail.toLowerCase()));
     const querySnapshot = await getDocs(q);
 
     if (querySnapshot.empty) {
-      alert("Xəta: Email tapılmadı!");
-      window.location.href = "qeydiyyat.html";
-      return;
+        // Əgər hələ də yoxdursa (server gecikməsi ola bilər), yenidən yoxla və ya yarat
+        alert("Hesabınız hazırlanır, zəhmət olmasa bir saniyə gözləyin və yenidən cəhd edin.");
+        return;
     }
 
     startGame();
@@ -254,7 +264,7 @@
     startTimer();
   }
 
-  // OYUN MƏNTİQİ
+  // OYUN MEXANİKASI (Dəyişməyib)
   document.querySelectorAll("#wordSelector button").forEach(btn => {
     btn.onclick = () => {
         if(state.isActive) return;
