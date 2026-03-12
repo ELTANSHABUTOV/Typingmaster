@@ -126,12 +126,12 @@
     <div class="word-stream" id="wordBox"></div>
 
     <div class="input-row">
-      <input type="text" id="mainInput" placeholder="BAŞLA düyməsinə klikləyin..." disabled autocomplete="off">
+      <input type="text" id="mainInput" placeholder="Yüklənir..." disabled autocomplete="off">
       <button class="btn" id="startAction">BAŞLA</button>
     </div>
 
     <div class="rules-panel">
-        <b>QAYDALAR:</b> Sözləri ardıcıllıqla yazın və hər sözdən sonra <b>Boşluq (Space)</b> düyməsini sıxın. Səhv yazdığınız sözü geri qayıdıb düzəldə bilməzsiniz, fokusunuzu qoruyun!
+        <b>QAYDALAR:</b> Sözləri ardıcıllıqla yazın və hər sözdən sonra <b>Boşluq (Space)</b> düyməsini sıxın. Səhv yazdığınız sözü geri qayıdıb düzəldə bilməzsiniz!
     </div>
   </div>
 </div>
@@ -141,7 +141,6 @@
     <a href="privacy.html">Məxfilik Siyasəti</a>
     <a href="terms.html">İstifadə Şərtləri</a>
     <a href="haqqimizda.html">Haqqımızda</a>
-    
   </div>
   <p style="font-size: 12px; color: var(--muted); margin: 0;">© 2026 TypingMaster Global Services. Bütün hüquqlar qorunur.</p>
 </footer>
@@ -160,60 +159,10 @@
 </div>
 
 <script type="module">
-  // ... (mövcud importların sonuna əlavə et)
-import { addDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-// Ziyarətçini qeyd edən funksiya
-async function trackVisitor(email) {
-    const visitorRef = collection(db, "visitors");
-    
-    if (email) {
-        // Əgər email varsa, birbaşa email ilə qeyd et
-        await addDoc(visitorRef, {
-            type: "registered",
-            identity: email,
-            timestamp: serverTimestamp()
-        });
-    } else {
-        // Əgər anonimdirsə, ardıcıl nömrəni idarə etmək üçün "counters" sənədindən istifadə edirik
-        const counterRef = doc(db, "counters", "visitors_count");
-        
-        try {
-            // Sayğacı 1 vahid artırırıq (Atomik əməliyyat)
-            await setDoc(counterRef, { current: increment(1) }, { merge: true });
-            
-            // Yeni nömrəni götürürük
-            const snap = await getDoc(counterRef);
-            const count = snap.data().current;
-            
-            // visitors bölməsinə Anonim X olaraq yazırıq
-            await addDoc(visitorRef, {
-                type: "anonymous",
-                identity: "anonim " + count,
-                timestamp: serverTimestamp()
-            });
-        } catch (e) {
-            console.error("Sayğac xətası:", e);
-        }
-    }
-}
-
-// onAuthStateChanged daxilində bu funksiyanı çağırırıq
-onAuthStateChanged(auth, (user) => {
-    const email = user ? user.email : localStorage.getItem("tempEmail");
-    checkUserStatus(user);
-    
-    // Sayta hər girişdə (və ya login olanda) bu funksiya işləsin
-    // Bir sessiyada bir dəfə işləməsi üçün sessionStorage istifadə edə bilərsən
-    if (!sessionStorage.getItem("visited")) {
-        trackVisitor(email);
-        sessionStorage.setItem("visited", "true");
-    }
-});
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { 
-    getFirestore, doc, getDoc, setDoc, serverTimestamp, 
-    collection, query, where, getDocs 
+    getFirestore, doc, getDoc, setDoc, addDoc, serverTimestamp, 
+    collection, query, where, getDocs, increment 
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
   import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
@@ -230,22 +179,45 @@ onAuthStateChanged(auth, (user) => {
   const wordPool = "salam dünya kitab klaviatura sürət texnologiya məktəb həyat proqramist uğur gələcək internet məlumat inkişaf azərbaycan musiqi günəş ulduz dəniz qələm dəftər kompyuter sistem şəbəkə yazı sürətli dahi yaradıcı qüvvə fəza zaman məkan rəqəmsal".split(" ");
   let state = { words: [], currentIdx: 0, correct: 0, wrong: 0, startTime: null, isActive: false, limit: 25 };
   
-  // İstifadəçini həm Auth-dan, həm də LocalStorage-dən yoxlayırıq
   let activeEmail = localStorage.getItem("tempEmail"); 
-
   const inputEl = document.getElementById("mainInput");
   const wordBox = document.getElementById("wordBox");
   const logoutBtn = document.getElementById("logoutBtn");
 
-  // Auth Status və Adın göstərilməsi
+  // --- YENİ: ZİYARƏTÇİ İZLƏMƏ FUNKSİYASI ---
+  async function trackVisitor(email) {
+    if (sessionStorage.getItem("visited_logged")) return; // Eyni sessiyada təkrar yazmasın
+    
+    const visitorRef = collection(db, "visitors");
+    
+    if (email) {
+        await addDoc(visitorRef, {
+            identity: email,
+            type: "registered",
+            timestamp: serverTimestamp()
+        });
+    } else {
+        const counterRef = doc(db, "counters", "visitor_stats");
+        await setDoc(counterRef, { anonCount: increment(1) }, { merge: true });
+        const snap = await getDoc(counterRef);
+        const currentNumber = snap.data().anonCount;
+        
+        await addDoc(visitorRef, {
+            identity: "anonim " + currentNumber,
+            type: "anonymous",
+            timestamp: serverTimestamp()
+        });
+    }
+    sessionStorage.setItem("visited_logged", "true");
+  }
+
   async function checkUserStatus(user) {
     const email = user ? user.email : localStorage.getItem("tempEmail");
+    trackVisitor(email); // Ziyarətçini qeyd et
     
     if (email) {
       activeEmail = email;
       logoutBtn.style.display = "block";
-      
-      // Bazadan adı çəkməyə çalışaq
       const q = query(collection(db, "melumatlar"), where("email", "==", email));
       const snap = await getDocs(q);
       
@@ -255,7 +227,6 @@ onAuthStateChanged(auth, (user) => {
       } else {
         document.getElementById("userDisplayName").innerText = email.split('@')[0];
       }
-      
       inputEl.placeholder = "Hazırsınızsa BAŞLA-ya sıxın";
     } else {
       activeEmail = null;
@@ -269,42 +240,18 @@ onAuthStateChanged(auth, (user) => {
     checkUserStatus(user);
   });
 
-  // OTP səhifəsindən gələnlər üçün dərhal yoxla
-  if (!auth.currentUser && activeEmail) {
-    checkUserStatus(null);
-  }
-
   logoutBtn.onclick = () => {
     localStorage.removeItem("tempEmail");
     signOut(auth).then(() => window.location.reload());
   };
 
-  // BAŞLA düyməsinə basdıqda yoxlama
   document.getElementById("startAction").onclick = async () => {
     if(!activeEmail) { 
       alert("Zəhmət olmasa əvvəlcə daxil olun!"); 
       window.location.href="qeydiyyat.html"; 
       return; 
     }
-
-    try {
-      // "melumatlar" bazasında bu email varmı?
-      const q = query(collection(db, "melumatlar"), where("email", "==", activeEmail.toLowerCase()));
-      const querySnapshot = await getDocs(q);
-
-      if (querySnapshot.empty) {
-        alert("Xəta: Email qeydiyyat bazasında tapılmadı. Qeydiyyata yönləndirilirsiniz.");
-        window.location.href = "qeydiyyat.html";
-        return;
-      }
-
-      // Əgər varsa oyunu başlat
-      startGame();
-      
-    } catch (error) {
-      console.error("Yoxlama xətası:", error);
-      alert("Sistem xətası baş verdi.");
-    }
+    startGame();
   };
 
   function startGame() {
@@ -318,7 +265,6 @@ onAuthStateChanged(auth, (user) => {
     startTimer();
   }
 
-  // Word Selection funksiyaları...
   document.querySelectorAll("#wordSelector button").forEach(btn => {
     btn.onclick = () => {
         if(state.isActive) return;
@@ -387,7 +333,7 @@ onAuthStateChanged(auth, (user) => {
     document.getElementById("resultModal").style.display = "flex";
     
     if (activeEmail) {
-      await setDoc(doc(db, "results", `${activeEmail}_${Date.now()}`), {
+      await addDoc(collection(db, "results"), {
         email: activeEmail, wpm: parseInt(finalWpm), correct: state.correct, wrong: state.wrong, createdAt: serverTimestamp()
       });
     }
