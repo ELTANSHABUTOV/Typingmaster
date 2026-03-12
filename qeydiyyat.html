@@ -48,28 +48,29 @@
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      // ƏSAS HİSSƏ: Google-dan gələn emaili yaddaşa yazırıq ki, index.html onu tanısın
+      // Email-i yaddaşa yazırıq ki, digər səhifələr tanısın
       localStorage.setItem("tempEmail", user.email);
 
-      // Firestore-da istifadəçini yoxlayırıq
+      // Firestore-da istifadəçinin sənədini yoxlayırıq (UID ilə)
       const userRef = doc(db, "melumatlar", user.uid);
       const snap = await getDoc(userRef);
 
-      if (snap.exists()) {
-        alert("Giriş uğurludur! Səhifəyə yönləndirilirsiniz...");
-        // Əgər istifadəçi artıq varsa, birbaşa ana səhifəyə (oyuna) göndər
+      if (snap.exists() && snap.data().name) {
+        // Əgər istifadəçi varsa və artıq adı qeyd edilibsə
+        alert("Xoş gəldiniz!");
         window.location.href = "index.html"; 
       } else {
-        // Əgər yeni istifadəçidirsə, məlumatlarını bazaya qeyd edirik
+        // Əgər yeni istifadəçidirsə və ya adı yoxdursa
+        // Bazada ilkin sənədini yaradırıq (adını boş qoyuruq)
         await setDoc(userRef, {
-          name: user.displayName,
           email: user.email.toLowerCase(),
           createdAt: serverTimestamp(),
-          provider: "google"
-        });
-        
-        alert("Xoş gəldiniz! Məlumatlarınız qeyd edildi.");
-        window.location.href = "index.html"; // Və ya istəsən adiviyaz.html-ə göndər
+          provider: "google",
+          name: "" // Bu hissə adiviyaz.html-də doldurulacaq
+        }, { merge: true });
+
+        // Adını yazması üçün yönləndiririk
+        window.location.href = "adiviyaz.html";
       }
     } catch (err) { 
       console.error(err);
@@ -79,3 +80,4 @@
 </script>
 </body>
 </html>
+
