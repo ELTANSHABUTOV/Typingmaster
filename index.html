@@ -28,6 +28,12 @@
       display: flex; justify-content: space-between; align-items: center; 
       margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05);
     }
+    .char-correct { color: var(--success); } /* Yaşıl */
+.char-wrong { 
+  color: var(--error); 
+  text-decoration: underline; /* Səhv hərf həm də altından xətt çəkilsin */
+  background: rgba(244, 63, 94, 0.2); 
+}
     .nav-links { display: flex; gap: 10px; }
     .nav-links a { 
       color: var(--text); text-decoration: none; font-size: 13px; font-weight: 500;
@@ -177,6 +183,39 @@
       window.location.href = "qeydiyyat.html";
     }
   });
+  // Hər hərf yazıldıqda anında yoxlama
+  inputEl.oninput = () => {
+    const typed = inputEl.value; // Sənin yazdığın mətn
+    const target = state.words[state.currentIdx]; // Ekrandakı hədəf söz
+    const wordEls = document.querySelectorAll(".word");
+    const currentWordEl = wordEls[state.currentIdx];
+
+    let coloredHTML = "";
+
+    for (let i = 0; i < target.length; i++) {
+      if (i < typed.length) {
+        // Əgər hərf düzdürsə yaşıl, səhvdirsə qırmızı
+        if (typed[i] === target[i]) {
+          coloredHTML += `<span class="char-correct">${target[i]}</span>`;
+        } else {
+          coloredHTML += `<span class="char-wrong">${target[i]}</span>`;
+        }
+      } else {
+        // Hələ yazılmamış hərflər normal rəngdə qalsın
+        coloredHTML += target[i];
+      }
+    }
+
+    // Sözün içini rəngli hərflərlə yeniləyirik
+    currentWordEl.innerHTML = coloredHTML;
+
+    // Əgər yazılan mətn hədəf sözdən daha uzundursa, sözü qırmızı göstər (artıq hərf xətası)
+    if (typed.length > target.length) {
+      currentWordEl.classList.add("wrong");
+    } else {
+      currentWordEl.classList.remove("wrong");
+    }
+  };
 
   // OYUN KODLARI
   function generateWords() {
