@@ -1,301 +1,137 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="az">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>TypingMaster — Professional Yazı Platforması</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
-  <style>
-    :root { 
-      --bg: #0f172a; --card-bg: rgba(30, 41, 59, 0.7); 
-      --accent: #38bdf8; --text: #f8fafc; --muted: #94a3b8;
-      --error: #ff4757; --success: #2ed573; --glass-border: rgba(255, 255, 255, 0.1);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Siyasəti | TypingMaster</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-blue: #38bdf8;
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+        }
 
-    * { box-sizing: border-box; transition: all 0.3s ease; scroll-behavior: smooth; }
-    body { 
-      margin: 0; background: radial-gradient(circle at top right, #1e293b, #0f172a); 
-      color: var(--text); font-family: 'Poppins', sans-serif; 
-      display: flex; flex-direction: column; align-items: center; min-height: 100vh;
-    }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            line-height: 1.6;
+        }
 
-    /* Container & Card */
-    .container { width: 100%; max-width: 1000px; padding: 40px 20px; flex: 1; display: flex; flex-direction: column; justify-content: center; }
-    .main-card { 
-      background: var(--card-bg); backdrop-filter: blur(20px); border-radius: 40px; 
-      padding: 50px; border: 1px solid var(--glass-border); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
 
-    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
-    .nav-links { display: flex; gap: 10px; }
-    .nav-links a, .rules-btn { 
-      color: var(--text); text-decoration: none; font-size: 13px; font-weight: 500;
-      padding: 10px 18px; border-radius: 12px; background: rgba(255,255,255,0.05); cursor: pointer; border: none;
-    }
-    .nav-links a:hover, .rules-btn:hover { background: var(--accent); color: #000; }
+        h1 {
+            color: var(--accent-blue);
+            font-size: 2rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid rgba(56, 189, 248, 0.2);
+            padding-bottom: 10px;
+        }
 
-    /* Game UI */
-    .game-options { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-    .word-counts { display: flex; background: rgba(0,0,0,0.2); padding: 6px; border-radius: 18px; }
-    .word-counts button { background: transparent; border: none; color: var(--muted); padding: 8px 18px; cursor: pointer; font-weight: 600; border-radius: 12px; }
-    .word-counts button.active { background: var(--accent); color: #000; }
+        h2 {
+            font-size: 1.2rem;
+            color: var(--accent-blue);
+            margin-top: 25px;
+        }
 
-    .stats-bar { display: flex; gap: 15px; }
-    .stat-pill { background: rgba(15, 23, 42, 0.6); padding: 12px 20px; border-radius: 20px; text-align: center; border: 1px solid var(--glass-border); min-width: 100px; }
-    .stat-pill label { display: block; font-size: 10px; color: var(--muted); text-transform: uppercase; }
-    .stat-pill span { color: var(--accent); font-weight: 800; font-size: 1.4rem; }
-    
-    .word-stream { 
-      background: rgba(0,0,0,0.15); border-radius: 25px; padding: 40px; 
-      height: 220px; display: flex; flex-wrap: wrap; gap: 15px; 
-      font-size: 30px; line-height: 1.6; margin-bottom: 35px; overflow: hidden; border: 1px solid var(--glass-border);
-    }
-    .word { color: var(--muted); padding: 0 8px; border-radius: 8px; }
-    .word.current { color: #fff; background: rgba(56, 189, 248, 0.15); border-bottom: 3px solid var(--accent); }
-    .word.correct { color: var(--success); }
-    .word.wrong { color: var(--error); border-bottom: 3px solid var(--error); }
+        p {
+            color: var(--text-dim);
+            margin-bottom: 15px;
+        }
 
-    .input-row { display: flex; gap: 20px; }
-    input[type="text"] { 
-      flex: 1; background: rgba(15, 23, 42, 0.8); border: 2px solid var(--glass-border); 
-      border-radius: 20px; padding: 22px 30px; color: white; font-size: 20px; outline: none;
-    }
-    .btn { padding: 0 45px; border-radius: 20px; border: none; font-weight: 800; cursor: pointer; background: var(--accent); color: #000; text-transform: uppercase; }
+        .highlight {
+            color: var(--text-main);
+            font-weight: 600;
+        }
 
-    /* Modal System */
-    .modal { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(15px); display: none; justify-content: center; align-items: center; z-index: 9999; padding: 20px; }
-    .modal-content { background: #1e293b; padding: 40px; border-radius: 35px; border: 1px solid var(--accent); width: 100%; max-width: 550px; position: relative; max-height: 90vh; overflow-y: auto; }
-    .close-modal { position: absolute; top: 20px; right: 20px; background: none; border: none; color: var(--muted); font-size: 24px; cursor: pointer; }
-    
-    .info-section { text-align: left; margin-bottom: 20px; }
-    .info-section h3 { color: var(--accent); margin-bottom: 10px; font-size: 1.1rem; }
-    .info-section p { color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
+        .footer-link {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 25px;
+            background-color: var(--accent-blue);
+            color: var(--bg-color);
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: transform 0.2s, opacity 0.2s;
+        }
 
-    footer { padding: 40px; text-align: center; width: 100%; border-top: 1px solid var(--glass-border); }
-    .footer-links { display: flex; justify-content: center; gap: 20px; margin-top: 15px; flex-wrap: wrap; }
-    .footer-links button { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 13px; font-family: inherit; }
-    .footer-links button:hover { color: var(--accent); }
-  </style>
+        .footer-link:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        .cookie-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .cookie-table th, .cookie-table td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .cookie-table th {
+            color: var(--text-main);
+        }
+    </style>
 </head>
 <body>
 
 <div class="container">
-  <div class="main-card">
-    <header>
-      <div style="display:flex; align-items:center; gap:15px;">
-        <img src="https://i.postimg.cc/9Qy6YWFZ/Chat-GPT-Image-Nov-27-2025-09-35-45-PM.png" width="40" style="border-radius:10px">
-        <h1 style="margin:0; font-size:1.6rem; font-weight:800;">Typing<span style="color:var(--accent)">Master</span></h1>
-      </div>
-      <nav class="nav-links">
-        <button class="rules-btn" onclick="openModal('rulesModal')">Oyun Qaydaları</button>
-        <a href="account.html" id="userDisplayName">Hesab</a>
-      </nav>
-    </header>
+    <h1>Cookie (Kuki) Siyasəti</h1>
+    
+    <p>Bu platformada təcrübənizi təkmilləşdirmək üçün <span class="highlight">TypingMaster</span> kukilərdən istifadə edir. Saytımızı istifadə edərək bu şərtləri qəbul etmiş sayılırsınız.</p>
 
-    <div class="game-options">
-      <div class="word-counts" id="wordSelector">
-        <button data-val="10">10</button>
-        <button data-val="25" class="active">25</button>
-        <button data-val="50">50</button>
-        <button data-val="100">100</button>
-      </div>
-      <div class="stats-bar">
-        <div class="stat-pill"><label>Sürət</label><span id="wpmDisplay">0</span></div>
-        <div class="stat-pill"><label>Vaxt</label><span id="timerDisplay">0s</span></div>
-      </div>
-    </div>
+    <h2>1. Kuki nədir?</h2>
+    <p>Kukilər (cookies) veb-saytı ziyarət etdiyiniz zaman brauzerinizə yerləşdirilən kiçik mətn fayllarıdır. Onlar saytın düzgün işləməsi və sizin üstünlüklərinizi xatırlamaq üçün lazımdır.</p>
 
-    <div class="word-stream" id="wordBox"></div>
+    <h2>2. Hansı kukilərdən istifadə edirik?</h2>
+    <table class="cookie-table">
+        <thead>
+            <tr>
+                <th>Növ</th>
+                <th>Məqsəd</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Zəruri</td>
+                <td>Sessiyanı aktiv saxlamaq və təhlükəsizlik üçün.</td>
+            </tr>
+            <tr>
+                <td>Analitik</td>
+                <td>Sürətli yazma statistikalarınızı izləmək üçün.</td>
+            </tr>
+            <tr>
+                <td>Üstünlük</td>
+                <td>Dil və tema (qaranlıq rejim) seçimlərini yadda saxlamaq üçün.</td>
+            </tr>
+        </tbody>
+    </table>
 
-    <div class="input-row">
-      <input type="text" id="mainInput" placeholder="BAŞLA düyməsinə klikləyin..." disabled autocomplete="off">
-      <button class="btn" id="startAction">BAŞLA</button>
-    </div>
-  </div>
+    <h2>3. Kukiləri necə idarə etmək olar?</h2>
+    <p>Siz brauzerinizin tənzimləmələrindən kukiləri silə və ya bloklaya bilərsiniz. Lakin unutmayın ki, bu halda bəzi funksiyalar (məsələn, test nəticələrinin yadda saxlanılması) işləməyə bilər.</p>
+
+    <a href="index.html" class="footer-link">Ana Səhifəyə Qayıt</a>
 </div>
 
-<footer>
-  <p style="color: var(--muted); font-size: 14px;">TypingMaster — Yazma sürətinizi bizimlə artırın.</p>
-  <div class="footer-links">
-    <button onclick="openModal('privacyModal')">Məxfilik Siyasəti</button>
-    <button onclick="openModal('termsModal')">İstifadə Şərtləri</button>
-    <button onclick="openModal('rulesModal')">Necə Oynamalı?</button>
-  </div>
-</footer>
-
-<div id="rulesModal" class="modal">
-  <div class="modal-content">
-    <button class="close-modal" onclick="closeModal('rulesModal')">&times;</button>
-    <h2 style="color: var(--accent);">Oyun Qaydaları 🎮</h2>
-    <div class="info-section">
-      <h3>1. Başlamaq</h3>
-      <p>"BAŞLA" düyməsinə kliklədiyiniz an vaxt başlayır və ilk söz aktivləşir.</p>
-    </div>
-    <div class="info-section">
-      <h3>2. Yazma Qaydası</h3>
-      <p>Ekranda gördüyünüz sözü daxil edin və növbəti sözə keçmək üçün <b>Boşluq (Space)</b> düyməsini sıxın.</p>
-    </div>
-    <div class="info-section">
-      <h3>3. Səhvlər</h3>
-      <p>Səhv yazdığınız hərflər qırmızı rəngdə görünəcək. Səhv yazdığınız sözlər WPM sürətinizə təsir etmir.</p>
-    </div>
-  </div>
-</div>
-
-<div id="privacyModal" class="modal">
-  <div class="modal-content">
-    <button class="close-modal" onclick="closeModal('privacyModal')">&times;</button>
-    <h2 style="color: var(--accent);">Məxfilik Siyasəti 🛡️</h2>
-    <p style="color: var(--muted); font-size: 0.9rem;">Məlumatlarınızın təhlükəsizliyi bizim üçün önəmlidir.</p>
-    <div class="info-section">
-      <p>• Toplanılan məlumatlar yalnız sizin sürət statistikalarınızı yadda saxlamaq üçündür.<br>
-      • Email ünvanınız üçüncü tərəflərlə paylaşılmır.<br>
-      • Cookie-lər platformanın işini optimallaşdırmaq üçün istifadə olunur.</p>
-    </div>
-  </div>
-</div>
-
-<div id="termsModal" class="modal">
-  <div class="modal-content">
-    <button class="close-modal" onclick="closeModal('termsModal')">&times;</button>
-    <h2 style="color: var(--accent);">İstifadə Şərtləri 📜</h2>
-    <div class="info-section">
-      <p>• TypingMaster platformasından istifadə tamamilə ödənişsizdir.<br>
-      • İstifadəçilər digər şəxslərin hesablarına müdaxilə etməməlidir.<br>
-      • Platformada qeydə alınan nəticələr əyləncə və inkişaf məqsədlidir.</p>
-    </div>
-  </div>
-</div>
-
-<div id="resultModal" class="modal">
-  <div class="modal-content">
-    <h2 style="margin:0; color: var(--accent);">Nəticə</h2>
-    <span id="finalWpm" style="font-size: 4rem; font-weight: 800; display: block;">0</span>
-    <p style="color: var(--muted);">WPM (Söz/Dəq)</p>
-    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 20px 0;">
-      <div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:15px;">Düz: <span id="resCorrect" style="color:var(--success)">0</span></div>
-      <div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:15px;">Səhv: <span id="resWrong" style="color:var(--error)">0</span></div>
-    </div>
-    <button class="btn" style="width:100%; padding: 15px;" onclick="location.reload()">Təkrarla</button>
-  </div>
-</div>
-
-<script type="module">
-  // Modal Funksiyaları
-  window.openModal = function(id) { document.getElementById(id).style.display = 'flex'; }
-  window.closeModal = function(id) { document.getElementById(id).style.display = 'none'; }
-
-  // Sənin Orijinal Firebase və Oyun Məntiqin (Dəyişməz qalıb)
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-  import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCYWC8P0meXFbyRoSA4uHkJmJRkPFlhwSQ",
-    authDomain: "salam-58d0a.firebaseapp.com",
-    projectId: "salam-58d0a",
-    storageBucket: "salam-58d0a.firebasestorage.app",
-    messagingSenderId: "703442504339",
-    appId: "1:703442504339:web:f9a6b1f54db80c4c829b66"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-
-  let state = { words: [], currentIdx: 0, startTime: null, isActive: false, limit: 25, timerInterval: null, correctCount: 0, wrongCount: 0 };
-  const wordPool = "salam dünya kitab klaviatura sürət texnologiya məktəb həyat proqramist uğur gələcək internet məlumat inkişaf azərbaycan musiqi günəş ulduz dəniz qələm dəftər kompyuter sistem şəbəkə yazı sürətli dahi yaradıcı qüvvə fəza zaman məkan rəqəmsal kitabxana təhsil oyun platforma qabiliyyət məqsəd arzular".split(" ");
-
-  const inputEl = document.getElementById("mainInput");
-  const wordBox = document.getElementById("wordBox");
-
-  onAuthStateChanged(auth, async (user) => {
-    const email = user ? user.email : localStorage.getItem("tempEmail");
-    if (email) {
-      const q = query(collection(db, "melumatlar"), where("email", "==", email.toLowerCase()));
-      const snap = await getDocs(q);
-      if (!snap.empty) { document.getElementById("userDisplayName").innerText = snap.docs[0].data().name || email.split('@')[0]; }
-    }
-  });
-
-  document.getElementById("wordSelector").onclick = (e) => {
-    if (e.target.tagName === "BUTTON") {
-      document.querySelectorAll("#wordSelector button").forEach(btn => btn.classList.remove("active"));
-      e.target.classList.add("active");
-      state.limit = parseInt(e.target.dataset.val);
-      resetGame();
-    }
-  };
-
-  function resetGame() {
-    state.isActive = false; state.currentIdx = 0; state.correctCount = 0; state.wrongCount = 0;
-    clearInterval(state.timerInterval);
-    inputEl.value = ""; inputEl.disabled = true;
-    document.getElementById("startAction").style.display = "block";
-    document.getElementById("timerDisplay").innerText = "0s";
-    document.getElementById("wpmDisplay").innerText = "0";
-    generateWords();
-  }
-
-  function generateWords() {
-    state.words = [];
-    for(let i=0; i<state.limit; i++) { state.words.push(wordPool[Math.floor(Math.random() * wordPool.length)]); }
-    wordBox.innerHTML = state.words.map((w, i) => `<span class="word ${i === 0 ? 'current' : ''}">${w}</span>`).join("");
-    wordBox.scrollTop = 0;
-  }
-
-  inputEl.oninput = () => {
-    if (!state.isActive) return;
-    const typed = inputEl.value;
-    const target = state.words[state.currentIdx];
-    const currentWordEl = document.querySelectorAll(".word")[state.currentIdx];
-    let coloredHTML = "";
-    for (let i = 0; i < target.length; i++) {
-      if (i < typed.length) { coloredHTML += `<span class="${typed[i] === target[i] ? 'char-correct' : 'char-wrong'}">${target[i]}</span>`; }
-      else { coloredHTML += target[i]; }
-    }
-    currentWordEl.innerHTML = coloredHTML;
-  };
-
-  inputEl.onkeydown = (e) => {
-    if (e.key === " ") {
-      e.preventDefault();
-      const typed = inputEl.value.trim();
-      if (!typed) return;
-      const target = state.words[state.currentIdx];
-      const wordEls = document.querySelectorAll(".word");
-      if (typed === target) { wordEls[state.currentIdx].className = "word correct"; state.correctCount++; }
-      else { wordEls[state.currentIdx].className = "word wrong"; state.wrongCount++; }
-      state.currentIdx++; inputEl.value = "";
-      if (state.currentIdx >= state.words.length) { finishGame(); }
-      else { 
-        wordEls[state.currentIdx].classList.add("current");
-        if (wordEls[state.currentIdx].offsetTop > wordBox.offsetHeight + wordBox.scrollTop - 100) { wordBox.scrollTop += 50; }
-      }
-    }
-  };
-
-  function finishGame() {
-    state.isActive = false; clearInterval(state.timerInterval);
-    document.getElementById("finalWpm").innerText = document.getElementById("wpmDisplay").innerText;
-    document.getElementById("resCorrect").innerText = state.correctCount;
-    document.getElementById("resWrong").innerText = state.wrongCount;
-    document.getElementById("resultModal").style.display = "flex";
-  }
-
-  document.getElementById("startAction").onclick = () => {
-    state.isActive = true; state.startTime = Date.now();
-    inputEl.disabled = false; inputEl.focus();
-    document.getElementById("startAction").style.display = "none";
-    state.timerInterval = setInterval(() => {
-      if (!state.isActive) return;
-      const elapsed = (Date.now() - state.startTime) / 1000;
-      document.getElementById("timerDisplay").innerText = Math.floor(elapsed) + "s";
-      document.getElementById("wpmDisplay").innerText = Math.round((state.correctCount) / (elapsed / 60)) || 0;
-    }, 1000);
-  };
-
-  generateWords();
-</script>
 </body>
 </html>
