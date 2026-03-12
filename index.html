@@ -161,7 +161,10 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { 
+    getFirestore, doc, getDoc, setDoc, serverTimestamp, 
+    collection, query, where, getDocs 
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
   import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
   const firebaseConfig = { 
@@ -187,9 +190,8 @@
     currentUser = user;
     if (user) {
       logoutBtn.style.display = "block";
-      const docRef = doc(db, "melumatlar", user.uid);
-      const docSnap = await getDoc(docRef);
-      document.getElementById("userDisplayName").innerText = (docSnap.exists() ? docSnap.data().name : user.email.split('@')[0]);
+      // Emaili göstəririk
+      document.getElementById("userDisplayName").innerText = user.email.split('@')[0];
       inputEl.placeholder = "Hazırsınızsa BAŞLA-ya sıxın";
     } else {
       logoutBtn.style.display = "none";
@@ -199,6 +201,47 @@
   });
 
   logoutBtn.onclick = () => signOut(auth).then(() => window.location.reload());
+
+  // BAŞLA düyməsinə basdıqda yoxlama
+  document.getElementById("startAction").onclick = async () => {
+    // 1. Giriş edilibmi?
+    if(!currentUser) { 
+      alert("Zəhmət olmasa əvvəlcə daxil olun!"); 
+      window.location.href="qeydiyyat.html"; // Login səhifəsinə yönləndir
+      return; 
+    }
+
+    try {
+      // 2. "melumatlar" bazasında bu email varmı?
+      const q = query(collection(db, "melumatlar"), where("email", "==", currentUser.email));
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
+        // İstifadəçi Auth-dan keçib amma "melumatlar" bazasında yoxdursa
+        alert("Xəta: Sizin email qeydiyyat bazasında tapılmadı. Qeydiyyata yönləndirilirsiniz.");
+        window.location.href = "qeydiyyat.html";
+        return;
+      }
+
+      // 3. Əgər varsa oyunu başlat
+      startGame();
+      
+    } catch (error) {
+      console.error("Yoxlama zamanı xəta:", error);
+      alert("Sistem xətası baş verdi.");
+    }
+  };
+
+  function startGame() {
+    state.isActive = true; 
+    state.startTime = Date.now();
+    inputEl.disabled = false; 
+    inputEl.focus();
+    document.getElementById("startAction").style.display = "none";
+    document.getElementById("wordSelector").style.pointerEvents = "none";
+    document.getElementById("wordSelector").style.opacity = "0.5";
+    startTimer();
+  }
 
   // Word Selection
   document.querySelectorAll("#wordSelector button").forEach(btn => {
@@ -216,16 +259,6 @@
     state.currentIdx = 0;
     wordBox.innerHTML = state.words.map((w, i) => `<span class="word ${i === 0 ? 'current' : ''}">${w}</span>`).join("");
   }
-
-  document.getElementById("startAction").onclick = () => {
-    if(!currentUser) { alert("Zəhmət olmasa daxil olun!"); window.location.href="qeydiyyat.html"; return; }
-    state.isActive = true; state.startTime = Date.now();
-    inputEl.disabled = false; inputEl.focus();
-    document.getElementById("startAction").style.display = "none";
-    document.getElementById("wordSelector").style.pointerEvents = "none";
-    document.getElementById("wordSelector").style.opacity = "0.5";
-    startTimer();
-  };
 
   function startTimer() {
     const timer = setInterval(() => {
