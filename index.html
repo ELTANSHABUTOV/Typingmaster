@@ -1,137 +1,349 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="az">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cookie Siyasəti | TypingMaster</title>
-    <style>
-        :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --accent-blue: #38bdf8;
-            --text-main: #f8fafc;
-            --text-dim: #94a3b8;
-        }
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5663281315926059" crossorigin="anonymous"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TypingMaster — Professional Yazı Platforması</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root { 
+      --bg: #0b1120; --card-bg: rgba(22, 30, 46, 0.9); 
+      --accent: #38bdf8; --text: #f8fafc; --muted: #64748b;
+      --error: #f43f5e; --success: #10b981;
+    }
+    
+    * { box-sizing: border-box; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+    
+    body { 
+      margin: 0; background: var(--bg); color: var(--text); 
+      font-family: 'Poppins', sans-serif; display: flex; flex-direction: column; 
+      align-items: center; min-height: 100vh;
+    }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            line-height: 1.6;
-        }
+    .container { width: 100%; max-width: 900px; padding: 20px; flex: 1; display: flex; flex-direction: column; justify-content: center; }
 
-        .container {
-            width: 90%;
-            max-width: 800px;
-            background: var(--card-bg);
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
+    .main-card { 
+      background: var(--card-bg); backdrop-filter: blur(25px); 
+      border-radius: 32px; padding: 40px; border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.7);
+    }
 
-        h1 {
-            color: var(--accent-blue);
-            font-size: 2rem;
-            margin-bottom: 20px;
-            border-bottom: 2px solid rgba(56, 189, 248, 0.2);
-            padding-bottom: 10px;
-        }
+    header { 
+      display: flex; justify-content: space-between; align-items: center; 
+      margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
 
-        h2 {
-            font-size: 1.2rem;
-            color: var(--accent-blue);
-            margin-top: 25px;
-        }
+    .nav-links { display: flex; gap: 10px; }
+    .nav-links a { 
+      color: var(--text); text-decoration: none; font-size: 13px; font-weight: 500;
+      padding: 8px 16px; border-radius: 12px; background: rgba(255,255,255,0.05);
+    }
+    .nav-links a#logoutBtn { background: var(--error); color: white; display: none; font-weight: 700; }
+    .nav-links a:hover:not(#logoutBtn) { background: var(--accent); color: var(--bg); }
 
-        p {
-            color: var(--text-dim);
-            margin-bottom: 15px;
-        }
+    .game-options { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .word-counts { display: flex; background: rgba(0,0,0,0.3); padding: 5px; border-radius: 12px; gap: 5px; }
+    .word-counts button { 
+      background: transparent; border: none; color: var(--muted); padding: 5px 12px; 
+      cursor: pointer; font-weight: 600; border-radius: 8px; font-size: 13px;
+    }
+    .word-counts button.active { background: var(--accent); color: var(--bg); }
 
-        .highlight {
-            color: var(--text-main);
-            font-weight: 600;
-        }
+    .stats-bar { display: flex; gap: 10px; }
+    .stat-pill { background: rgba(0,0,0,0.25); padding: 8px 15px; border-radius: 12px; text-align: center; min-width: 80px; }
+    .stat-pill label { display: block; font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+    .stat-pill span { color: var(--accent); font-weight: 800; font-size: 1.1rem; }
 
-        .footer-link {
-            display: inline-block;
-            margin-top: 30px;
-            padding: 12px 25px;
-            background-color: var(--accent-blue);
-            color: var(--bg-color);
-            text-decoration: none;
-            border-radius: 10px;
-            font-weight: bold;
-            transition: transform 0.2s, opacity 0.2s;
-        }
+    .word-stream { 
+      background: rgba(0,0,0,0.2); border-radius: 20px; padding: 30px; 
+      height: 160px; display: flex; flex-wrap: wrap; gap: 12px; 
+      font-size: 24px; line-height: 1.5; margin-bottom: 25px; overflow: hidden; position: relative;
+    }
+    .word { color: var(--muted); padding: 0 4px; border-radius: 4px; }
+    .word.current { color: #fff; background: rgba(56, 189, 248, 0.15); border-bottom: 2px solid var(--accent); }
+    .word.correct { color: var(--success); }
+    .word.wrong { color: var(--error); }
 
-        .footer-link:hover {
-            transform: translateY(-2px);
-            opacity: 0.9;
-        }
+    .input-row { display: flex; gap: 15px; position: relative; }
+    input[type="text"] { 
+      flex: 1; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); 
+      border-radius: 16px; padding: 18px 25px; color: white; font-size: 18px; outline: none;
+    }
+    input[type="text"]:focus { border-color: var(--accent); box-shadow: 0 0 20px rgba(56, 189, 248, 0.1); }
 
-        .cookie-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
+    .rules-panel { 
+        margin-top: 20px; padding: 15px; background: rgba(56, 189, 248, 0.05); 
+        border-radius: 15px; font-size: 12px; color: var(--muted); border: 1px dashed rgba(56, 189, 248, 0.2);
+    }
 
-        .cookie-table th, .cookie-table td {
-            text-align: left;
-            padding: 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
+    footer { 
+      width: 100%; padding: 40px 20px; background: rgba(0,0,0,0.3); 
+      margin-top: 50px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .footer-nav { display: flex; justify-content: center; gap: 25px; margin-bottom: 15px; }
+    .footer-nav a { color: var(--muted); text-decoration: none; font-size: 13px; }
+    .footer-nav a:hover { color: var(--accent); }
 
-        .cookie-table th {
-            color: var(--text-main);
-        }
-    </style>
+    .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 9999; }
+    .modal-content { background: #111827; padding: 45px; border-radius: 35px; text-align: center; border: 1px solid var(--accent); width: 90%; max-width: 400px; }
+    
+    .char-correct { color: var(--success); }
+    .char-wrong { color: var(--error); text-decoration: underline; }
+    .btn { padding: 15px 35px; border-radius: 16px; border: none; font-weight: 800; cursor: pointer; background: var(--accent); color: var(--bg); text-transform: uppercase; letter-spacing: 1px; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(56, 189, 248, 0.3); }
+  </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Cookie (Kuki) Siyasəti</h1>
-    
-    <p>Bu platformada təcrübənizi təkmilləşdirmək üçün <span class="highlight">TypingMaster</span> kukilərdən istifadə edir. Saytımızı istifadə edərək bu şərtləri qəbul etmiş sayılırsınız.</p>
+  <div class="main-card">
+    <header>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <img src="https://i.postimg.cc/9Qy6YWFZ/Chat-GPT-Image-Nov-27-2025-09-35-45-PM.png" width="40" style="border-radius:10px">
+        <h2 style="margin:0; font-size:1.4rem; font-weight:800;">TypingMaster</h2>
+      </div>
+      <nav class="nav-links">
+        <a href="account.html" id="userDisplayName">Hesab</a>
+        <a href="telefon.html">Dəstək</a>
+        <a href="#" id="logoutBtn">ÇIXIŞ</a>
+      </nav>
+    </header>
 
-    <h2>1. Kuki nədir?</h2>
-    <p>Kukilər (cookies) veb-saytı ziyarət etdiyiniz zaman brauzerinizə yerləşdirilən kiçik mətn fayllarıdır. Onlar saytın düzgün işləməsi və sizin üstünlüklərinizi xatırlamaq üçün lazımdır.</p>
+    <div class="game-options">
+      <div class="word-counts" id="wordSelector">
+        <button data-val="10">10</button>
+        <button data-val="25" class="active">25</button>
+        <button data-val="50">50</button>
+        <button data-val="100">100</button>
+      </div>
+      <div class="stats-bar">
+        <div class="stat-pill"><label>Sürət</label><span id="wpmDisplay">0</span></div>
+        <div class="stat-pill"><label>Vaxt</label><span id="timerDisplay">00:00</span></div>
+      </div>
+    </div>
 
-    <h2>2. Hansı kukilərdən istifadə edirik?</h2>
-    <table class="cookie-table">
-        <thead>
-            <tr>
-                <th>Növ</th>
-                <th>Məqsəd</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Zəruri</td>
-                <td>Sessiyanı aktiv saxlamaq və təhlükəsizlik üçün.</td>
-            </tr>
-            <tr>
-                <td>Analitik</td>
-                <td>Sürətli yazma statistikalarınızı izləmək üçün.</td>
-            </tr>
-            <tr>
-                <td>Üstünlük</td>
-                <td>Dil və tema (qaranlıq rejim) seçimlərini yadda saxlamaq üçün.</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="word-stream" id="wordBox"></div>
 
-    <h2>3. Kukiləri necə idarə etmək olar?</h2>
-    <p>Siz brauzerinizin tənzimləmələrindən kukiləri silə və ya bloklaya bilərsiniz. Lakin unutmayın ki, bu halda bəzi funksiyalar (məsələn, test nəticələrinin yadda saxlanılması) işləməyə bilər.</p>
+    <div class="input-row">
+      <input type="text" id="mainInput" placeholder="BAŞLA düyməsinə klikləyin..." disabled autocomplete="off">
+      <button class="btn" id="startAction">BAŞLA</button>
+    </div>
 
-    <a href="index.html" class="footer-link">Ana Səhifəyə Qayıt</a>
+    <div class="rules-panel">
+        <b>QAYDALAR:</b> Sözləri ardıcıllıqla yazın və hər sözdən sonra <b>Boşluq (Space)</b> düyməsini sıxın. Səhv yazdığınız sözü geri qayıdıb düzəldə bilməzsiniz, fokusunuzu qoruyun!
+    </div>
+  </div>
 </div>
 
+<footer>
+  <div class="footer-nav">
+    <a href="privacy.html">Məxfilik Siyasəti</a>
+    <a href="terms.html">İstifadə Şərtləri</a>
+    <a href="haqqimizda.html">Haqqımızda</a>
+    
+  </div>
+  <p style="font-size: 12px; color: var(--muted); margin: 0;">© 2026 TypingMaster Global Services. Bütün hüquqlar qorunur.</p>
+</footer>
+
+<div id="resultModal" class="modal">
+  <div class="modal-content">
+    <h3 style="margin-top:0">Nəticəniz</h3>
+    <span id="wpm-highlight" style="font-size: 4.5rem; color: var(--accent); font-weight: 800; display: block;">0</span>
+    <p style="margin-bottom: 30px; letter-spacing: 2px;">WPM</p>
+    <div style="display:flex; justify-content: space-between; margin-bottom: 30px; background: rgba(255,255,255,0.05); padding: 20px; border-radius: 20px;">
+        <div>Düzgün: <br><b id="finalCorrect" style="color:var(--success); font-size: 1.4rem;">0</b></div>
+        <div>Səhv: <br><b id="finalWrong" style="color:var(--error); font-size: 1.4rem;">0</b></div>
+    </div>
+    <button class="btn" style="width:100%" onclick="location.reload()">YENİDƏN SINA</button>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { 
+    getFirestore, doc, getDoc, setDoc, serverTimestamp, 
+    collection, query, where, getDocs 
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+  const firebaseConfig = { 
+    apiKey: "AIzaSyCPUyl6EbO8dvJBTWofVBQg1a1xJHM4_08", authDomain: "salam-58d0a.firebaseapp.com", 
+    projectId: "salam-58d0a", storageBucket: "salam-58d0a.firebasestorage.app", 
+    messagingSenderId: "703442504339", appId: "1:703442504339:web:4d7757d08bb37189829b66" 
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+
+  const wordPool = "salam dünya kitab klaviatura sürət texnologiya məktəb həyat proqramist uğur gələcək internet məlumat inkişaf azərbaycan musiqi günəş ulduz dəniz qələm dəftər kompyuter sistem şəbəkə yazı sürətli dahi yaradıcı qüvvə fəza zaman məkan rəqəmsal".split(" ");
+  let state = { words: [], currentIdx: 0, correct: 0, wrong: 0, startTime: null, isActive: false, limit: 25 };
+  
+  // İstifadəçini həm Auth-dan, həm də LocalStorage-dən yoxlayırıq
+  let activeEmail = localStorage.getItem("tempEmail"); 
+
+  const inputEl = document.getElementById("mainInput");
+  const wordBox = document.getElementById("wordBox");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  // Auth Status və Adın göstərilməsi
+  async function checkUserStatus(user) {
+    const email = user ? user.email : localStorage.getItem("tempEmail");
+    
+    if (email) {
+      activeEmail = email;
+      logoutBtn.style.display = "block";
+      
+      // Bazadan adı çəkməyə çalışaq
+      const q = query(collection(db, "melumatlar"), where("email", "==", email));
+      const snap = await getDocs(q);
+      
+      if (!snap.empty) {
+        const userData = snap.docs[0].data();
+        document.getElementById("userDisplayName").innerText = userData.name || email.split('@')[0];
+      } else {
+        document.getElementById("userDisplayName").innerText = email.split('@')[0];
+      }
+      
+      inputEl.placeholder = "Hazırsınızsa BAŞLA-ya sıxın";
+    } else {
+      activeEmail = null;
+      logoutBtn.style.display = "none";
+      document.getElementById("userDisplayName").innerText = "Hesab";
+      inputEl.placeholder = "Daxil olun...";
+    }
+  }
+
+  onAuthStateChanged(auth, (user) => {
+    checkUserStatus(user);
+  });
+
+  // OTP səhifəsindən gələnlər üçün dərhal yoxla
+  if (!auth.currentUser && activeEmail) {
+    checkUserStatus(null);
+  }
+
+  logoutBtn.onclick = () => {
+    localStorage.removeItem("tempEmail");
+    signOut(auth).then(() => window.location.reload());
+  };
+
+  // BAŞLA düyməsinə basdıqda yoxlama
+  document.getElementById("startAction").onclick = async () => {
+    if(!activeEmail) { 
+      alert("Zəhmət olmasa əvvəlcə daxil olun!"); 
+      window.location.href="qeydiyyat.html"; 
+      return; 
+    }
+
+    try {
+      // "melumatlar" bazasında bu email varmı?
+      const q = query(collection(db, "melumatlar"), where("email", "==", activeEmail.toLowerCase()));
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
+        alert("Xəta: Email qeydiyyat bazasında tapılmadı. Qeydiyyata yönləndirilirsiniz.");
+        window.location.href = "qeydiyyat.html";
+        return;
+      }
+
+      // Əgər varsa oyunu başlat
+      startGame();
+      
+    } catch (error) {
+      console.error("Yoxlama xətası:", error);
+      alert("Sistem xətası baş verdi.");
+    }
+  };
+
+  function startGame() {
+    state.isActive = true; 
+    state.startTime = Date.now();
+    inputEl.disabled = false; 
+    inputEl.focus();
+    document.getElementById("startAction").style.display = "none";
+    document.getElementById("wordSelector").style.pointerEvents = "none";
+    document.getElementById("wordSelector").style.opacity = "0.5";
+    startTimer();
+  }
+
+  // Word Selection funksiyaları...
+  document.querySelectorAll("#wordSelector button").forEach(btn => {
+    btn.onclick = () => {
+        if(state.isActive) return;
+        document.querySelectorAll("#wordSelector button").forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.limit = parseInt(btn.dataset.val);
+        generateWords();
+    };
+  });
+
+  function generateWords() {
+    state.words = [...wordPool].sort(() => Math.random() - 0.5).slice(0, state.limit);
+    state.currentIdx = 0;
+    wordBox.innerHTML = state.words.map((w, i) => `<span class="word ${i === 0 ? 'current' : ''}">${w}</span>`).join("");
+  }
+
+  function startTimer() {
+    const timer = setInterval(() => {
+      if (!state.isActive) { clearInterval(timer); return; }
+      const elapsed = (Date.now() - state.startTime) / 1000;
+      document.getElementById("timerDisplay").innerText = `${Math.floor(elapsed/60).toString().padStart(2,'0')}:${Math.floor(elapsed%60).toString().padStart(2,'0')}`;
+      if(elapsed > 0) document.getElementById("wpmDisplay").innerText = Math.round(state.currentIdx / (elapsed / 60));
+    }, 1000);
+  }
+
+  inputEl.oninput = () => {
+    const typed = inputEl.value;
+    const target = state.words[state.currentIdx];
+    const wordEls = document.querySelectorAll(".word");
+    let colored = "";
+    for (let i = 0; i < target.length; i++) {
+        if (i < typed.length) {
+            colored += typed[i] === target[i] ? `<span class="char-correct">${target[i]}</span>` : `<span class="char-wrong">${target[i]}</span>`;
+        } else colored += target[i];
+    }
+    wordEls[state.currentIdx].innerHTML = colored;
+  };
+
+  inputEl.onkeydown = (e) => {
+    if (e.key === " ") {
+      e.preventDefault();
+      const typed = inputEl.value.trim();
+      if (!typed) return;
+      const target = state.words[state.currentIdx];
+      const wordEls = document.querySelectorAll(".word");
+      
+      if (typed === target) { state.correct++; wordEls[state.currentIdx].className = "word correct"; }
+      else { state.wrong++; wordEls[state.currentIdx].className = "word wrong"; wordEls[state.currentIdx].innerHTML = target; }
+
+      state.currentIdx++;
+      inputEl.value = "";
+      if (state.currentIdx >= state.words.length) endGame();
+      else {
+        wordEls.forEach((el, i) => i === state.currentIdx ? el.classList.add('current') : el.classList.remove('current'));
+        wordEls[state.currentIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  };
+
+  async function endGame() {
+    state.isActive = false; inputEl.disabled = true;
+    const finalWpm = document.getElementById("wpmDisplay").innerText;
+    document.getElementById("wpm-highlight").innerText = finalWpm;
+    document.getElementById("finalCorrect").innerText = state.correct;
+    document.getElementById("finalWrong").innerText = state.wrong;
+    document.getElementById("resultModal").style.display = "flex";
+    
+    if (activeEmail) {
+      await setDoc(doc(db, "results", `${activeEmail}_${Date.now()}`), {
+        email: activeEmail, wpm: parseInt(finalWpm), correct: state.correct, wrong: state.wrong, createdAt: serverTimestamp()
+      });
+    }
+  }
+
+  generateWords();
+</script>
 </body>
 </html>
