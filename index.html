@@ -160,6 +160,56 @@
 </div>
 
 <script type="module">
+  // ... (mövcud importların sonuna əlavə et)
+import { addDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// Ziyarətçini qeyd edən funksiya
+async function trackVisitor(email) {
+    const visitorRef = collection(db, "visitors");
+    
+    if (email) {
+        // Əgər email varsa, birbaşa email ilə qeyd et
+        await addDoc(visitorRef, {
+            type: "registered",
+            identity: email,
+            timestamp: serverTimestamp()
+        });
+    } else {
+        // Əgər anonimdirsə, ardıcıl nömrəni idarə etmək üçün "counters" sənədindən istifadə edirik
+        const counterRef = doc(db, "counters", "visitors_count");
+        
+        try {
+            // Sayğacı 1 vahid artırırıq (Atomik əməliyyat)
+            await setDoc(counterRef, { current: increment(1) }, { merge: true });
+            
+            // Yeni nömrəni götürürük
+            const snap = await getDoc(counterRef);
+            const count = snap.data().current;
+            
+            // visitors bölməsinə Anonim X olaraq yazırıq
+            await addDoc(visitorRef, {
+                type: "anonymous",
+                identity: "anonim " + count,
+                timestamp: serverTimestamp()
+            });
+        } catch (e) {
+            console.error("Sayğac xətası:", e);
+        }
+    }
+}
+
+// onAuthStateChanged daxilində bu funksiyanı çağırırıq
+onAuthStateChanged(auth, (user) => {
+    const email = user ? user.email : localStorage.getItem("tempEmail");
+    checkUserStatus(user);
+    
+    // Sayta hər girişdə (və ya login olanda) bu funksiya işləsin
+    // Bir sessiyada bir dəfə işləməsi üçün sessionStorage istifadə edə bilərsən
+    if (!sessionStorage.getItem("visited")) {
+        trackVisitor(email);
+        sessionStorage.setItem("visited", "true");
+    }
+});
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { 
     getFirestore, doc, getDoc, setDoc, serverTimestamp, 
