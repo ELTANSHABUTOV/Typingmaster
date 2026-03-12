@@ -179,55 +179,80 @@
 
   const wordPool = "salam dünya kitab klaviatura sürət texnologiya məktəb həyat proqramist uğur gələcək internet məlumat inkişaf azərbaycan musiqi günəş ulduz dəniz qələm dəftər kompyuter sistem şəbəkə yazı sürətli dahi yaradıcı qüvvə fəza zaman məkan rəqəmsal".split(" ");
   let state = { words: [], currentIdx: 0, correct: 0, wrong: 0, startTime: null, isActive: false, limit: 25 };
-  let currentUser = null;
+  
+  // İstifadəçini həm Auth-dan, həm də LocalStorage-dən yoxlayırıq
+  let activeEmail = localStorage.getItem("tempEmail"); 
 
   const inputEl = document.getElementById("mainInput");
   const wordBox = document.getElementById("wordBox");
   const logoutBtn = document.getElementById("logoutBtn");
 
-  // Auth Status
-  onAuthStateChanged(auth, async (user) => {
-    currentUser = user;
-    if (user) {
+  // Auth Status və Adın göstərilməsi
+  async function checkUserStatus(user) {
+    const email = user ? user.email : localStorage.getItem("tempEmail");
+    
+    if (email) {
+      activeEmail = email;
       logoutBtn.style.display = "block";
-      // Emaili göstəririk
-      document.getElementById("userDisplayName").innerText = user.email.split('@')[0];
+      
+      // Bazadan adı çəkməyə çalışaq
+      const q = query(collection(db, "melumatlar"), where("email", "==", email));
+      const snap = await getDocs(q);
+      
+      if (!snap.empty) {
+        const userData = snap.docs[0].data();
+        document.getElementById("userDisplayName").innerText = userData.name || email.split('@')[0];
+      } else {
+        document.getElementById("userDisplayName").innerText = email.split('@')[0];
+      }
+      
       inputEl.placeholder = "Hazırsınızsa BAŞLA-ya sıxın";
     } else {
+      activeEmail = null;
       logoutBtn.style.display = "none";
       document.getElementById("userDisplayName").innerText = "Hesab";
       inputEl.placeholder = "Daxil olun...";
     }
+  }
+
+  onAuthStateChanged(auth, (user) => {
+    checkUserStatus(user);
   });
 
-  logoutBtn.onclick = () => signOut(auth).then(() => window.location.reload());
+  // OTP səhifəsindən gələnlər üçün dərhal yoxla
+  if (!auth.currentUser && activeEmail) {
+    checkUserStatus(null);
+  }
+
+  logoutBtn.onclick = () => {
+    localStorage.removeItem("tempEmail");
+    signOut(auth).then(() => window.location.reload());
+  };
 
   // BAŞLA düyməsinə basdıqda yoxlama
   document.getElementById("startAction").onclick = async () => {
-    // 1. Giriş edilibmi?
-    if(!currentUser) { 
+    if(!activeEmail) { 
       alert("Zəhmət olmasa əvvəlcə daxil olun!"); 
-      window.location.href="qeydiyyat.html"; // Login səhifəsinə yönləndir
+      window.location.href="qeydiyyat.html"; 
       return; 
     }
 
     try {
-      // 2. "melumatlar" bazasında bu email varmı?
-      const q = query(collection(db, "melumatlar"), where("email", "==", currentUser.email));
+      // "melumatlar" bazasında bu email varmı?
+      const q = query(collection(db, "melumatlar"), where("email", "==", activeEmail.toLowerCase()));
       const querySnapshot = await getDocs(q);
 
       if (querySnapshot.empty) {
-        // İstifadəçi Auth-dan keçib amma "melumatlar" bazasında yoxdursa
-        alert("Xəta: Sizin email qeydiyyat bazasında tapılmadı. Qeydiyyata yönləndirilirsiniz.");
+        alert("Xəta: Email qeydiyyat bazasında tapılmadı. Qeydiyyata yönləndirilirsiniz.");
         window.location.href = "qeydiyyat.html";
         return;
       }
 
-      // 3. Əgər varsa oyunu başlat
+      // Əgər varsa oyunu başlat
       startGame();
       
     } catch (error) {
-      console.error("Yoxlama zamanı xəta:", error);
+      console.error("Yoxlama xətası:", error);
       alert("Sistem xətası baş verdi.");
     }
   };
@@ -243,7 +268,7 @@
     startTimer();
   }
 
-  // Word Selection
+  // Word Selection funksiyaları...
   document.querySelectorAll("#wordSelector button").forEach(btn => {
     btn.onclick = () => {
         if(state.isActive) return;
@@ -311,9 +336,9 @@
     document.getElementById("finalWrong").innerText = state.wrong;
     document.getElementById("resultModal").style.display = "flex";
     
-    if (currentUser) {
-      await setDoc(doc(db, "results", `${currentUser.email}_${Date.now()}`), {
-        email: currentUser.email, wpm: parseInt(finalWpm), correct: state.correct, wrong: state.wrong, createdAt: serverTimestamp()
+    if (activeEmail) {
+      await setDoc(doc(db, "results", `${activeEmail}_${Date.now()}`), {
+        email: activeEmail, wpm: parseInt(finalWpm), correct: state.correct, wrong: state.wrong, createdAt: serverTimestamp()
       });
     }
   }
