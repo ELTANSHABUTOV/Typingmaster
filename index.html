@@ -136,12 +136,13 @@
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  let state = { words: [], currentIdx: 0, startTime: null, isActive: false, limit: 25 };
-  const wordPool = "salam dünya kitab klaviatura sürət texnologiya məktəb həyat proqramist uğur gələcək internet məlumat inkişaf azərbaycan musiqi günəş ulduz dəniz qələm dəftər kompyuter sistem şəbəkə yazı sürətli dahi yaradıcı qüvvə fəza zaman məkan rəqəmsal".split(" ");
+  let state = { words: [], currentIdx: 0, startTime: null, isActive: false, limit: 25, timerInterval: null };
+  const wordPool = "salam dünya kitab klaviatura sürət texnologiya məktəb həyat proqramist uğur gələcək internet məlumat inkişaf azərbaycan musiqi günəş ulduz dəniz qələm dəftər kompyuter sistem şəbəkə yazı sürətli dahi yaradıcı qüvvə fəza zaman məkan rəqəmsal kitabxana təhsil oyun platforma qabiliyyət məqsəd arzular".split(" ");
 
   const inputEl = document.getElementById("mainInput");
   const wordBox = document.getElementById("wordBox");
 
+  // 1. İSTİFADƏÇİ YOXLAMA
   onAuthStateChanged(auth, async (user) => {
     const email = user ? user.email : localStorage.getItem("tempEmail");
     if (email) {
@@ -156,21 +157,57 @@
     }
   });
 
-  function generateWords() {
-    state.words = [...wordPool].sort(() => Math.random() - 0.5).slice(0, state.limit);
+  // 2. SÖZ SAYINI DƏYİŞDİRMƏK
+  document.getElementById("wordSelector").onclick = (e) => {
+    if (e.target.tagName === "BUTTON") {
+      // Aktiv düyməni dəyiş
+      document.querySelectorAll("#wordSelector button").forEach(btn => btn.classList.remove("active"));
+      e.target.classList.add("active");
+      
+      // Yeni limiti təyin et və oyunu sıfırla
+      state.limit = parseInt(e.target.dataset.val);
+      resetGame();
+    }
+  };
+
+  function resetGame() {
+    state.isActive = false;
     state.currentIdx = 0;
-    renderWords();
+    state.startTime = null;
+    clearInterval(state.timerInterval);
+    inputEl.value = "";
+    inputEl.disabled = true;
+    document.getElementById("startAction").style.display = "block";
+    document.getElementById("timerDisplay").innerText = "0s";
+    document.getElementById("wpmDisplay").innerText = "0";
+    generateWords();
   }
 
-  function renderWords() {
-    wordBox.innerHTML = state.words.map((w, i) => {
-      let cls = "word";
-      if (i === state.currentIdx) cls += " current";
-      return `<span class="${cls}">${w}</span>`;
-    }).join("");
+  function generateWords() {
+    state.words = [];
+    for(let i=0; i<state.limit; i++) {
+        state.words.push(wordPool[Math.floor(Math.random() * wordPool.length)]);
+    }
+    wordBox.innerHTML = state.words.map((w, i) => `<span class="word ${i === 0 ? 'current' : ''}">${w}</span>`).join("");
+    wordBox.scrollTop = 0; // Siyahını yuxarı qaytar
+  }
+
+  // 3. AUTO-SCROLL (SÖZÜN GÖRÜNMƏSİNİ TƏMİN ETMƏK)
+  function scrollToCurrentWord() {
+    const currentWordEl = document.querySelectorAll(".word")[state.currentIdx];
+    if (currentWordEl) {
+      const boxRect = wordBox.getBoundingClientRect();
+      const wordRect = currentWordEl.getBoundingClientRect();
+      
+      // Əgər söz görünən sahədən aşağıdadırsa, sürüşdür
+      if (wordRect.bottom > boxRect.bottom || wordRect.top < boxRect.top) {
+        currentWordEl.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }
   }
 
   inputEl.oninput = () => {
+    if (!state.isActive) return;
     const typed = inputEl.value;
     const target = state.words[state.currentIdx];
     const currentWordEl = document.querySelectorAll(".word")[state.currentIdx];
@@ -202,20 +239,24 @@
       
       if (state.currentIdx >= state.words.length) {
         state.isActive = false;
+        clearInterval(state.timerInterval);
         document.getElementById("wpm-highlight").innerText = document.getElementById("wpmDisplay").innerText;
         document.getElementById("resultModal").style.display = "flex";
       } else {
         wordEls[state.currentIdx].classList.add("current");
+        scrollToCurrentWord(); // Növbəti sözə keçəndə ekranı sürüşdür
       }
     }
   };
 
   document.getElementById("startAction").onclick = () => {
-    state.isActive = true; state.startTime = Date.now();
-    inputEl.disabled = false; inputEl.focus();
+    state.isActive = true; 
+    state.startTime = Date.now();
+    inputEl.disabled = false; 
+    inputEl.focus();
     document.getElementById("startAction").style.display = "none";
     
-    setInterval(() => {
+    state.timerInterval = setInterval(() => {
       if (!state.isActive) return;
       const elapsed = (Date.now() - state.startTime) / 1000;
       document.getElementById("timerDisplay").innerText = Math.floor(elapsed) + "s";
