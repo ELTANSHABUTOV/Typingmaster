@@ -12,36 +12,28 @@
       --accent: #38bdf8; --text: #f8fafc; --muted: #64748b;
       --error: #f43f5e; --success: #10b981;
     }
-    
     * { box-sizing: border-box; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
-    
     body { 
       margin: 0; background: var(--bg); color: var(--text); 
       font-family: 'Poppins', sans-serif; display: flex; flex-direction: column; 
       align-items: center; min-height: 100vh;
     }
-
     .container { width: 100%; max-width: 900px; padding: 20px; flex: 1; display: flex; flex-direction: column; justify-content: center; }
-
     .main-card { 
       background: var(--card-bg); backdrop-filter: blur(25px); 
       border-radius: 32px; padding: 40px; border: 1px solid rgba(255,255,255,0.08);
       box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.7);
     }
-
     header { 
       display: flex; justify-content: space-between; align-items: center; 
       margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05);
     }
-
     .nav-links { display: flex; gap: 10px; }
     .nav-links a { 
       color: var(--text); text-decoration: none; font-size: 13px; font-weight: 500;
       padding: 8px 16px; border-radius: 12px; background: rgba(255,255,255,0.05);
     }
-    .nav-links a#logoutBtn { background: var(--error); color: white; display: none; font-weight: 700; }
-    .nav-links a:hover:not(#logoutBtn) { background: var(--accent); color: var(--bg); }
-
+    .nav-links a:hover { background: var(--accent); color: var(--bg); }
     .game-options { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
     .word-counts { display: flex; background: rgba(0,0,0,0.3); padding: 5px; border-radius: 12px; gap: 5px; }
     .word-counts button { 
@@ -49,12 +41,10 @@
       cursor: pointer; font-weight: 600; border-radius: 8px; font-size: 13px;
     }
     .word-counts button.active { background: var(--accent); color: var(--bg); }
-
     .stats-bar { display: flex; gap: 10px; }
     .stat-pill { background: rgba(0,0,0,0.25); padding: 8px 15px; border-radius: 12px; text-align: center; min-width: 80px; }
     .stat-pill label { display: block; font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
     .stat-pill span { color: var(--accent); font-weight: 800; font-size: 1.1rem; }
-
     .word-stream { 
       background: rgba(0,0,0,0.2); border-radius: 20px; padding: 30px; 
       height: 160px; display: flex; flex-wrap: wrap; gap: 12px; 
@@ -64,19 +54,16 @@
     .word.current { color: #fff; background: rgba(56, 189, 248, 0.15); border-bottom: 2px solid var(--accent); }
     .word.correct { color: var(--success); }
     .word.wrong { color: var(--error); }
-
     .input-row { display: flex; gap: 15px; position: relative; }
     input[type="text"] { 
       flex: 1; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); 
       border-radius: 16px; padding: 18px 25px; color: white; font-size: 18px; outline: none;
     }
     input[type="text"]:focus { border-color: var(--accent); box-shadow: 0 0 20px rgba(56, 189, 248, 0.1); }
-
     .rules-panel { 
         margin-top: 20px; padding: 15px; background: rgba(56, 189, 248, 0.05); 
         border-radius: 15px; font-size: 12px; color: var(--muted); border: 1px dashed rgba(56, 189, 248, 0.2);
     }
-
     footer { 
       width: 100%; padding: 40px 20px; background: rgba(0,0,0,0.3); 
       margin-top: 50px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05);
@@ -84,14 +71,11 @@
     .footer-nav { display: flex; justify-content: center; gap: 25px; margin-bottom: 15px; }
     .footer-nav a { color: var(--muted); text-decoration: none; font-size: 13px; }
     .footer-nav a:hover { color: var(--accent); }
-
     .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 9999; }
     .modal-content { background: #111827; padding: 45px; border-radius: 35px; text-align: center; border: 1px solid var(--accent); width: 90%; max-width: 400px; }
-    
     .char-correct { color: var(--success); }
     .char-wrong { color: var(--error); text-decoration: underline; }
     .btn { padding: 15px 35px; border-radius: 16px; border: none; font-weight: 800; cursor: pointer; background: var(--accent); color: var(--bg); text-transform: uppercase; letter-spacing: 1px; }
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(56, 189, 248, 0.3); }
   </style>
 </head>
 <body>
@@ -105,8 +89,8 @@
       </div>
       <nav class="nav-links">
         <a href="account.html" id="userDisplayName">Hesab</a>
+        <a href="haqqimizda.html">Haqqımızda</a>
         <a href="telefon.html">Dəstək</a>
-        
       </nav>
     </header>
 
@@ -131,7 +115,7 @@
     </div>
 
     <div class="rules-panel">
-        <b>QAYDALAR:</b> Sözləri ardıcıllıqla yazın və hər sözdən sonra <b>Boşluq (Space)</b> düyməsini sıxın. Səhv yazdığınız sözü düzəldə bilməzsiniz!
+        <b>QAYDALAR:</b> Sözləri ardıcıllıqla yazın və hər sözdən sonra <b>Boşluq (Space)</b> düyməsini sıxın.
     </div>
   </div>
 </div>
@@ -140,204 +124,103 @@
   <div class="footer-nav">
     <a href="privacy.html">Məxfilik Siyasəti</a>
     <a href="terms.html">İstifadə Şərtləri</a>
-    <a href="haqqimizda.html">Haqqımızda</a>
   </div>
-  <p style="font-size: 12px; color: var(--muted); margin: 0;">© 2026 TypingMaster Global Services. Bütün hüquqlar qorunur.</p>
+  <p style="font-size: 12px; color: var(--muted); margin: 0;">© 2026 TypingMaster Global Services.</p>
 </footer>
 
 <div id="resultModal" class="modal">
   <div class="modal-content">
-    <h3 style="margin-top:0">Nəticəniz</h3>
+    <h3>Nəticəniz</h3>
     <span id="wpm-highlight" style="font-size: 4.5rem; color: var(--accent); font-weight: 800; display: block;">0</span>
-    <p style="margin-bottom: 30px; letter-spacing: 2px;">WPM</p>
-    <div style="display:flex; justify-content: space-between; margin-bottom: 30px; background: rgba(255,255,255,0.05); padding: 20px; border-radius: 20px;">
-        <div>Düzgün: <br><b id="finalCorrect" style="color:var(--success); font-size: 1.4rem;">0</b></div>
-        <div>Səhv: <br><b id="finalWrong" style="color:var(--error); font-size: 1.4rem;">0</b></div>
-    </div>
+    <p>WPM</p>
     <button class="btn" style="width:100%" onclick="location.reload()">YENİDƏN SINA</button>
   </div>
 </div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { 
-    getFirestore, doc, setDoc, serverTimestamp, 
-    collection, query, where, getDocs, addDoc 
-  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { getFirestore, doc, getDoc, collection, query, where, getDocs, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  const firebaseConfig = { 
-    apiKey: "AIzaSyCPUyl6EbO8dvJBTWofVBQg1a1xJHM4_08", authDomain: "salam-58d0a.firebaseapp.com", 
-    projectId: "salam-58d0a", storageBucket: "salam-58d0a.firebasestorage.app", 
-    messagingSenderId: "703442504339", appId: "1:703442504339:web:4d7757d08bb37189829b66" 
+  const firebaseConfig = {
+    apiKey: "AIzaSyCYWC8P0meXFbyRoSA4uHkJmJRkPFlhwSQ",
+    authDomain: "salam-58d0a.firebaseapp.com",
+    projectId: "salam-58d0a",
+    storageBucket: "salam-58d0a.firebasestorage.app",
+    messagingSenderId: "703442504339",
+    appId: "1:703442504339:web:f9a6b1f54db80c4c829b66"
   };
 
   const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
   const auth = getAuth(app);
+  const db = getFirestore(app);
 
-  const wordPool = "salam dünya kitab klaviatura sürət texnologiya məktəb həyat proqramist uğur gələcək internet məlumat inkişaf azərbaycan musiqi günəş ulduz dəniz qələm dəftər kompyuter sistem şəbəkə yazı sürətli dahi yaradıcı qüvvə fəza zaman məkan rəqəmsal".split(" ");
+  let activeEmail = localStorage.getItem("tempEmail");
   let state = { words: [], currentIdx: 0, correct: 0, wrong: 0, startTime: null, isActive: false, limit: 25 };
-  
-  let activeEmail = localStorage.getItem("tempEmail"); 
+  const wordPool = "salam dünya kitab klaviatura sürət texnologiya məktəb həyat proqramist uğur gələcək internet məlumat inkişaf azərbaycan musiqi günəş ulduz dəniz qələm dəftər kompyuter sistem şəbəkə yazı sürətli dahi yaradıcı qüvvə fəza zaman məkan rəqəmsal".split(" ");
 
   const inputEl = document.getElementById("mainInput");
   const wordBox = document.getElementById("wordBox");
-  const logoutBtn = document.getElementById("logoutBtn");
 
-  // STATUS YOKLAMA (GOOGLE VƏ OTP ÜÇÜN)
-  async function checkUserStatus(user) {
-    const email = user ? user.email : localStorage.getItem("tempEmail");
-    
-    if (email) {
-      activeEmail = email;
-      logoutBtn.style.display = "block";
-      
+  // İSTİFADƏÇİ YOXLAMA
+  onAuthStateChanged(auth, async (user) => {
+    if (user || activeEmail) {
+      const email = user ? user.email : activeEmail;
       const q = query(collection(db, "melumatlar"), where("email", "==", email.toLowerCase()));
       const snap = await getDocs(q);
       
       if (!snap.empty) {
-        const userData = snap.docs[0].data();
-        document.getElementById("userDisplayName").innerText = userData.name || email.split('@')[0];
-      } else if (user && user.providerData[0].providerId === 'google.com') {
-        // Google ilə daxil olubsa amma bazada yoxdursa - Avtomatik Qeydiyyat Et
-        const newUserData = {
-          email: email.toLowerCase(),
-          name: user.displayName || email.split('@')[0],
-          createdAt: serverTimestamp()
-        };
-        await addDoc(collection(db, "melumatlar"), newUserData);
-        document.getElementById("userDisplayName").innerText = newUserData.name;
-      } else {
-        document.getElementById("userDisplayName").innerText = email.split('@')[0];
+        document.getElementById("userDisplayName").innerText = snap.docs[0].data().name || email.split('@')[0];
       }
       inputEl.placeholder = "Hazırsınızsa BAŞLA-ya sıxın";
     } else {
-      activeEmail = null;
-      logoutBtn.style.display = "none";
-      document.getElementById("userDisplayName").innerText = "Hesab";
-      inputEl.placeholder = "Daxil olun...";
-    }
-  }
-
-  onAuthStateChanged(auth, (user) => checkUserStatus(user));
-  if (!auth.currentUser && activeEmail) checkUserStatus(null);
-
-  // ÇIXIŞ
-  logoutBtn.onclick = (e) => {
-    e.preventDefault();
-    localStorage.removeItem("tempEmail");
-    signOut(auth).then(() => {
       window.location.href = "qeydiyyat.html";
-    }).catch(() => {
-      window.location.href = "qeydiyyat.html";
-    });
-  };
-
-  // BAŞLA
-  document.getElementById("startAction").onclick = async () => {
-    if(!activeEmail) { 
-      alert("Zəhmət olmasa əvvəlcə daxil olun!"); 
-      window.location.href="qeydiyyat.html"; 
-      return; 
     }
-
-    // Google ilə daxil olanlar üçün yoxlama sürətləndirilib
-    const q = query(collection(db, "melumatlar"), where("email", "==", activeEmail.toLowerCase()));
-    const querySnapshot = await getDocs(q);
-
-    if (querySnapshot.empty) {
-        // Əgər hələ də yoxdursa (server gecikməsi ola bilər), yenidən yoxla və ya yarat
-        alert("Hesabınız hazırlanır, zəhmət olmasa bir saniyə gözləyin və yenidən cəhd edin.");
-        return;
-    }
-
-    startGame();
-  };
-
-  function startGame() {
-    state.isActive = true; state.startTime = Date.now();
-    inputEl.disabled = false; inputEl.focus();
-    document.getElementById("startAction").style.display = "none";
-    document.getElementById("wordSelector").style.pointerEvents = "none";
-    document.getElementById("wordSelector").style.opacity = "0.5";
-    startTimer();
-  }
-
-  // OYUN MEXANİKASI (Dəyişməyib)
-  document.querySelectorAll("#wordSelector button").forEach(btn => {
-    btn.onclick = () => {
-        if(state.isActive) return;
-        document.querySelectorAll("#wordSelector button").forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        state.limit = parseInt(btn.dataset.val);
-        generateWords();
-    };
   });
 
+  // OYUN KODLARI
   function generateWords() {
     state.words = [...wordPool].sort(() => Math.random() - 0.5).slice(0, state.limit);
     state.currentIdx = 0;
     wordBox.innerHTML = state.words.map((w, i) => `<span class="word ${i === 0 ? 'current' : ''}">${w}</span>`).join("");
   }
 
+  document.getElementById("startAction").onclick = () => {
+    state.isActive = true; state.startTime = Date.now();
+    inputEl.disabled = false; inputEl.focus();
+    document.getElementById("startAction").style.display = "none";
+    startTimer();
+  };
+
   function startTimer() {
-    const timer = setInterval(() => {
-      if (!state.isActive) { clearInterval(timer); return; }
+    setInterval(() => {
+      if (!state.isActive) return;
       const elapsed = (Date.now() - state.startTime) / 1000;
-      document.getElementById("timerDisplay").innerText = `${Math.floor(elapsed/60).toString().padStart(2,'0')}:${Math.floor(elapsed%60).toString().padStart(2,'0')}`;
-      if(elapsed > 0) document.getElementById("wpmDisplay").innerText = Math.round(state.currentIdx / (elapsed / 60));
+      document.getElementById("timerDisplay").innerText = Math.floor(elapsed) + "s";
+      document.getElementById("wpmDisplay").innerText = Math.round(state.currentIdx / (elapsed / 60)) || 0;
     }, 1000);
   }
-
-  inputEl.oninput = () => {
-    const typed = inputEl.value;
-    const target = state.words[state.currentIdx];
-    const wordEls = document.querySelectorAll(".word");
-    let colored = "";
-    for (let i = 0; i < target.length; i++) {
-        if (i < typed.length) {
-            colored += typed[i] === target[i] ? `<span class="char-correct">${target[i]}</span>` : `<span class="char-wrong">${target[i]}</span>`;
-        } else colored += target[i];
-    }
-    wordEls[state.currentIdx].innerHTML = colored;
-  };
 
   inputEl.onkeydown = (e) => {
     if (e.key === " ") {
       e.preventDefault();
       const typed = inputEl.value.trim();
-      if (!typed) return;
       const target = state.words[state.currentIdx];
       const wordEls = document.querySelectorAll(".word");
       
-      if (typed === target) { state.correct++; wordEls[state.currentIdx].className = "word correct"; }
-      else { state.wrong++; wordEls[state.currentIdx].className = "word wrong"; wordEls[state.currentIdx].innerHTML = target; }
-
+      wordEls[state.currentIdx].className = (typed === target) ? "word correct" : "word wrong";
       state.currentIdx++;
       inputEl.value = "";
-      if (state.currentIdx >= state.words.length) endGame();
-      else {
-        wordEls.forEach((el, i) => i === state.currentIdx ? el.classList.add('current') : el.classList.remove('current'));
-        wordEls[state.currentIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+      
+      if (state.currentIdx >= state.words.length) {
+        state.isActive = false;
+        document.getElementById("wpm-highlight").innerText = document.getElementById("wpmDisplay").innerText;
+        document.getElementById("resultModal").style.display = "flex";
+      } else {
+        wordEls[state.currentIdx].classList.add("current");
       }
     }
   };
-
-  async function endGame() {
-    state.isActive = false; inputEl.disabled = true;
-    const finalWpm = document.getElementById("wpmDisplay").innerText;
-    document.getElementById("wpm-highlight").innerText = finalWpm;
-    document.getElementById("finalCorrect").innerText = state.correct;
-    document.getElementById("finalWrong").innerText = state.wrong;
-    document.getElementById("resultModal").style.display = "flex";
-    
-    if (activeEmail) {
-      await setDoc(doc(db, "results", `${activeEmail}_${Date.now()}`), {
-        email: activeEmail, wpm: parseInt(finalWpm), correct: state.correct, wrong: state.wrong, createdAt: serverTimestamp()
-      });
-    }
-  }
 
   generateWords();
 </script>
