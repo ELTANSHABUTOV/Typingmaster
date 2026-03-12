@@ -28,18 +28,16 @@
       display: flex; justify-content: space-between; align-items: center; 
       margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05);
     }
-    .char-correct { color: var(--success); } /* Yaşıl */
-.char-wrong { 
-  color: var(--error); 
-  text-decoration: underline; /* Səhv hərf həm də altından xətt çəkilsin */
-  background: rgba(244, 63, 94, 0.2); 
-}
     .nav-links { display: flex; gap: 10px; }
     .nav-links a { 
       color: var(--text); text-decoration: none; font-size: 13px; font-weight: 500;
       padding: 8px 16px; border-radius: 12px; background: rgba(255,255,255,0.05);
     }
     .nav-links a:hover { background: var(--accent); color: var(--bg); }
+    
+    .char-correct { color: var(--success); }
+    .char-wrong { color: var(--error); text-decoration: underline; background: rgba(244, 63, 94, 0.2); border-radius: 2px; }
+
     .game-options { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
     .word-counts { display: flex; background: rgba(0,0,0,0.3); padding: 5px; border-radius: 12px; gap: 5px; }
     .word-counts button { 
@@ -51,37 +49,26 @@
     .stat-pill { background: rgba(0,0,0,0.25); padding: 8px 15px; border-radius: 12px; text-align: center; min-width: 80px; }
     .stat-pill label { display: block; font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
     .stat-pill span { color: var(--accent); font-weight: 800; font-size: 1.1rem; }
+    
     .word-stream { 
       background: rgba(0,0,0,0.2); border-radius: 20px; padding: 30px; 
       height: 160px; display: flex; flex-wrap: wrap; gap: 12px; 
-      font-size: 24px; line-height: 1.5; margin-bottom: 25px; overflow: hidden; position: relative;
+      font-size: 24px; line-height: 1.5; margin-bottom: 25px; overflow: hidden;
     }
     .word { color: var(--muted); padding: 0 4px; border-radius: 4px; }
     .word.current { color: #fff; background: rgba(56, 189, 248, 0.15); border-bottom: 2px solid var(--accent); }
     .word.correct { color: var(--success); }
     .word.wrong { color: var(--error); }
-    .input-row { display: flex; gap: 15px; position: relative; }
+
+    .input-row { display: flex; gap: 15px; }
     input[type="text"] { 
       flex: 1; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); 
       border-radius: 16px; padding: 18px 25px; color: white; font-size: 18px; outline: none;
     }
-    input[type="text"]:focus { border-color: var(--accent); box-shadow: 0 0 20px rgba(56, 189, 248, 0.1); }
-    .rules-panel { 
-        margin-top: 20px; padding: 15px; background: rgba(56, 189, 248, 0.05); 
-        border-radius: 15px; font-size: 12px; color: var(--muted); border: 1px dashed rgba(56, 189, 248, 0.2);
-    }
-    footer { 
-      width: 100%; padding: 40px 20px; background: rgba(0,0,0,0.3); 
-      margin-top: 50px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05);
-    }
-    .footer-nav { display: flex; justify-content: center; gap: 25px; margin-bottom: 15px; }
-    .footer-nav a { color: var(--muted); text-decoration: none; font-size: 13px; }
-    .footer-nav a:hover { color: var(--accent); }
+    .btn { padding: 15px 35px; border-radius: 16px; border: none; font-weight: 800; cursor: pointer; background: var(--accent); color: var(--bg); text-transform: uppercase; }
+    
     .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 9999; }
     .modal-content { background: #111827; padding: 45px; border-radius: 35px; text-align: center; border: 1px solid var(--accent); width: 90%; max-width: 400px; }
-    .char-correct { color: var(--success); }
-    .char-wrong { color: var(--error); text-decoration: underline; }
-    .btn { padding: 15px 35px; border-radius: 16px; border: none; font-weight: 800; cursor: pointer; background: var(--accent); color: var(--bg); text-transform: uppercase; letter-spacing: 1px; }
   </style>
 </head>
 <body>
@@ -109,30 +96,18 @@
       </div>
       <div class="stats-bar">
         <div class="stat-pill"><label>Sürət</label><span id="wpmDisplay">0</span></div>
-        <div class="stat-pill"><label>Vaxt</label><span id="timerDisplay">00:00</span></div>
+        <div class="stat-pill"><label>Vaxt</label><span id="timerDisplay">0s</span></div>
       </div>
     </div>
 
     <div class="word-stream" id="wordBox"></div>
 
     <div class="input-row">
-      <input type="text" id="mainInput" placeholder="Yüklənir..." disabled autocomplete="off">
+      <input type="text" id="mainInput" placeholder="Daxil olun..." disabled autocomplete="off">
       <button class="btn" id="startAction">BAŞLA</button>
-    </div>
-
-    <div class="rules-panel">
-        <b>QAYDALAR:</b> Sözləri ardıcıllıqla yazın və hər sözdən sonra <b>Boşluq (Space)</b> düyməsini sıxın.
     </div>
   </div>
 </div>
-
-<footer>
-  <div class="footer-nav">
-    <a href="privacy.html">Məxfilik Siyasəti</a>
-    <a href="terms.html">İstifadə Şərtləri</a>
-  </div>
-  <p style="font-size: 12px; color: var(--muted); margin: 0;">© 2026 TypingMaster Global Services.</p>
-</footer>
 
 <div id="resultModal" class="modal">
   <div class="modal-content">
@@ -146,7 +121,7 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-  import { getFirestore, doc, getDoc, collection, query, where, getDocs, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCYWC8P0meXFbyRoSA4uHkJmJRkPFlhwSQ",
@@ -161,20 +136,17 @@
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  let activeEmail = localStorage.getItem("tempEmail");
-  let state = { words: [], currentIdx: 0, correct: 0, wrong: 0, startTime: null, isActive: false, limit: 25 };
+  let state = { words: [], currentIdx: 0, startTime: null, isActive: false, limit: 25 };
   const wordPool = "salam dünya kitab klaviatura sürət texnologiya məktəb həyat proqramist uğur gələcək internet məlumat inkişaf azərbaycan musiqi günəş ulduz dəniz qələm dəftər kompyuter sistem şəbəkə yazı sürətli dahi yaradıcı qüvvə fəza zaman məkan rəqəmsal".split(" ");
 
   const inputEl = document.getElementById("mainInput");
   const wordBox = document.getElementById("wordBox");
 
-  // İSTİFADƏÇİ YOXLAMA
   onAuthStateChanged(auth, async (user) => {
-    if (user || activeEmail) {
-      const email = user ? user.email : activeEmail;
+    const email = user ? user.email : localStorage.getItem("tempEmail");
+    if (email) {
       const q = query(collection(db, "melumatlar"), where("email", "==", email.toLowerCase()));
       const snap = await getDocs(q);
-      
       if (!snap.empty) {
         document.getElementById("userDisplayName").innerText = snap.docs[0].data().name || email.split('@')[0];
       }
@@ -183,62 +155,39 @@
       window.location.href = "qeydiyyat.html";
     }
   });
-  // Hər hərf yazıldıqda anında yoxlama
-  inputEl.oninput = () => {
-    const typed = inputEl.value; // Sənin yazdığın mətn
-    const target = state.words[state.currentIdx]; // Ekrandakı hədəf söz
-    const wordEls = document.querySelectorAll(".word");
-    const currentWordEl = wordEls[state.currentIdx];
 
-    let coloredHTML = "";
-
-    for (let i = 0; i < target.length; i++) {
-      if (i < typed.length) {
-        // Əgər hərf düzdürsə yaşıl, səhvdirsə qırmızı
-        if (typed[i] === target[i]) {
-          coloredHTML += `<span class="char-correct">${target[i]}</span>`;
-        } else {
-          coloredHTML += `<span class="char-wrong">${target[i]}</span>`;
-        }
-      } else {
-        // Hələ yazılmamış hərflər normal rəngdə qalsın
-        coloredHTML += target[i];
-      }
-    }
-
-    // Sözün içini rəngli hərflərlə yeniləyirik
-    currentWordEl.innerHTML = coloredHTML;
-
-    // Əgər yazılan mətn hədəf sözdən daha uzundursa, sözü qırmızı göstər (artıq hərf xətası)
-    if (typed.length > target.length) {
-      currentWordEl.classList.add("wrong");
-    } else {
-      currentWordEl.classList.remove("wrong");
-    }
-  };
-
-  // OYUN KODLARI
   function generateWords() {
     state.words = [...wordPool].sort(() => Math.random() - 0.5).slice(0, state.limit);
     state.currentIdx = 0;
-    wordBox.innerHTML = state.words.map((w, i) => `<span class="word ${i === 0 ? 'current' : ''}">${w}</span>`).join("");
+    renderWords();
   }
 
-  document.getElementById("startAction").onclick = () => {
-    state.isActive = true; state.startTime = Date.now();
-    inputEl.disabled = false; inputEl.focus();
-    document.getElementById("startAction").style.display = "none";
-    startTimer();
+  function renderWords() {
+    wordBox.innerHTML = state.words.map((w, i) => {
+      let cls = "word";
+      if (i === state.currentIdx) cls += " current";
+      return `<span class="${cls}">${w}</span>`;
+    }).join("");
+  }
+
+  inputEl.oninput = () => {
+    const typed = inputEl.value;
+    const target = state.words[state.currentIdx];
+    const currentWordEl = document.querySelectorAll(".word")[state.currentIdx];
+
+    let coloredHTML = "";
+    for (let i = 0; i < target.length; i++) {
+      if (i < typed.length) {
+        coloredHTML += `<span class="${typed[i] === target[i] ? 'char-correct' : 'char-wrong'}">${target[i]}</span>`;
+      } else {
+        coloredHTML += target[i];
+      }
+    }
+    currentWordEl.innerHTML = coloredHTML;
+    
+    if (typed.length > target.length) currentWordEl.classList.add("wrong");
+    else currentWordEl.classList.remove("wrong");
   };
-
-  function startTimer() {
-    setInterval(() => {
-      if (!state.isActive) return;
-      const elapsed = (Date.now() - state.startTime) / 1000;
-      document.getElementById("timerDisplay").innerText = Math.floor(elapsed) + "s";
-      document.getElementById("wpmDisplay").innerText = Math.round(state.currentIdx / (elapsed / 60)) || 0;
-    }, 1000);
-  }
 
   inputEl.onkeydown = (e) => {
     if (e.key === " ") {
@@ -259,6 +208,19 @@
         wordEls[state.currentIdx].classList.add("current");
       }
     }
+  };
+
+  document.getElementById("startAction").onclick = () => {
+    state.isActive = true; state.startTime = Date.now();
+    inputEl.disabled = false; inputEl.focus();
+    document.getElementById("startAction").style.display = "none";
+    
+    setInterval(() => {
+      if (!state.isActive) return;
+      const elapsed = (Date.now() - state.startTime) / 1000;
+      document.getElementById("timerDisplay").innerText = Math.floor(elapsed) + "s";
+      document.getElementById("wpmDisplay").innerText = Math.round(state.currentIdx / (elapsed / 60)) || 0;
+    }, 1000);
   };
 
   generateWords();
