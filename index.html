@@ -107,8 +107,8 @@
         <h2 style="margin:0; font-size:1.4rem; font-weight:800;">TypingMaster</h2>
       </div>
       <nav class="nav-links">
-        <a href="account.html" id="userDisplayName">Hesab</a>
-        <a href="telefon.html">Dəstək</a>
+        <a href="account" id="userDisplayName">Hesab</a>
+        <a href="telefon">Dəstək</a>
         <a href="#" id="logoutBtn">ÇIXIŞ</a>
       </nav>
     </header>
@@ -141,9 +141,9 @@
 
 <footer>
   <div class="footer-nav">
-    <a href="privacy.html">Məxfilik Siyasəti</a>
-    <a href="terms.html">İstifadə Şərtləri</a>
-    <a href="haqqimizda.html">Haqqımızda</a>
+    <a href="privacy">Məxfilik Siyasəti</a>
+    <a href="terms">İstifadə Şərtləri</a>
+    <a href="haqqimizda">Haqqımızda</a>
   </div>
   <p style="font-size: 12px; color: var(--muted); margin: 0;">© 2026 TypingMaster Global Services. Bütün hüquqlar qorunur.</p>
 </footer>
@@ -258,14 +258,14 @@
     signOut(auth).then(() => {
         localStorage.clear();
         sessionStorage.clear();
-        window.location.href = "qeydiyyat.html";
+        window.location.href = "qeydiyyat";
     });
   };
 
   document.getElementById("startAction").onclick = async () => {
     if(!activeEmail) { 
       alert("Zəhmət olmasa əvvəlcə daxil olun!"); 
-      window.location.href="qeydiyyat.html"; 
+      window.location.href="qeydiyyat"; 
       return; 
     }
     startGame();
