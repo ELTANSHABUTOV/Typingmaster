@@ -104,6 +104,36 @@
     .char-wrong { color: var(--error); text-decoration: underline; }
     .btn { padding: 15px 35px; border-radius: 16px; border: none; font-weight: 800; cursor: pointer; background: var(--accent); color: var(--bg); text-transform: uppercase; letter-spacing: 1px; }
     .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(56, 189, 248, 0.3); }
+    /* Reklam Sahəsi Dizaynı */
+.video-ad-container {
+    margin-top: 25px;
+    width: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.video-ad-container video {
+    width: 100%;
+    display: block;
+    border-radius: 20px;
+}
+
+.ad-label {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    text-transform: uppercase;
+    pointer-events: none;
+}
   </style>
 </head>
 <body>
@@ -141,6 +171,13 @@
       <input type="text" id="mainInput" placeholder="Yüklənir..." disabled autocomplete="off">
       <button class="btn" id="startAction">BAŞLA</button>
     </div>
+    <div class="video-ad-container" onclick="window.open('https://sizin-linkiniz.com', '_blank')">
+    <span class="ad-label">Reklam</span>
+    <video autoplay muted loop playsinline>
+        <source src="sizin-videonuz.mp4" type="video/mp4">
+        Sizin brauzeriniz video dəstəkləmir.
+    </video>
+</div>
 
     <div class="rules-panel">
         <b>QAYDALAR:</b> Sözləri ardıcıllıqla yazın və hər sözdən sonra <b>Boşluq (Space)</b> düyməsini sıxın. Səhv yazdığınız sözü geri qayıdıb düzəldə bilməzsiniz!
