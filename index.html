@@ -115,6 +115,23 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
+/* Reklam sahəsini mətn üçün tənzimləmək */
+.video-ad-container {
+    min-height: 150px; /* Hündürlük veririk ki, boş görünməsin */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.ad-placeholder-text {
+    color: var(--accent);
+    font-size: 24px;
+    font-weight: 800;
+    text-align: center;
+    padding: 20px;
+    letter-spacing: 1px;
+}
 
 .video-ad-container video {
     width: 100%;
@@ -173,10 +190,7 @@
     </div>
     <div class="video-ad-container" onclick="window.open('https://sizin-linkiniz.com', '_blank')">
     <span class="ad-label">Reklam</span>
-    <video autoplay muted loop playsinline>
-        <source src="sizin-videonuz.mp4" type="video/mp4">
-        Sizin brauzeriniz video dəstəkləmir.
-    </video>
+    <div class="ad-placeholder-text">REKLAMINIZ BURADA OLA BİLƏRDİ</div>
 </div>
 
     <div class="rules-panel">
